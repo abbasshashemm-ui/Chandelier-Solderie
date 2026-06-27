@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+:root {
+  --cs-white: #ffffff;
+  --cs-off-white: #fafafa;
+  --cs-black: #1a1a1a;
+  --cs-charcoal: #333333;
+  --cs-gold: #c9a962;
+  --cs-gold-light: #d4bc7a;
+  --cs-gold-dark: #a8893f;
+  --cs-border: #e8e4dc;
+  --cs-text-muted: #777777;
+}
+
+@theme inline {
+  --color-background: var(--cs-off-white);
+  --color-foreground: var(--cs-charcoal);
+  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-montserrat);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--cs-charcoal);
+  font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page-shell {
+  background:
+    radial-gradient(circle at top left, rgba(201, 169, 98, 0.14), transparent 28%),
+    radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.9), transparent 24%),
+    linear-gradient(180deg, #f7f3ec 0%, #fafafa 38%, #ffffff 100%);
+}
+
+.glass-panel {
+  isolation: isolate;
+}
+
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.08) 45%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.glass-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.font-serif {
+  font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
+}
+
+.font-sans {
+  font-family: var(--font-montserrat), "Helvetica Neue", Arial, sans-serif;
+}
+
+::selection {
+  background: rgba(201, 169, 98, 0.25);
+}
