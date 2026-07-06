@@ -1,10 +1,7 @@
 import type { Product } from "./types";
+import { getWhatsAppNumber } from "./site-contact";
 
-const DEFAULT_NUMBER = "96170123456";
-
-export function getWhatsAppNumber() {
-  return process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? DEFAULT_NUMBER;
-}
+export { getWhatsAppNumber } from "./site-contact";
 
 export function buildWhatsAppUrl(product: Product) {
   const message = [

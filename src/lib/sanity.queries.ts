@@ -9,12 +9,14 @@ export const PRODUCTS_QUERY = `*[_type == "product"] | order(featured desc, _cre
   room,
   priceRange,
   dimensions,
+  category,
   shortDescription,
   description,
   featured,
   "imageUrl": mainImage.asset->url,
   "imageAlt": coalesce(mainImage.alt, title),
   "galleryUrls": gallery[].asset->url,
+  "videoUrl": video.asset->url,
   "publishedAt": coalesce(publishedAt, _createdAt)
 }`;
 
@@ -29,12 +31,14 @@ export const PRODUCT_BY_SLUG_QUERY = `*[_type == "product" && slug.current == $s
   room,
   priceRange,
   dimensions,
+  category,
   shortDescription,
   description,
   featured,
   "imageUrl": mainImage.asset->url,
   "imageAlt": coalesce(mainImage.alt, title),
   "galleryUrls": gallery[].asset->url,
+  "videoUrl": video.asset->url,
   "publishedAt": coalesce(publishedAt, _createdAt)
 }`;
 

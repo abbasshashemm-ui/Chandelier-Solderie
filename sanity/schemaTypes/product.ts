@@ -97,6 +97,28 @@ export const product = defineType({
       rows: 6,
     }),
     defineField({
+      name: "video",
+      title: "Product Video",
+      type: "file",
+      options: {
+        accept: "video/*",
+      },
+    }),
+    defineField({
+      name: "category",
+      title: "Category",
+      type: "string",
+      options: {
+        list: [
+          "Chandeliers",
+          "Pendants",
+          "Wall Lamps",
+          "Flush Mounts",
+          "Outdoor",
+        ],
+      },
+    }),
+    defineField({
       name: "featured",
       title: "Featured",
       type: "boolean",

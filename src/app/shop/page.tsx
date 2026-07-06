@@ -1,9 +1,12 @@
-import { SiteHeader } from "@/components/site-header";
+import { Suspense } from "react";
 import { CatalogueView } from "@/components/catalogue-view";
+import { CatalogueLoading } from "@/components/catalogue-loading";
 import { getProducts } from "@/lib/products";
 
 export const metadata = {
   title: "Shop",
+  description:
+    "Browse curated chandeliers and luxury lighting from Chandelier Solderie, Lebanon.",
 };
 
 export default async function ShopPage() {
@@ -11,10 +14,9 @@ export default async function ShopPage() {
 
   return (
     <div className="page-shell min-h-screen">
-      <div className="mx-auto max-w-[1600px] px-3 pt-3 md:px-5 md:pt-4">
-        <SiteHeader />
-      </div>
-      <CatalogueView products={products} title="Full Archive" />
+      <Suspense fallback={<CatalogueLoading title="Shop" />}>
+        <CatalogueView products={products} title="Shop" />
+      </Suspense>
     </div>
   );
 }

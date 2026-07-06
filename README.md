@@ -5,11 +5,10 @@ Modern luxury catalogue with **liquid glass** UI, built for **Vercel + Sanity fr
 ## Stack
 
 - **Next.js 16** (App Router)
-- **Sanity** (product CMS)
+- **Sanity** (product CMS + embedded Studio at `/studio`)
 - **Tailwind CSS v4**
-- **Mock data fallback** when Sanity isn't configured yet
 
-## Quick start (free, no Sanity account needed)
+## Quick start (development without Sanity)
 
 ```bash
 cd web
@@ -17,59 +16,68 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) — you'll see 6 sample products with filters, quick view, and WhatsApp inquire buttons.
+Without Sanity configured, the site shows **8 demo products in development only**. Production builds show an empty catalogue until you connect Sanity and publish products.
 
-## Connect Sanity (free tier)
+## Connect Sanity (CMS admin)
 
 1. Create a project at [sanity.io/manage](https://www.sanity.io/manage)
-2. Copy `.env.example` → `.env.local` and fill in:
+2. Copy `.env.example` → `.env.local` and set:
    ```
    NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
    NEXT_PUBLIC_SANITY_DATASET=production
    ```
-3. Run the embedded studio at [http://localhost:3000/studio](http://localhost:3000/studio)
-4. Create **Product** documents matching the schema in `sanity/schemaTypes/product.ts`
-5. Publish products — they replace mock data automatically
+3. In Sanity project settings → **API** → **CORS origins**, add:
+   - `http://localhost:3000`
+   - Your Vercel production URL
+4. Open [http://localhost:3000/studio](http://localhost:3000/studio) to add products (image upload, gallery, video, filters, publish)
+5. Invite client/admin emails in Sanity project **Members** for Studio access
 
-## Deploy to Vercel (free tier for testing)
+## On-demand revalidation
+
+When a product is published, the site updates via webhook:
+
+1. Set `SANITY_REVALIDATE_SECRET` in `.env.local` and Vercel
+2. In Sanity → **API** → **Webhooks**, create a webhook:
+   - URL: `https://your-domain.com/api/revalidate`
+   - Method: POST
+   - Header: `Authorization: Bearer <SANITY_REVALIDATE_SECRET>`
+   - Trigger: Create / Update / Delete on `product`
+
+## Deploy to Vercel
 
 ```bash
 npx vercel
 ```
 
-Add the same env vars in the Vercel dashboard.
-
-> **Note:** Vercel Hobby is free for personal projects. Use **Pro ($20/mo)** when you launch commercially.
+Add all env vars from `.env.example` in the Vercel dashboard.
 
 ## Project structure
 
 ```
 web/
-├── sanity/                 # Sanity schema
-├── sanity.config.ts        # Studio config
+├── sanity.config.ts        # Embedded Studio config
+├── sanity/                 # Product schema
 ├── src/
-│   ├── app/                # Pages + embedded /studio
+│   ├── app/
+│   │   ├── studio/         # CMS admin at /studio
+│   │   ├── shop/           # Catalogue with search + filters
+│   │   ├── product/[slug]/ # Product detail
+│   │   └── inquire/        # Contact page
 │   ├── components/         # Glass UI + catalogue
-│   └── lib/                # Sanity client, filters, mock data
+│   └── lib/                # Sanity client, filters, products
 ```
 
-## Brand tokens (from WP theme)
+## Features
 
-| Token | Value |
-|-------|-------|
-| Gold | `#c9a962` |
-| Black | `#1a1a1a` |
-| Serif | Cormorant Garamond |
-| Sans | Montserrat |
-
-## Features ported from WP theme
-
-- Sidebar filters (style, material, room, price, dimensions)
-- 4-column product grid
-- Quick view modal
+- Embedded Sanity Studio (`/studio`) for manual product entry
+- Sidebar filters (style, material, room, price, dimensions) with URL sync
+- Search by name or SKU
+- Pagination (24 per page)
+- Product detail pages with gallery + optional video
 - WhatsApp inquiry CTA
-- Product detail pages
-- Sticky glass header (Home / Shop)
+- Sticky glass header (Home / Shop / Inquire)
+- Featured products on home page
+- SEO: per-product metadata, sitemap, robots
 
 ## Scripts
 
@@ -78,3 +86,4 @@ web/
 | `npm run dev` | Start Next.js dev server |
 | `npm run build` | Production build |
 | `npm run lint` | ESLint |
+| `npm run studio` | Standalone Sanity Studio (optional) |

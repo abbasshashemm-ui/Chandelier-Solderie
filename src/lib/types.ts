@@ -16,12 +16,14 @@ export type Product = {
   room?: string;
   priceRange?: string;
   dimensions?: string;
+  category?: string;
   shortDescription?: string;
   description?: string;
   featured?: boolean;
   imageUrl?: string;
   imageAlt?: string;
   galleryUrls?: string[];
+  videoUrl?: string;
   publishedAt?: string;
 };
 
