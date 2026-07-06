@@ -4,10 +4,10 @@ import { SiteFooter } from "@/components/site-footer";
 
 export default function NotFound() {
   return (
-    <div className="page-shell min-h-screen pt-[var(--cs-header-height)]">
+    <div className="page-shell min-h-screen">
       <SiteHeader />
 
-      <main className="mx-auto flex min-h-[calc(100vh-var(--cs-header-height))] max-w-lg flex-col items-center justify-center px-6 py-16 text-center">
+      <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center px-6 pb-16 pt-[var(--cs-header-height)] text-center">
         <p className="font-castellar text-[0.7rem] uppercase tracking-[0.28em] text-[#a8893f]">
           404
         </p>

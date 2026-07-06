@@ -2,9 +2,9 @@ import { SiteHeader } from "@/components/site-header";
 
 export default function ProductLoading() {
   return (
-    <div className="page-shell min-h-screen pt-[var(--cs-header-height)]">
+    <div className="page-shell min-h-screen">
       <SiteHeader />
-      <main className="mx-auto max-w-[1180px] animate-pulse px-3 py-5 sm:px-5 sm:py-8 md:py-10">
+      <main className="mx-auto max-w-[1180px] animate-pulse px-3 pb-5 pt-[var(--cs-header-height)] sm:px-5 sm:pb-8 sm:pt-[calc(var(--cs-header-height)+2rem)] md:pb-10 md:pt-[calc(var(--cs-header-height)+2.5rem)]">
         <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
           <div className="aspect-square bg-white/40 backdrop-blur-md" />
           <div className="space-y-4 p-6">

@@ -12,10 +12,10 @@ export const metadata = {
 
 export default function InquirePage() {
   return (
-    <div className="page-shell min-h-screen pt-[var(--cs-header-height)]">
+    <div className="page-shell min-h-screen">
       <SiteHeader />
 
-      <main className="mx-auto flex min-h-[calc(100vh-var(--cs-header-height))] max-w-2xl flex-col items-center justify-center px-6 py-16 text-center">
+      <main className="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 pb-16 pt-[var(--cs-header-height)] text-center">
         <p className="font-castellar text-[0.7rem] uppercase tracking-[0.28em] text-[#a8893f]">
           Chandelier Solderie
         </p>

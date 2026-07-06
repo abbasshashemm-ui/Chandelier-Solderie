@@ -121,7 +121,7 @@ body::after {
     background-image var(--cs-light-transition);
 }
 
-.page-shell > * {
+.page-shell > *:not(header):not(footer) {
   position: relative;
   z-index: 1;
 }
