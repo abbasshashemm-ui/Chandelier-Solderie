@@ -140,7 +140,7 @@ export function CatalogueView({ products, title }: CatalogueViewProps) {
 
               <form
                 onSubmit={handleSearchSubmit}
-                className="mb-6 flex max-w-md gap-2"
+                className="mb-6 flex max-w-md flex-col gap-2 sm:flex-row"
               >
                 <label htmlFor="catalogue-search" className="sr-only">
                   Search products
@@ -168,7 +168,7 @@ export function CatalogueView({ products, title }: CatalogueViewProps) {
                     {searchQuery ? ` matching “${searchQuery}”` : ""}
                   </p>
 
-                  <div className="grid grid-cols-2 items-stretch gap-4 sm:gap-5 lg:grid-cols-4 lg:gap-6">
+                  <div className="grid grid-cols-2 items-stretch gap-3 sm:gap-5 lg:grid-cols-4 lg:gap-6">
                     {pageItems.map((product, index) => (
                       <ProductCard
                         key={product._id}
@@ -187,7 +187,7 @@ export function CatalogueView({ products, title }: CatalogueViewProps) {
                         type="button"
                         disabled={safePage <= 1}
                         onClick={() => goToPage(safePage - 1)}
-                        className="min-h-10 border border-[#c9a962]/30 px-4 font-sans text-[0.6875rem] uppercase tracking-[0.12em] text-[#1a1a1a] transition enabled:hover:border-[#c9a962] disabled:opacity-40"
+                        className="min-h-11 border border-[#c9a962]/30 px-4 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-[#1a1a1a] transition enabled:hover:border-[#c9a962] disabled:opacity-40"
                       >
                         Previous
                       </button>
@@ -198,7 +198,7 @@ export function CatalogueView({ products, title }: CatalogueViewProps) {
                         type="button"
                         disabled={safePage >= totalPages}
                         onClick={() => goToPage(safePage + 1)}
-                        className="min-h-10 border border-[#c9a962]/30 px-4 font-sans text-[0.6875rem] uppercase tracking-[0.12em] text-[#1a1a1a] transition enabled:hover:border-[#c9a962] disabled:opacity-40"
+                        className="min-h-11 border border-[#c9a962]/30 px-4 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-[#1a1a1a] transition enabled:hover:border-[#c9a962] disabled:opacity-40"
                       >
                         Next
                       </button>

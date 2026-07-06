@@ -20,7 +20,7 @@ export function SiteFooter() {
   const instagramUrl = getInstagramUrl();
 
   return (
-    <footer className="site-footer mx-auto w-full max-w-[1340px] px-3 pb-8 pt-8 sm:px-4 md:px-8 md:pb-10 md:pt-10">
+    <footer className="site-footer mx-auto w-full max-w-[1340px] px-3 pb-10 pt-8 sm:px-4 md:px-8 md:pb-10 md:pt-10">
       <div className="liquid-glass relative px-5 py-8 sm:px-8 sm:py-10">
         <div className="relative z-10 grid gap-10 md:grid-cols-[1.2fr_0.8fr_1fr] md:gap-8">
           <div className="text-center md:text-left">
@@ -36,7 +36,7 @@ export function SiteFooter() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
-                className="site-footer__social flex size-10 items-center justify-center border border-[#c9a962]/25 bg-white/40 text-[#444] transition hover:border-[#c9a962] hover:bg-[#c9a962] hover:text-white"
+                className="site-footer__social flex size-11 items-center justify-center border border-[#c9a962]/25 bg-white/40 text-[#444] transition hover:border-[#c9a962] hover:bg-[#c9a962] hover:text-white"
               >
                 <WhatsAppIcon className="size-4" />
               </a>
@@ -45,7 +45,7 @@ export function SiteFooter() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="site-footer__social flex size-10 items-center justify-center border border-[#c9a962]/25 bg-white/40 text-[#444] transition hover:border-[#c9a962] hover:bg-[#c9a962] hover:text-white"
+                className="site-footer__social flex size-11 items-center justify-center border border-[#c9a962]/25 bg-white/40 text-[#444] transition hover:border-[#c9a962] hover:bg-[#c9a962] hover:text-white"
               >
                 <InstagramIcon className="size-4" />
               </a>

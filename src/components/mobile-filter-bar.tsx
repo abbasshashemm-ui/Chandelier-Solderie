@@ -77,7 +77,7 @@ function MobileFilterSheet({
           <button
             type="button"
             onClick={onClose}
-            className="w-full bg-[#c9a962] py-3.5 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-white"
+            className="flex min-h-11 w-full items-center justify-center bg-[#c9a962] py-3.5 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-white"
           >
             Show results{activeCount > 0 ? ` (${activeCount} filters)` : ""}
           </button>

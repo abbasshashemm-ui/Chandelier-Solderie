@@ -56,7 +56,7 @@ function SpecRow({ label, value }: { label: string; value?: string }) {
   if (!value) return null;
 
   return (
-    <div className="grid grid-cols-[7rem_1fr] gap-4 border-b border-[#c9a962]/12 py-3 font-sans text-sm last:border-b-0">
+    <div className="grid grid-cols-1 gap-1 border-b border-[#c9a962]/12 py-3 font-sans text-sm last:border-b-0 sm:grid-cols-[7rem_1fr] sm:gap-4">
       <dt className="uppercase tracking-[0.1em] text-[#999]">{label}</dt>
       <dd className="text-[#1a1a1a]">{value}</dd>
     </div>
@@ -76,15 +76,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const origin = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
   return (
-    <div className="page-shell min-h-screen">
+    <div className="page-shell min-h-[var(--cs-viewport-height)]">
       <SiteHeader />
 
-      <main className="relative isolate mx-auto max-w-[1240px] px-3 pb-6 pt-[calc(var(--cs-header-height)+0.375rem)] sm:px-6 sm:pb-10 md:pb-12">
-        <div className="product-page-scale relative z-10">
-          <header className="mb-8 sm:mb-10">
+      <main className="relative isolate mx-auto max-w-[1240px] px-3 pb-8 pt-[calc(var(--cs-header-height)+0.375rem)] sm:px-6 sm:pb-10 md:pb-12">
+        <div className="relative z-10">
+          <header className="mb-6 sm:mb-10">
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 font-sans text-[0.6875rem] uppercase tracking-[0.16em] text-[#777] transition hover:text-[#c9a962]"
+              className="inline-flex min-h-11 items-center gap-2 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-[#777] transition hover:text-[#c9a962]"
             >
               <span aria-hidden className="text-[#c9a962]">
                 ←
@@ -110,7 +110,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <aside className="lg:col-span-5">
               <GlassPanel
                 variant="gold"
-                className="h-full p-6 shadow-[0_20px_56px_rgba(201,169,98,0.14),inset_0_1px_0_rgba(255,255,255,0.6)] ring-1 ring-[#c9a962]/25 sm:p-8 md:p-10"
+                className="h-full p-4 shadow-[0_20px_56px_rgba(201,169,98,0.14),inset_0_1px_0_rgba(255,255,255,0.6)] ring-1 ring-[#c9a962]/25 sm:p-8 md:p-10"
               >
                 <div className="relative z-10">
                   <div className="flex flex-wrap gap-2">

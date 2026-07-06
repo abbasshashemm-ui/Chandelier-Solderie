@@ -14,7 +14,7 @@ export function HomeView({ products }: HomeViewProps) {
     <>
       <SiteHeader />
 
-      <main className="flex min-h-[calc(100vh-var(--cs-header-height))] flex-col pt-[var(--cs-header-height)]">
+      <main className="flex min-h-[calc(var(--cs-viewport-height)-var(--cs-header-height))] flex-col pt-[var(--cs-header-height)]">
         <section className="mx-auto flex w-full max-w-[1340px] flex-col items-center px-3 pb-6 pt-1 sm:px-4 md:px-8 md:pb-8 md:pt-2">
           <CatalogueWelcome />
 

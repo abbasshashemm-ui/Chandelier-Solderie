@@ -61,7 +61,7 @@ export function ProductCard({
 
         <Link
           href={`/product/${product.slug}`}
-          className="absolute bottom-3 left-1/2 z-10 w-[calc(100%-1.5rem)] max-w-[12rem] -translate-x-1/2 border border-[#c9a962]/35 bg-gradient-to-r from-[#c9a962]/95 to-[#a8893f]/95 px-4 py-2.5 text-center font-sans text-[0.5625rem] font-medium uppercase tracking-[0.16em] text-white opacity-100 shadow-[0_8px_24px_rgba(201,169,98,0.35)] backdrop-blur-sm transition duration-500 sm:bottom-4 sm:max-w-none sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 translate-y-1 hover:from-[#d4bc7a] hover:to-[#c9a962]"
+          className="absolute bottom-3 left-1/2 z-10 flex min-h-11 w-[calc(100%-1.5rem)] max-w-[12rem] -translate-x-1/2 items-center justify-center border border-[#c9a962]/35 bg-gradient-to-r from-[#c9a962]/95 to-[#a8893f]/95 px-4 py-3 text-center font-sans text-[0.625rem] font-medium uppercase tracking-[0.14em] text-white opacity-100 shadow-[0_8px_24px_rgba(201,169,98,0.35)] backdrop-blur-sm transition duration-500 sm:bottom-4 sm:max-w-none sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 translate-y-1 hover:from-[#d4bc7a] hover:to-[#c9a962]"
         >
           View Piece
         </Link>

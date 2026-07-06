@@ -14,7 +14,7 @@ type GalleryItem =
   | { kind: "image"; url: string; alt: string; label: string };
 
 const thumbBase =
-  "group/thumb relative size-[4.75rem] shrink-0 overflow-hidden border bg-white/40 backdrop-blur-xl backdrop-saturate-150 transition duration-500 sm:size-[5.75rem] md:size-[6.5rem]";
+  "group/thumb relative size-[4.75rem] shrink-0 snap-center overflow-hidden border bg-white/40 backdrop-blur-xl backdrop-saturate-150 transition duration-500 sm:size-[5.75rem] md:size-[6.5rem]";
 
 export function ProductGallery({ product }: ProductGalleryProps) {
   const galleryUrls = getProductGalleryUrls(product, 3);
@@ -82,7 +82,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
         <p className="font-sans text-[0.625rem] uppercase tracking-[0.2em] text-[#a8893f]">
           Gallery
         </p>
-        <div className="flex gap-2.5 overflow-x-auto pb-1 sm:gap-3">
+        <div className="flex snap-x snap-mandatory gap-2.5 overflow-x-auto pb-1 [-webkit-overflow-scrolling:touch] sm:gap-3">
           {items.map((item, index) => {
             const isActive = index === activeIndex;
 
