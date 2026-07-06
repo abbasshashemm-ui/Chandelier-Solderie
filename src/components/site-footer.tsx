@@ -2,12 +2,10 @@ import Link from "next/link";
 import {
   buildGeneralWhatsAppUrl,
   getInstagramUrl,
-  getMailtoUrl,
   siteContact,
 } from "@/lib/site-contact";
 import {
   InstagramIcon,
-  MailIcon,
   MapPinIcon,
   WhatsAppIcon,
 } from "./social-icons";
@@ -20,7 +18,6 @@ const exploreLinks = [
 export function SiteFooter() {
   const whatsappUrl = buildGeneralWhatsAppUrl();
   const instagramUrl = getInstagramUrl();
-  const mailtoUrl = getMailtoUrl();
 
   return (
     <footer className="site-footer mx-auto w-full max-w-[1340px] px-3 pb-8 pt-8 sm:px-4 md:px-8 md:pb-10 md:pt-10">
@@ -51,13 +48,6 @@ export function SiteFooter() {
                 className="site-footer__social flex size-10 items-center justify-center border border-[#c9a962]/25 bg-white/40 text-[#444] transition hover:border-[#c9a962] hover:bg-[#c9a962] hover:text-white"
               >
                 <InstagramIcon className="size-4" />
-              </a>
-              <a
-                href={mailtoUrl}
-                aria-label="Email"
-                className="site-footer__social flex size-10 items-center justify-center border border-[#c9a962]/25 bg-white/40 text-[#444] transition hover:border-[#c9a962] hover:bg-[#c9a962] hover:text-white"
-              >
-                <MailIcon className="size-4" />
               </a>
             </div>
           </div>
@@ -101,7 +91,7 @@ export function SiteFooter() {
                   className="site-footer__contact-link inline-flex items-center justify-center gap-2.5 font-sans text-sm text-[#555] transition hover:text-[#c9a962] md:justify-start"
                 >
                   <WhatsAppIcon className="size-4 shrink-0" />
-                  WhatsApp
+                  +961 71 568 063
                 </a>
               </li>
               <li>
@@ -113,15 +103,6 @@ export function SiteFooter() {
                 >
                   <InstagramIcon className="size-4 shrink-0" />
                   Instagram
-                </a>
-              </li>
-              <li>
-                <a
-                  href={mailtoUrl}
-                  className="site-footer__contact-link inline-flex items-center justify-center gap-2.5 font-sans text-sm text-[#555] transition hover:text-[#c9a962] md:justify-start"
-                >
-                  <MailIcon className="size-4 shrink-0" />
-                  {siteContact.email}
                 </a>
               </li>
               <li>

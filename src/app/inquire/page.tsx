@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { buildGeneralWhatsAppUrl } from "@/lib/site-contact";
-import { getInstagramUrl, getMailtoUrl } from "@/lib/site-contact";
+import { buildGeneralWhatsAppUrl, getInstagramUrl } from "@/lib/site-contact";
 
 export const metadata = {
   title: "Inquire",
@@ -36,12 +35,6 @@ export default function InquirePage() {
             className="flex min-h-12 items-center justify-center bg-gradient-to-r from-[#c9a962] to-[#a8893f] px-6 py-3.5 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-white shadow-[0_10px_32px_rgba(201,169,98,0.35)] transition hover:from-[#d4bc7a] hover:to-[#c9a962]"
           >
             WhatsApp Inquiry
-          </a>
-          <a
-            href={getMailtoUrl()}
-            className="flex min-h-11 items-center justify-center border border-[#c9a962]/35 bg-white/50 px-6 py-3 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-[#1a1a1a] backdrop-blur-md transition hover:border-[#c9a962]"
-          >
-            Email Us
           </a>
           <a
             href={getInstagramUrl()}
