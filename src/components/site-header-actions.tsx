@@ -16,7 +16,7 @@ export function SiteHeaderActions({ className = "" }: SiteHeaderActionsProps) {
         href={buildGeneralWhatsAppUrl()}
         target="_blank"
         rel="noopener noreferrer"
-        className="hidden min-h-11 items-center px-2 font-sans text-[0.625rem] uppercase tracking-[0.12em] text-[#444] transition hover:text-[#c9a962] sm:flex sm:px-3 sm:py-1.5"
+        className="hidden min-h-11 items-center px-2 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-[#444] transition hover:text-[#c9a962] sm:flex sm:px-3 sm:py-1.5"
       >
         Inquire
       </a>

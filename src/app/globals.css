@@ -224,17 +224,18 @@ html.lights-on .page-shell::before {
 
 .liquid-glass--header {
   box-shadow:
-    0 1px 0 var(--cs-glass-gold-line),
-    0 12px 40px rgba(26, 26, 26, 0.07),
-    inset 0 1px 0 var(--cs-glass-inset),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.35);
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.9),
+    0 0.5px 0 rgba(0, 0, 0, 0.06);
 }
 
 .site-header.liquid-glass {
-  background: rgba(255, 255, 255, 0.58);
-  backdrop-filter: blur(44px) saturate(210%) brightness(1.06);
-  -webkit-backdrop-filter: blur(44px) saturate(210%) brightness(1.06);
-  border-bottom: 1px solid rgba(201, 169, 98, 0.14);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
+  box-shadow:
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.92),
+    0 0.5px 0 rgba(0, 0, 0, 0.04);
 }
 
 .site-header.liquid-glass::before {
@@ -244,35 +245,28 @@ html.lights-on .page-shell::before {
   pointer-events: none;
   z-index: 0;
   background: linear-gradient(
-    105deg,
-    rgba(255, 255, 255, 0.72) 0%,
-    rgba(255, 255, 255, 0.18) 42%,
-    rgba(255, 255, 255, 0.04) 100%
+    180deg,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0) 55%
   );
 }
 
 .site-header.liquid-glass::after {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.82) 0%,
-    rgba(255, 255, 255, 0.22) 38%,
-    rgba(255, 255, 255, 0) 72%
-  );
+  background: none;
 }
 
 html.lights-on .site-header.liquid-glass {
-  background: rgba(255, 252, 245, 0.68);
-  backdrop-filter: blur(48px) saturate(220%) brightness(1.08);
-  -webkit-backdrop-filter: blur(48px) saturate(220%) brightness(1.08);
-  border-bottom-color: rgba(255, 210, 80, 0.22);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  border-bottom-color: rgba(0, 0, 0, 0.06);
 }
 
-html.lights-on .site-header.liquid-glass::after {
+html.lights-on .site-header.liquid-glass::before {
   background: linear-gradient(
     180deg,
-    rgba(255, 252, 235, 0.9) 0%,
-    rgba(255, 240, 200, 0.28) 40%,
-    rgba(255, 255, 255, 0) 72%
+    rgba(255, 252, 245, 0.4) 0%,
+    rgba(255, 255, 255, 0) 55%
   );
 }
 
@@ -318,57 +312,40 @@ html.lights-on .liquid-glass--sidebar {
 }
 
 .site-logo-mark {
-  filter: brightness(0.28) contrast(1.15);
+  filter: brightness(0.22) contrast(1.05);
   transition: filter var(--cs-light-transition);
 }
 
 html.lights-on .site-logo-mark {
-  filter: brightness(0.45) contrast(1.05) drop-shadow(0 0 6px rgba(255, 220, 100, 0.25));
+  filter: brightness(0.38) contrast(1.02);
 }
 
 .site-logo-text {
   font-family: var(--font-castellar), "Castellar", "Castellar MT", serif;
-  font-size: clamp(0.5625rem, 2.8vw, 1.05rem);
+  font-size: clamp(0.6875rem, 1.6vw, 0.9375rem);
   font-weight: 400;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   white-space: nowrap;
-  background: linear-gradient(
-    180deg,
-    #9a9a9a 0%,
-    #454545 20%,
-    #737373 42%,
-    #2e2e2e 52%,
-    #7a7a7a 74%,
-    #505050 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.45));
-  transition: filter var(--cs-light-transition);
+  color: #2a2a2a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  text-shadow: 0 0.5px 0 rgba(255, 255, 255, 0.6);
+  transition:
+    color var(--cs-light-transition),
+    text-shadow var(--cs-light-transition);
 }
 
 @media (min-width: 640px) {
   .site-logo-text {
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
   }
 }
 
 html.lights-on .site-logo-text {
-  background: linear-gradient(
-    180deg,
-    #c8b06a 0%,
-    #6b5a28 20%,
-    #a89250 42%,
-    #4a3e18 52%,
-    #b89e58 74%,
-    #7a6830 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  filter: drop-shadow(0 0 8px rgba(255, 220, 100, 0.35));
+  color: #7a6830;
+  text-shadow: 0 0.5px 0 rgba(255, 252, 235, 0.5);
 }
 
 .font-castellar {
