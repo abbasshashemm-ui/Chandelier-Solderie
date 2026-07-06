@@ -79,7 +79,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <div className="page-shell min-h-screen">
       <SiteHeader />
 
-      <main className="relative isolate mx-auto max-w-[1240px] px-3 pb-6 pt-[var(--cs-header-height)] sm:px-6 sm:pb-10 sm:pt-[calc(var(--cs-header-height)+1.5rem)] md:pb-12 md:pt-[calc(var(--cs-header-height)+3rem)]">
+      <main className="relative isolate mx-auto max-w-[1240px] px-3 pb-6 pt-[calc(var(--cs-header-height)+0.375rem)] sm:px-6 sm:pb-10 md:pb-12">
         <div className="product-page-scale relative z-10">
           <header className="mb-8 sm:mb-10">
             <Link
