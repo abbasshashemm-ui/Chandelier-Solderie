@@ -20,7 +20,7 @@ export function HomeView({ products }: HomeViewProps) {
 
           <Link
             href="/shop"
-            className="relative z-10 mt-7 min-h-11 border border-[#c9a962]/35 bg-white/45 px-6 py-3.5 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-[#1a1a1a] backdrop-blur-md transition hover:border-[#c9a962] hover:bg-[#c9a962] hover:text-white sm:mt-8 sm:px-8"
+            className="relative z-10 mt-4 min-h-11 border border-[#c9a962]/35 bg-white/45 px-6 py-3.5 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-[#1a1a1a] backdrop-blur-md transition hover:border-[#c9a962] hover:bg-[#c9a962] hover:text-white sm:px-8"
           >
             Explore the Collection
           </Link>
