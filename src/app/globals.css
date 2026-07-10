@@ -377,6 +377,175 @@ html.lights-on .site-logo-text {
   text-wrap: balance;
 }
 
+/* ── Hanging welcome chandelier ───────────────────────── */
+
+.catalogue-welcome-mount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.catalogue-welcome-ceiling-cap {
+  width: 2.75rem;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--cs-gold-dark) 20%,
+    var(--cs-gold) 50%,
+    var(--cs-gold-dark) 80%,
+    transparent
+  );
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.catalogue-welcome-hanger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: top center;
+  animation: cs-chandelier-sway 6s ease-in-out infinite;
+}
+
+.catalogue-welcome-chains {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 1.35rem;
+  height: 2.25rem;
+}
+
+@media (min-width: 768px) {
+  .catalogue-welcome-chains {
+    height: 2.75rem;
+    gap: 1.75rem;
+  }
+}
+
+.catalogue-welcome-chain {
+  width: 1px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--cs-gold-dark) 0 2px,
+    rgba(201, 169, 98, 0.35) 2px 5px,
+    transparent 5px 7px
+  );
+}
+
+.catalogue-welcome-chain--center {
+  height: calc(100% + 0.35rem);
+}
+
+.catalogue-welcome-pendant {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.35rem 0.75rem 0;
+}
+
+.catalogue-welcome-icon {
+  width: 3.25rem;
+  height: auto;
+  color: var(--cs-gold-dark);
+  filter: drop-shadow(0 2px 6px var(--cs-chandelier-halo));
+  margin-bottom: 0.35rem;
+}
+
+html.lights-on .catalogue-welcome-icon {
+  color: var(--cs-gold);
+  filter: drop-shadow(0 0 10px rgba(255, 210, 80, 0.45));
+}
+
+.catalogue-welcome-title {
+  text-shadow: 0 0 18px var(--cs-chandelier-halo);
+  transition:
+    color var(--cs-light-transition),
+    text-shadow var(--cs-light-transition);
+}
+
+html.lights-on .catalogue-welcome-title {
+  color: #6b5a28;
+  text-shadow:
+    0 0 22px rgba(255, 210, 80, 0.35),
+    0 1px 0 rgba(255, 252, 235, 0.5);
+}
+
+.catalogue-welcome-glow-line {
+  width: 5rem;
+  height: 1px;
+  margin-top: 0.75rem;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--cs-gold) 50%,
+    transparent
+  );
+  box-shadow: 0 0 10px var(--cs-chandelier-halo);
+}
+
+.catalogue-welcome-drops {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.55rem;
+  margin-top: 0.45rem;
+}
+
+.catalogue-welcome-drop {
+  display: block;
+  transform: rotate(45deg);
+  border-radius: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.85),
+    var(--cs-gold-light) 45%,
+    var(--cs-gold-dark)
+  );
+  box-shadow: 0 1px 3px rgba(201, 169, 98, 0.35);
+  opacity: 0.85;
+}
+
+html.lights-on .catalogue-welcome-drop {
+  box-shadow: 0 0 8px rgba(255, 210, 80, 0.55);
+  opacity: 1;
+}
+
+@keyframes cs-chandelier-sway {
+  0%,
+  100% {
+    transform: rotate(-1.15deg);
+  }
+  50% {
+    transform: rotate(1.15deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catalogue-welcome-hanger {
+    animation: none;
+  }
+}
+
+.catalogue-welcome-skeleton-hanger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.catalogue-welcome-skeleton-chains {
+  display: flex;
+  gap: 1.35rem;
+  height: 2.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.catalogue-welcome-skeleton-chain {
+  width: 1px;
+  background: rgba(201, 169, 98, 0.25);
+}
+
 .font-serif {
   font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
 }
