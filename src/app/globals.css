@@ -382,6 +382,14 @@ html.lights-on .site-logo-text {
 
 /* ── Hanging welcome ──────────────────────────────────── */
 
+.catalogue-welcome-hanger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: top center;
+  animation: cs-chandelier-sway 6s ease-in-out infinite;
+}
+
 .catalogue-welcome-suspension {
   display: flex;
   flex-direction: column;
@@ -400,7 +408,7 @@ html.lights-on .site-logo-text {
 
 .catalogue-welcome-cord {
   width: 1px;
-  height: 2.5rem;
+  height: 2.25rem;
   background: linear-gradient(
     to bottom,
     var(--cs-gold) 0%,
@@ -411,48 +419,14 @@ html.lights-on .site-logo-text {
 
 @media (min-width: 768px) {
   .catalogue-welcome-cord {
-    height: 3rem;
+    height: 2.75rem;
   }
 }
 
-.catalogue-welcome-pendant {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.catalogue-welcome-panel {
+.catalogue-welcome-copy {
   position: relative;
   z-index: 1;
-  padding: 1rem 1.5rem 1.1rem;
-  text-align: center;
-  border-top: 1px solid rgba(201, 169, 98, 0.55);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.62) 0%,
-    rgba(255, 255, 255, 0.38) 100%
-  );
-  backdrop-filter: blur(14px);
-  box-shadow:
-    0 10px 28px rgba(26, 26, 26, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.75);
-  transition:
-    background var(--cs-light-transition),
-    box-shadow var(--cs-light-transition),
-    border-color var(--cs-light-transition);
-}
-
-html.lights-on .catalogue-welcome-panel {
-  border-top-color: rgba(255, 210, 80, 0.65);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 252, 235, 0.78) 0%,
-    rgba(255, 245, 215, 0.52) 100%
-  );
-  box-shadow:
-    0 12px 32px rgba(201, 169, 98, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  padding-top: 0.15rem;
 }
 
 .catalogue-welcome-eyebrow {
@@ -461,6 +435,7 @@ html.lights-on .catalogue-welcome-panel {
 
 .catalogue-welcome-brand {
   letter-spacing: 0.02em;
+  text-shadow: 0 0 18px var(--cs-chandelier-halo);
   transition:
     color var(--cs-light-transition),
     text-shadow var(--cs-light-transition);
@@ -468,17 +443,17 @@ html.lights-on .catalogue-welcome-panel {
 
 html.lights-on .catalogue-welcome-brand {
   color: #5c4e24;
-  text-shadow: 0 1px 0 rgba(255, 252, 235, 0.55);
+  text-shadow:
+    0 0 22px rgba(255, 210, 80, 0.35),
+    0 1px 0 rgba(255, 252, 235, 0.55);
 }
 
 .catalogue-welcome-light {
-  position: absolute;
-  top: calc(100% - 0.25rem);
-  left: 50%;
+  position: relative;
   z-index: 0;
   width: min(18rem, 72vw);
-  height: 3.5rem;
-  transform: translateX(-50%);
+  height: 2.5rem;
+  margin-top: -0.35rem;
   pointer-events: none;
   background: radial-gradient(
     ellipse at center top,
@@ -498,6 +473,22 @@ html.lights-on .catalogue-welcome-light {
   );
 }
 
+@keyframes cs-chandelier-sway {
+  0%,
+  100% {
+    transform: rotate(-1.15deg);
+  }
+  50% {
+    transform: rotate(1.15deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catalogue-welcome-hanger {
+    animation: none;
+  }
+}
+
 .catalogue-welcome-skeleton {
   display: flex;
   flex-direction: column;
@@ -506,7 +497,7 @@ html.lights-on .catalogue-welcome-light {
 
 .catalogue-welcome-skeleton-cord {
   width: 1px;
-  height: 2.5rem;
+  height: 2.25rem;
   margin-bottom: 0.75rem;
   background: rgba(201, 169, 98, 0.25);
 }

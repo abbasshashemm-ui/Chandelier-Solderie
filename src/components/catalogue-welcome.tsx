@@ -1,13 +1,13 @@
 export function CatalogueWelcome() {
   return (
     <div className="catalogue-welcome">
-      <div className="catalogue-welcome-suspension" aria-hidden="true">
-        <span className="catalogue-welcome-rosette" />
-        <span className="catalogue-welcome-cord" />
-      </div>
+      <div className="catalogue-welcome-hanger">
+        <div className="catalogue-welcome-suspension" aria-hidden="true">
+          <span className="catalogue-welcome-rosette" />
+          <span className="catalogue-welcome-cord" />
+        </div>
 
-      <div className="catalogue-welcome-pendant">
-        <div className="catalogue-welcome-panel">
+        <div className="catalogue-welcome-copy text-center">
           <p className="catalogue-welcome-eyebrow font-sans text-[0.625rem] uppercase tracking-[0.22em] text-[#999] sm:text-[0.6875rem]">
             Welcome to
           </p>
@@ -15,6 +15,7 @@ export function CatalogueWelcome() {
             Chandelier Solderie
           </h1>
         </div>
+
         <div className="catalogue-welcome-light" aria-hidden="true" />
       </div>
     </div>
