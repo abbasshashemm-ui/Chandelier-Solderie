@@ -688,8 +688,83 @@ html.lights-on .skeleton-shimmer {
     padding-bottom: calc(1rem + env(safe-area-inset-bottom));
   }
 
+  .mobile-bottom-nav {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .site-header {
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+    padding-right: max(0.75rem, env(safe-area-inset-right));
+  }
+
+  .site-footer {
+    padding-bottom: calc(1.5rem + var(--cs-mobile-nav-height));
+  }
+
+  .catalogue-main {
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+    padding-right: max(0.75rem, env(safe-area-inset-right));
+  }
+
+  .catalogue-welcome-brand {
+    font-size: clamp(1.35rem, 5.4vw, 1.75rem);
+  }
+
+  .catalogue-welcome-eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+  }
+
+  .legal-page {
+    padding-left: max(1.25rem, env(safe-area-inset-left));
+    padding-right: max(1.25rem, env(safe-area-inset-right));
+  }
+
   .liquid-glass {
     backdrop-filter: blur(18px) saturate(160%);
     -webkit-backdrop-filter: blur(18px) saturate(160%);
+  }
+}
+
+/* ── iPhone / iOS polish ──────────────────────────────── */
+
+html {
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: clip;
+  -webkit-tap-highlight-color: rgba(201, 169, 98, 0.14);
+  touch-action: manipulation;
+  overscroll-behavior-y: none;
+}
+
+@supports (-webkit-touch-callout: none) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  .catalogue-welcome-hanger {
+    transform: translateZ(0);
+  }
+}
+
+@media (max-width: 430px) {
+  :root {
+    --cs-header-bar: 3.25rem;
+    --cs-mobile-nav-bar: 3.125rem;
+  }
+
+  .home-hero-cta {
+    width: min(100%, 20rem);
+    padding-inline: 1.25rem;
+  }
+
+  .product-card__title {
+    font-size: 0.875rem;
   }
 }

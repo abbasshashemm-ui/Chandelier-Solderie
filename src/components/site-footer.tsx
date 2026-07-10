@@ -13,6 +13,7 @@ import {
 const exploreLinks = [
   { href: "/", label: "Home" },
   { href: "/shop", label: "Shop" },
+  { href: "/legal", label: "Legal" },
 ] as const;
 
 export function SiteFooter() {
@@ -120,6 +121,12 @@ export function SiteFooter() {
             © {new Date().getFullYear()} {siteContact.brandName}. All rights
             reserved.
           </p>
+          <Link
+            href="/legal"
+            className="mt-3 inline-flex min-h-11 items-center justify-center font-sans text-[0.625rem] uppercase tracking-[0.14em] text-[#999] transition hover:text-[#c9a962]"
+          >
+            Privacy & Terms
+          </Link>
         </div>
       </div>
     </footer>

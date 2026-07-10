@@ -72,7 +72,7 @@ export function ProductCard({
           {meta ?? "\u00A0"}
         </p>
 
-        <h3 className="mt-2 min-h-[2.5rem] shrink-0 font-serif text-[0.95rem] font-medium leading-snug text-[#1a1a1a] line-clamp-2 sm:text-base">
+        <h3 className="product-card__title mt-2 min-h-[2.5rem] shrink-0 font-serif text-[0.95rem] font-medium leading-snug text-[#1a1a1a] line-clamp-2 sm:text-base">
           <Link
             href={`/product/${product.slug}`}
             className="transition duration-300 hover:text-[#a8893f]"

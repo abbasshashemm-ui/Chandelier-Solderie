@@ -14,7 +14,7 @@ export default function InquirePage() {
     <div className="page-shell min-h-screen">
       <SiteHeader />
 
-      <main className="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 pb-16 pt-[var(--cs-header-height)] text-center">
+      <main className="mx-auto flex min-h-[calc(var(--cs-viewport-height)-var(--cs-header-height)-var(--cs-mobile-nav-height))] max-w-2xl flex-col items-center justify-center px-5 pb-8 pt-[var(--cs-header-height)] text-center sm:px-6 md:min-h-screen md:pb-16">
         <p className="font-castellar text-[0.7rem] uppercase tracking-[0.28em] text-[#a8893f]">
           Chandelier Solderie
         </p>

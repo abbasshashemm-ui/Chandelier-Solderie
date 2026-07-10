@@ -29,6 +29,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.6,
     },
+    {
+      url: `${siteUrl}/legal`,
+      changeFrequency: "yearly",
+      priority: 0.4,
+    },
     ...productEntries,
   ];
 }

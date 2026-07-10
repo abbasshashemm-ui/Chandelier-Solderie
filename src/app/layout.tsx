@@ -1,8 +1,18 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import localFont from "next/font/local";
 import { LightsProvider } from "@/components/lights-provider";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
+import {
+  siteDescription,
+  siteIcons,
+  siteName,
+  siteOpenGraph,
+  siteTwitter,
+  siteUrl,
+} from "@/lib/site-metadata";
 import "./globals.css";
 
 const castellar = localFont({
@@ -23,31 +33,16 @@ const montserrat = Montserrat({
   weight: ["300", "400", "500"],
 });
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Chandelier Solderie",
-    template: "%s | Chandelier Solderie",
+    default: siteName,
+    template: `%s | ${siteName}`,
   },
-  description:
-    "Luxury lighting catalogue — curated chandeliers and pendants in Lebanon.",
-  openGraph: {
-    title: "Chandelier Solderie",
-    description:
-      "Luxury lighting catalogue — curated chandeliers and pendants in Lebanon.",
-    siteName: "Chandelier Solderie",
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Chandelier Solderie",
-    description:
-      "Luxury lighting catalogue — curated chandeliers and pendants in Lebanon.",
-  },
+  description: siteDescription,
+  icons: siteIcons,
+  openGraph: siteOpenGraph,
+  twitter: siteTwitter,
 };
 
 export const viewport: Viewport = {
@@ -73,6 +68,8 @@ export default function RootLayout({
           {children}
           <MobileBottomNav />
         </LightsProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
