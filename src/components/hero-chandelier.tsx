@@ -1,19 +1,35 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // Module-scoped so the cinematic entry only plays on the first load of the
 // session; returning to the home page via client navigation skips it.
 let hasPlayedEntry = false;
 
+type Phase = "waiting" | "entry" | "live";
+
 export function HeroChandelier() {
-  const [entry] = useState(() => !hasPlayedEntry);
+  const [phase, setPhase] = useState<Phase>(() =>
+    hasPlayedEntry ? "live" : "waiting",
+  );
   const tiltRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  // Only begin the entry once the image is fully loaded, so the animation
+  // never plays against a half-loaded picture.
+  const startEntry = useCallback(() => {
+    hasPlayedEntry = true;
+    setPhase((current) => (current === "waiting" ? "entry" : current));
+  }, []);
 
   useEffect(() => {
-    hasPlayedEntry = true;
-  }, []);
+    if (phase !== "waiting") return;
+    const img = imageRef.current;
+    if (img?.complete && img.naturalWidth > 0) {
+      startEntry();
+    }
+  }, [phase, startEntry]);
 
   // Subtle 3D parallax: the chandelier tilts in perspective following the
   // pointer. Desktop-only, disabled for reduced motion.
@@ -55,12 +71,13 @@ export function HeroChandelier() {
     };
   }, []);
 
+  const phaseClass =
+    phase === "waiting" ? "hero-waiting" : phase === "entry" ? "hero-entry" : "";
+
   return (
     <div
       aria-hidden
-      className={`hero-backdrop pointer-events-none absolute inset-x-0 top-0 flex justify-center ${
-        entry ? "hero-entry" : ""
-      }`}
+      className={`hero-backdrop pointer-events-none absolute inset-x-0 top-0 flex justify-center ${phaseClass}`}
     >
       <div className="hero-3d flex justify-center">
         <div ref={tiltRef} className="hero-tilt">
@@ -68,11 +85,13 @@ export function HeroChandelier() {
             <div className="hero-sway relative">
               <span className="hero-flare" />
               <Image
+                ref={imageRef}
                 src="/hero-chandelier.png"
                 alt=""
                 width={768}
                 height={1152}
                 priority
+                onLoad={startEntry}
                 sizes="(max-width: 640px) 320px, (max-width: 768px) 380px, 460px"
                 className="hero-ignite h-[30rem] w-auto sm:h-[36rem] md:h-[42rem]"
               />

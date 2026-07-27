@@ -245,16 +245,24 @@ body::after {
   animation: cs-hero-sway 10s ease-in-out 3.2s infinite;
 }
 
+/* Only visible as a brief flash while the bulbs ignite */
 .hero-flare {
   position: absolute;
   inset: -12% -30%;
   background: radial-gradient(
     ellipse 50% 42% at 50% 42%,
-    rgba(232, 189, 110, 0.34) 0%,
-    rgba(201, 163, 95, 0.12) 45%,
-    transparent 72%
+    rgba(232, 189, 110, 0.3) 0%,
+    rgba(216, 176, 102, 0.16) 28%,
+    rgba(201, 163, 95, 0.08) 48%,
+    rgba(201, 163, 95, 0.03) 62%,
+    transparent 78%
   );
-  opacity: 0.8;
+  opacity: 0;
+}
+
+/* Hidden until the image has fully loaded, then the entry begins */
+.hero-waiting .hero-ignite {
+  opacity: 0;
 }
 
 /* Cinematic first-load entry: descend in perspective, then ignite */
@@ -300,13 +308,13 @@ body::after {
     filter: brightness(0.22) blur(1.5px);
   }
   59% {
-    filter: brightness(1.18) blur(0.5px);
+    filter: brightness(1.1) blur(0.5px);
   }
   66% {
-    filter: brightness(0.68) blur(0);
+    filter: brightness(0.72) blur(0);
   }
   76% {
-    filter: brightness(1.25);
+    filter: brightness(1.12);
   }
   100% {
     filter: brightness(1);
@@ -319,16 +327,16 @@ body::after {
     opacity: 0;
   }
   59% {
-    opacity: 0.55;
+    opacity: 0.5;
   }
   66% {
-    opacity: 0.3;
+    opacity: 0.25;
   }
   80% {
-    opacity: 0.95;
+    opacity: 0.6;
   }
   100% {
-    opacity: 0.8;
+    opacity: 0;
   }
 }
 
