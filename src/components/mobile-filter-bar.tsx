@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import type { ActiveFilters } from "@/lib/filters";
 import type { FilterKey } from "@/lib/types";
 import { FilterPanel } from "./filter-panel";
@@ -40,7 +41,9 @@ function MobileFilterSheet({
 
   if (!open) return null;
 
-  return (
+  // Portaled to <body> so the sheet stacks above the fixed bottom nav,
+  // outside the page-shell stacking context.
+  return createPortal(
     <div className="fixed inset-0 z-[90] md:hidden">
       <button
         type="button"
@@ -83,7 +86,8 @@ function MobileFilterSheet({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
