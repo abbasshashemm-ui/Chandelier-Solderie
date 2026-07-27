@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/lib/types";
 import { buildGeneralWhatsAppUrl, siteContact } from "@/lib/site-contact";
+import { HeroChandelier } from "./hero-chandelier";
 import { ProductGrid } from "./product-grid";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
@@ -34,20 +34,7 @@ export function HomeView({ products }: HomeViewProps) {
         {/* Hero */}
         <section className="relative mx-auto flex w-full max-w-[1340px] flex-col items-center px-5 pb-16 pt-44 text-center sm:px-6 md:px-8 md:pb-20 md:pt-60">
           {/* Chandelier hanging from under the header, behind the copy */}
-          <div
-            aria-hidden
-            className="hero-backdrop pointer-events-none absolute inset-x-0 top-0 flex justify-center"
-          >
-            <Image
-              src="/hero-chandelier.png"
-              alt=""
-              width={768}
-              height={1152}
-              priority
-              sizes="(max-width: 640px) 320px, (max-width: 768px) 380px, 460px"
-              className="reveal h-[30rem] w-auto sm:h-[36rem] md:h-[42rem]"
-            />
-          </div>
+          <HeroChandelier />
 
           {/* Soft shade behind the copy for readability */}
           <div
