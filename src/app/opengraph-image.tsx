@@ -21,33 +21,50 @@ export default async function Image() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background:
-            "linear-gradient(165deg, #fffdf8 0%, #f3ece3 42%, #e8dfd2 100%)",
+          backgroundColor: "#0f0c09",
+          backgroundImage:
+            "radial-gradient(ellipse 80% 55% at 50% -10%, rgba(232,205,141,0.22), transparent 65%), linear-gradient(180deg, #14100b 0%, #0f0c09 40%, #0a0807 100%)",
         }}
       >
-        <img src={logoSrc} width={132} height={134} alt="" />
+        <img
+          src={logoSrc}
+          width={124}
+          height={126}
+          alt=""
+          style={{ filter: "invert(92%) sepia(50%) saturate(110%)" }}
+        />
         <div
           style={{
-            marginTop: 36,
-            fontSize: 56,
+            marginTop: 40,
+            fontSize: 58,
             fontFamily: "Georgia, serif",
-            letterSpacing: "0.04em",
-            color: "#1a1a1a",
+            letterSpacing: "0.05em",
+            color: "#f2ebdd",
           }}
         >
           {siteName}
         </div>
         <div
           style={{
-            marginTop: 18,
-            fontSize: 22,
-            fontFamily: "Helvetica, Arial, sans-serif",
-            letterSpacing: "0.24em",
-            textTransform: "uppercase",
-            color: "#a8893f",
+            marginTop: 24,
+            display: "flex",
+            alignItems: "center",
+            gap: 20,
           }}
         >
-          {siteDescription.replace(" — ", " · ")}
+          <div style={{ width: 60, height: 1, background: "#c9a35f" }} />
+          <div
+            style={{
+              fontSize: 21,
+              fontFamily: "Helvetica, Arial, sans-serif",
+              letterSpacing: "0.26em",
+              textTransform: "uppercase",
+              color: "#c9a35f",
+            }}
+          >
+            {siteDescription.replace(" — ", " · ")}
+          </div>
+          <div style={{ width: 60, height: 1, background: "#c9a35f" }} />
         </div>
       </div>
     ),

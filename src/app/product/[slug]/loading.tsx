@@ -4,14 +4,18 @@ export default function ProductLoading() {
   return (
     <div className="page-shell min-h-screen">
       <SiteHeader />
-      <main className="mx-auto max-w-[1180px] animate-pulse px-3 pb-5 pt-[var(--cs-header-height)] sm:px-5 sm:pb-8 sm:pt-[calc(var(--cs-header-height)+2rem)] md:pb-10 md:pt-[calc(var(--cs-header-height)+2.5rem)]">
-        <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
-          <div className="aspect-square bg-white/40 backdrop-blur-md" />
-          <div className="space-y-4 p-6">
-            <div className="h-4 w-24 bg-white/50" />
-            <div className="h-10 w-full bg-white/50" />
-            <div className="h-8 w-32 bg-white/50" />
-            <div className="h-24 w-full bg-white/40" />
+      <main className="mx-auto max-w-[1240px] px-3 pb-12 pt-[calc(var(--cs-header-height)+1rem)] sm:px-6 sm:pb-16 md:pt-[calc(var(--cs-header-height)+2rem)]">
+        <div className="skeleton-shimmer mb-8 h-4 w-36" />
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-7">
+            <div className="skeleton-shimmer aspect-[4/5] border border-line sm:aspect-square" />
+          </div>
+          <div className="space-y-5 lg:col-span-5">
+            <div className="skeleton-shimmer h-3 w-40" />
+            <div className="skeleton-shimmer h-12 w-full" />
+            <div className="skeleton-shimmer h-8 w-32" />
+            <div className="skeleton-shimmer h-28 w-full" />
+            <div className="skeleton-shimmer h-12 w-full" />
           </div>
         </div>
       </main>

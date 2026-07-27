@@ -14,15 +14,19 @@ export default function InquirePage() {
     <div className="page-shell min-h-screen">
       <SiteHeader />
 
-      <main className="mx-auto flex min-h-[calc(var(--cs-viewport-height)-var(--cs-header-height)-var(--cs-mobile-nav-height))] max-w-2xl flex-col items-center justify-center px-5 pb-8 pt-[var(--cs-header-height)] text-center sm:px-6 md:min-h-screen md:pb-16">
-        <p className="font-castellar text-[0.7rem] uppercase tracking-[0.28em] text-[#a8893f]">
+      <main className="mx-auto flex min-h-[calc(var(--cs-viewport-height)-var(--cs-header-height)-var(--cs-mobile-nav-height))] max-w-2xl flex-col items-center justify-center px-5 pb-12 pt-[var(--cs-header-height)] text-center sm:px-6 md:pb-20">
+        <div aria-hidden>
+          <div className="hero-cord" />
+          <div className="hero-jewel" />
+        </div>
+
+        <p className="mt-8 font-castellar text-[0.6875rem] uppercase tracking-[0.3em] text-gold">
           Chandelier Solderie
         </p>
-        <h1 className="mt-4 font-serif text-3xl font-medium text-[#1a1a1a] md:text-4xl">
-          Begin Your Inquiry
+        <h1 className="mt-4 font-serif text-4xl font-normal text-ivory md:text-5xl">
+          Begin Your <em className="italic text-gold-bright">Inquiry</em>
         </h1>
-        <div className="mx-auto mt-5 h-px w-20 bg-gradient-to-r from-transparent via-[#c9a962] to-transparent" />
-        <p className="mt-6 max-w-md font-serif text-lg leading-relaxed text-[#555]">
+        <p className="mt-6 max-w-md font-serif text-lg leading-relaxed text-muted">
           Share your vision with us — we will guide you through our curated
           collection and bespoke lighting options.
         </p>
@@ -32,7 +36,7 @@ export default function InquirePage() {
             href={buildGeneralWhatsAppUrl()}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex min-h-12 items-center justify-center bg-gradient-to-r from-[#c9a962] to-[#a8893f] px-6 py-3.5 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-white shadow-[0_10px_32px_rgba(201,169,98,0.35)] transition hover:from-[#d4bc7a] hover:to-[#c9a962]"
+            className="btn btn--gold"
           >
             WhatsApp Inquiry
           </a>
@@ -40,7 +44,7 @@ export default function InquirePage() {
             href={getInstagramUrl()}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex min-h-11 items-center justify-center border border-[#c9a962]/35 bg-white/50 px-6 py-3 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-[#1a1a1a] backdrop-blur-md transition hover:border-[#c9a962]"
+            className="btn btn--ghost"
           >
             Instagram
           </a>
@@ -48,7 +52,7 @@ export default function InquirePage() {
 
         <Link
           href="/shop"
-          className="mt-8 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-[#777] transition hover:text-[#c9a962]"
+          className="mt-10 font-sans text-[0.6875rem] uppercase tracking-[0.18em] text-faint transition hover:text-gold-bright"
         >
           Browse the collection
         </Link>

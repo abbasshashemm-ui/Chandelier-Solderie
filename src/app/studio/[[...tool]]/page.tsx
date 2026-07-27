@@ -14,15 +14,15 @@ function StudioSetupNotice() {
         justifyContent: "center",
         padding: "2rem",
         fontFamily: "Georgia, serif",
-        background: "#f3ece3",
-        color: "#1a1a1a",
+        background: "#0f0c09",
+        color: "#f2ebdd",
       }}
     >
       <div style={{ maxWidth: "32rem", textAlign: "center" }}>
         <h1 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
           Sanity Studio
         </h1>
-        <p style={{ lineHeight: 1.6, color: "#555" }}>
+        <p style={{ lineHeight: 1.6, color: "#a89a83" }}>
           Add <code>NEXT_PUBLIC_SANITY_PROJECT_ID</code> to{" "}
           <code>.env.local</code>, then restart the dev server.
         </p>

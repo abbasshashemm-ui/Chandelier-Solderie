@@ -14,8 +14,8 @@ export default async function ShopPage() {
 
   return (
     <div className="page-shell min-h-screen">
-      <Suspense fallback={<CatalogueLoading title="Shop" />}>
-        <CatalogueView products={products} title="Shop" />
+      <Suspense fallback={<CatalogueLoading title="The Collection" />}>
+        <CatalogueView products={products} title="The Collection" />
       </Suspense>
     </div>
   );

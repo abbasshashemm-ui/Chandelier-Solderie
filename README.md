@@ -1,6 +1,6 @@
 # Chandelier Solderie — Next.js + Sanity
 
-Modern luxury catalogue with **liquid glass** UI, built for **Vercel + Sanity free tiers**.
+Luxury lighting catalogue with a dark **"Nocturne"** showroom UI, built for **Vercel + Sanity free tiers**.
 
 ## Stack
 
@@ -11,7 +11,6 @@ Modern luxury catalogue with **liquid glass** UI, built for **Vercel + Sanity fr
 ## Quick start (development without Sanity)
 
 ```bash
-cd web
 npm install
 npm run dev
 ```
@@ -54,7 +53,6 @@ Add all env vars from `.env.example` in the Vercel dashboard.
 ## Project structure
 
 ```
-web/
 ├── sanity.config.ts        # Embedded Studio config
 ├── sanity/                 # Product schema
 ├── src/
@@ -63,7 +61,7 @@ web/
 │   │   ├── shop/           # Catalogue with search + filters
 │   │   ├── product/[slug]/ # Product detail
 │   │   └── inquire/        # Contact page
-│   ├── components/         # Glass UI + catalogue
+│   ├── components/         # Site chrome + catalogue UI
 │   └── lib/                # Sanity client, filters, products
 ```
 
@@ -75,7 +73,7 @@ web/
 - Pagination (24 per page)
 - Product detail pages with gallery + optional video
 - WhatsApp inquiry CTA
-- Sticky glass header (Home / Shop / Inquire)
+- Fixed header (Home / Collection / Inquire) + mobile bottom nav
 - Featured products on home page
 - SEO: per-product metadata, sitemap, robots
 
