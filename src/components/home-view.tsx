@@ -39,14 +39,14 @@ export function HomeView({ products }: HomeViewProps) {
           {/* Soft shade behind the copy for readability */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-32 z-0 h-[26rem] bg-[radial-gradient(ellipse_42%_38%_at_50%_52%,rgba(10,8,7,0.6),transparent_72%)] md:top-40"
+            className="pointer-events-none absolute inset-x-0 top-28 z-0 h-[28rem] bg-[radial-gradient(ellipse_52%_46%_at_50%_48%,rgba(10,8,7,0.88),transparent_74%)] md:top-36"
           />
 
           <p className="reveal reveal-2 relative z-10 font-sans text-[0.625rem] uppercase tracking-[0.32em] text-gold sm:text-[0.6875rem]">
             Luxury Lighting Atelier · Lebanon
           </p>
 
-          <h1 className="reveal reveal-2 relative z-10 mt-5 max-w-3xl font-serif text-[2.5rem] font-normal leading-[1.05] text-ivory sm:text-6xl md:text-7xl">
+          <h1 className="reveal reveal-2 relative z-10 mt-5 max-w-3xl font-serif text-[2.5rem] font-normal leading-[1.05] text-ivory [text-shadow:0_2px_28px_rgba(10,8,7,0.85),0_0_40px_rgba(10,8,7,0.55)] sm:text-6xl md:text-7xl">
             The art of <em className="italic text-gold-bright">light</em>,
             <br />
             piece by piece.
