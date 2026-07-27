@@ -4,10 +4,7 @@ import { useCallback, useMemo, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Product } from "@/lib/types";
 import type { ActiveFilters } from "@/lib/filters";
-import {
-  PRODUCTS_PER_PAGE,
-  filterProducts,
-} from "@/lib/filters";
+import { PRODUCTS_PER_PAGE, filterProducts } from "@/lib/filters";
 import { SiteHeader } from "./site-header";
 import { SiteFooter } from "./site-footer";
 import { FilterSidebar } from "./filter-sidebar";
@@ -45,10 +42,7 @@ export function CatalogueView({ products, title }: CatalogueViewProps) {
     () => searchParams.get("q") ?? "",
   );
 
-  const filters = useMemo(
-    () => readFilters(searchParams),
-    [searchParams],
-  );
+  const filters = useMemo(() => readFilters(searchParams), [searchParams]);
   const searchQuery = searchParams.get("q") ?? "";
   const currentPage = Math.max(1, Number(searchParams.get("page") ?? "1"));
 
@@ -109,14 +103,13 @@ export function CatalogueView({ products, title }: CatalogueViewProps) {
   };
 
   const isCatalogueEmpty = products.length === 0;
-  const noFilterMatches = !isCatalogueEmpty && filtered.length === 0;
 
   return (
     <>
       <SiteHeader />
 
       <div className="catalogue-shell pt-[var(--cs-header-height)]">
-        <div className="catalogue-body flex">
+        <div className="flex items-stretch">
           <FilterSidebar
             active={filters}
             onChange={handleFilterChange}
@@ -130,17 +123,19 @@ export function CatalogueView({ products, title }: CatalogueViewProps) {
               onClear={handleClear}
             />
 
-            <section className="mx-auto max-w-[1340px] px-3 pb-8 pt-4 md:px-8 md:pb-10 md:pt-6">
-              <div className="mb-5 md:mb-6">
-                <h1 className="font-serif text-2xl font-medium tracking-wide text-[#1a1a1a] md:text-4xl">
+            <section className="mx-auto max-w-[1340px] px-3 pb-12 pt-6 md:px-8 md:pb-16 md:pt-10">
+              <header className="mb-6 md:mb-8">
+                <p className="font-sans text-[0.625rem] uppercase tracking-[0.28em] text-gold">
+                  Chandelier Solderie
+                </p>
+                <h1 className="mt-2 font-serif text-3xl font-normal text-ivory md:text-5xl">
                   {title}
                 </h1>
-                <div className="mt-3 h-px w-16 bg-gradient-to-r from-[#c9a962] to-transparent" />
-              </div>
+              </header>
 
               <form
                 onSubmit={handleSearchSubmit}
-                className="mb-6 flex max-w-md flex-col gap-2 sm:flex-row"
+                className="mb-8 flex max-w-md flex-col gap-2 sm:flex-row"
               >
                 <label htmlFor="catalogue-search" className="sr-only">
                   Search products
@@ -151,11 +146,11 @@ export function CatalogueView({ products, title }: CatalogueViewProps) {
                   value={searchInput}
                   onChange={(event) => setSearchInput(event.target.value)}
                   placeholder="Search by name or SKU…"
-                  className="min-h-11 flex-1 border border-[#c9a962]/25 bg-white/50 px-4 font-sans text-sm text-[#1a1a1a] backdrop-blur-md outline-none transition focus:border-[#c9a962]"
+                  className="min-h-11 flex-1 border border-line bg-surface px-4 font-sans text-sm text-ivory placeholder:text-faint outline-none transition focus:border-gold"
                 />
                 <button
                   type="submit"
-                  className="min-h-11 border border-[#c9a962]/35 bg-[#c9a962] px-4 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-white transition hover:bg-[#a8893f]"
+                  className="btn btn--ghost min-h-11 px-5 py-0"
                 >
                   Search
                 </button>
@@ -163,7 +158,7 @@ export function CatalogueView({ products, title }: CatalogueViewProps) {
 
               {!isCatalogueEmpty && filtered.length > 0 ? (
                 <>
-                  <p className="mb-4 font-sans text-[0.6875rem] uppercase tracking-[0.12em] text-[#999]">
+                  <p className="mb-5 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-faint">
                     {filtered.length} piece{filtered.length === 1 ? "" : "s"}
                     {searchQuery ? ` matching “${searchQuery}”` : ""}
                   </p>
@@ -181,24 +176,24 @@ export function CatalogueView({ products, title }: CatalogueViewProps) {
                   {totalPages > 1 ? (
                     <nav
                       aria-label="Catalogue pagination"
-                      className="mt-10 flex items-center justify-center gap-2"
+                      className="mt-12 flex items-center justify-center gap-2"
                     >
                       <button
                         type="button"
                         disabled={safePage <= 1}
                         onClick={() => goToPage(safePage - 1)}
-                        className="min-h-11 border border-[#c9a962]/30 px-4 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-[#1a1a1a] transition enabled:hover:border-[#c9a962] disabled:opacity-40"
+                        className="min-h-11 border border-line px-4 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-ivory transition enabled:hover:border-gold enabled:hover:text-gold-bright disabled:opacity-30"
                       >
                         Previous
                       </button>
-                      <span className="px-3 font-sans text-xs text-[#777]">
+                      <span className="px-3 font-sans text-xs text-muted">
                         Page {safePage} of {totalPages}
                       </span>
                       <button
                         type="button"
                         disabled={safePage >= totalPages}
                         onClick={() => goToPage(safePage + 1)}
-                        className="min-h-11 border border-[#c9a962]/30 px-4 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-[#1a1a1a] transition enabled:hover:border-[#c9a962] disabled:opacity-40"
+                        className="min-h-11 border border-line px-4 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-ivory transition enabled:hover:border-gold enabled:hover:text-gold-bright disabled:opacity-30"
                       >
                         Next
                       </button>
@@ -206,17 +201,26 @@ export function CatalogueView({ products, title }: CatalogueViewProps) {
                   ) : null}
                 </>
               ) : (
-                <div className="liquid-glass flex min-h-[360px] flex-col items-center justify-center px-8 py-20 text-center">
-                  <p className="relative z-10 max-w-md font-serif text-2xl leading-relaxed text-[#555]">
+                <div className="flex min-h-[360px] flex-col items-center justify-center border border-line px-8 py-20 text-center">
+                  <p className="max-w-md font-serif text-2xl leading-relaxed text-muted">
                     {isCatalogueEmpty
                       ? "The collection is being curated."
                       : "No pieces match these filters."}
                   </p>
-                  <p className="relative z-10 mt-2 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-[#999]">
+                  <p className="mt-2 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-faint">
                     {isCatalogueEmpty
                       ? "Publish products in the studio to populate the catalogue"
                       : "Try adjusting your selection"}
                   </p>
+                  {!isCatalogueEmpty ? (
+                    <button
+                      type="button"
+                      onClick={handleClear}
+                      className="btn btn--ghost mt-8"
+                    >
+                      Clear All Filters
+                    </button>
+                  ) : null}
                 </div>
               )}
             </section>

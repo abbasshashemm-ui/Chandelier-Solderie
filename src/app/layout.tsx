@@ -3,7 +3,6 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import localFont from "next/font/local";
-import { LightsProvider } from "@/components/lights-provider";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import {
   siteDescription,
@@ -25,6 +24,7 @@ const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
 });
 
 const montserrat = Montserrat({
@@ -49,7 +49,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#f3ece3",
+  themeColor: "#0f0c09",
 };
 
 export default function RootLayout({
@@ -64,10 +64,8 @@ export default function RootLayout({
       className={`${castellar.variable} ${cormorant.variable} ${montserrat.variable} h-full`}
     >
       <body className="min-h-full antialiased pb-[var(--cs-mobile-nav-height)] md:pb-0">
-        <LightsProvider>
-          {children}
-          <MobileBottomNav />
-        </LightsProvider>
+        {children}
+        <MobileBottomNav />
         <Analytics />
         <SpeedInsights />
       </body>

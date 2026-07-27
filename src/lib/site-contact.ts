@@ -25,10 +25,6 @@ export function buildGeneralWhatsAppUrl() {
   return `https://wa.me/${getWhatsAppNumber()}?text=${encodeURIComponent(message)}`;
 }
 
-export function buildWhatsAppTelUrl() {
-  return `https://wa.me/${getWhatsAppNumber()}`;
-}
-
 export function getInstagramUrl() {
   return siteContact.instagramUrl;
 }

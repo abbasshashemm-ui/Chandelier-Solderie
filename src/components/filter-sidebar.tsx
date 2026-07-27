@@ -12,8 +12,13 @@ type FilterSidebarProps = {
 
 export function FilterSidebar({ active, onChange, onClear }: FilterSidebarProps) {
   return (
-    <aside className="filter-sidebar liquid-glass liquid-glass--sidebar sticky top-[calc(var(--cs-header-height)+1rem)] z-30 mt-4 hidden h-[calc(100vh-var(--cs-header-height)-1rem)] w-[260px] shrink-0 flex-col self-start md:flex">
-      <FilterPanel active={active} onChange={onChange} onClear={onClear} className="flex min-h-0 flex-1 flex-col" />
+    <aside className="filter-sidebar sticky top-[var(--cs-header-height)] z-30 hidden h-[calc(100vh-var(--cs-header-height))] w-[260px] shrink-0 flex-col self-start border-r border-line md:flex">
+      <FilterPanel
+        active={active}
+        onChange={onChange}
+        onClear={onClear}
+        className="flex min-h-0 flex-1 flex-col"
+      />
     </aside>
   );
 }

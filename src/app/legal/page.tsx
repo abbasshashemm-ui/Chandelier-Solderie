@@ -16,24 +16,23 @@ export default function LegalPage() {
     <div className="page-shell min-h-screen">
       <SiteHeader />
 
-      <main className="legal-page mx-auto max-w-3xl px-5 pb-[calc(2rem+var(--cs-mobile-nav-height))] pt-[calc(var(--cs-header-height)+1.5rem)] sm:px-8 md:pb-16 md:pt-[calc(var(--cs-header-height)+2.5rem)]">
-        <p className="font-castellar text-[0.7rem] uppercase tracking-[0.28em] text-[#a8893f]">
+      <main className="mx-auto max-w-3xl px-5 pb-[calc(3rem+var(--cs-mobile-nav-height))] pt-[calc(var(--cs-header-height)+2rem)] sm:px-8 md:pb-20 md:pt-[calc(var(--cs-header-height)+3rem)]">
+        <p className="font-castellar text-[0.6875rem] uppercase tracking-[0.3em] text-gold">
           {siteContact.brandName}
         </p>
-        <h1 className="mt-4 font-serif text-3xl font-medium text-[#1a1a1a] md:text-4xl">
+        <h1 className="mt-4 font-serif text-4xl font-normal text-ivory md:text-5xl">
           Legal
         </h1>
-        <div className="mx-auto mt-5 h-px w-20 bg-gradient-to-r from-transparent via-[#c9a962] to-transparent" />
 
-        <section className="legal-section mt-10">
-          <h2 className="font-serif text-2xl text-[#1a1a1a]">Privacy Policy</h2>
-          <p className="mt-4 font-serif text-base leading-relaxed text-[#555]">
+        <section className="mt-12 border-t border-line pt-8">
+          <h2 className="font-serif text-2xl text-ivory">Privacy Policy</h2>
+          <p className="mt-4 font-serif text-base leading-relaxed text-muted">
             {siteContact.brandName} respects your privacy. This website is a
             catalogue for luxury lighting. We do not operate an online checkout —
             inquiries are handled directly through WhatsApp, Instagram, or in
             person at our showroom.
           </p>
-          <ul className="mt-4 space-y-3 font-serif text-base leading-relaxed text-[#555]">
+          <ul className="mt-4 list-disc space-y-3 pl-5 font-serif text-base leading-relaxed text-muted marker:text-gold">
             <li>
               When you contact us via WhatsApp or Instagram, those platforms
               handle your messages under their own privacy policies.
@@ -43,18 +42,16 @@ export default function LegalPage() {
               type) to improve the website experience. This data is aggregated
               and does not personally identify you.
             </li>
-            <li>
-              We do not sell personal information to third parties.
-            </li>
+            <li>We do not sell personal information to third parties.</li>
           </ul>
         </section>
 
-        <section className="legal-section mt-10">
-          <h2 className="font-serif text-2xl text-[#1a1a1a]">Terms of Use</h2>
-          <p className="mt-4 font-serif text-base leading-relaxed text-[#555]">
+        <section className="mt-12 border-t border-line pt-8">
+          <h2 className="font-serif text-2xl text-ivory">Terms of Use</h2>
+          <p className="mt-4 font-serif text-base leading-relaxed text-muted">
             By using this website, you agree to the following terms:
           </p>
-          <ul className="mt-4 space-y-3 font-serif text-base leading-relaxed text-[#555]">
+          <ul className="mt-4 list-disc space-y-3 pl-5 font-serif text-base leading-relaxed text-muted marker:text-gold">
             <li>
               Product images, descriptions, and prices are provided for catalogue
               purposes and may change without notice.
@@ -76,19 +73,22 @@ export default function LegalPage() {
           </ul>
         </section>
 
-        <section className="legal-section mt-10">
-          <h2 className="font-serif text-2xl text-[#1a1a1a]">Contact</h2>
-          <p className="mt-4 font-serif text-base leading-relaxed text-[#555]">
+        <section className="mt-12 border-t border-line pt-8">
+          <h2 className="font-serif text-2xl text-ivory">Contact</h2>
+          <p className="mt-4 font-serif text-base leading-relaxed text-muted">
             For questions about these policies or your inquiry, reach us through
             our{" "}
-            <Link href="/inquire" className="text-[#a8893f] underline-offset-2 hover:underline">
+            <Link
+              href="/inquire"
+              className="text-gold-bright underline-offset-4 hover:underline"
+            >
               Inquire page
             </Link>{" "}
             or visit us at {siteContact.location}.
           </p>
         </section>
 
-        <p className="mt-12 font-sans text-[0.625rem] uppercase tracking-[0.14em] text-[#999]">
+        <p className="mt-14 font-sans text-[0.625rem] uppercase tracking-[0.16em] text-faint">
           Last updated {year}
         </p>
       </main>
