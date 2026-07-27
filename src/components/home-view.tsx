@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/lib/types";
 import { buildGeneralWhatsAppUrl, siteContact } from "@/lib/site-contact";
@@ -31,28 +32,45 @@ export function HomeView({ products }: HomeViewProps) {
 
       <main className="flex min-h-[calc(var(--cs-viewport-height)-var(--cs-header-height))] flex-col pt-[var(--cs-header-height)]">
         {/* Hero */}
-        <section className="mx-auto flex w-full max-w-[1340px] flex-col items-center px-5 pb-16 text-center sm:px-6 md:px-8 md:pb-20">
-          <div className="reveal" aria-hidden>
-            <div className="hero-cord" />
-            <div className="hero-jewel" />
+        <section className="relative mx-auto flex w-full max-w-[1340px] flex-col items-center px-5 pb-16 pt-44 text-center sm:px-6 md:px-8 md:pb-20 md:pt-60">
+          {/* Chandelier hanging from under the header, behind the copy */}
+          <div
+            aria-hidden
+            className="hero-backdrop pointer-events-none absolute inset-x-0 top-0 flex justify-center"
+          >
+            <Image
+              src="/hero-chandelier.png"
+              alt=""
+              width={768}
+              height={1152}
+              priority
+              sizes="(max-width: 640px) 320px, (max-width: 768px) 380px, 460px"
+              className="reveal h-[30rem] w-auto sm:h-[36rem] md:h-[42rem]"
+            />
           </div>
 
-          <p className="reveal reveal-2 mt-8 font-sans text-[0.625rem] uppercase tracking-[0.32em] text-gold sm:text-[0.6875rem]">
+          {/* Soft shade behind the copy for readability */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-32 z-0 h-[26rem] bg-[radial-gradient(ellipse_42%_38%_at_50%_52%,rgba(10,8,7,0.6),transparent_72%)] md:top-40"
+          />
+
+          <p className="reveal reveal-2 relative z-10 font-sans text-[0.625rem] uppercase tracking-[0.32em] text-gold sm:text-[0.6875rem]">
             Luxury Lighting Atelier · Lebanon
           </p>
 
-          <h1 className="reveal reveal-2 mt-5 max-w-3xl font-serif text-[2.5rem] font-normal leading-[1.05] text-ivory sm:text-6xl md:text-7xl">
+          <h1 className="reveal reveal-2 relative z-10 mt-5 max-w-3xl font-serif text-[2.5rem] font-normal leading-[1.05] text-ivory sm:text-6xl md:text-7xl">
             The art of <em className="italic text-gold-bright">light</em>,
             <br />
             piece by piece.
           </h1>
 
-          <p className="reveal reveal-3 mt-6 max-w-xl font-serif text-lg leading-relaxed text-muted sm:text-xl">
+          <p className="reveal reveal-3 relative z-10 mt-6 max-w-xl font-serif text-lg leading-relaxed text-muted sm:text-xl">
             Curated chandeliers, pendants and sculptural lighting — chosen to
             become the centerpiece of the rooms they illuminate.
           </p>
 
-          <div className="reveal reveal-4 mt-10 flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+          <div className="reveal reveal-4 relative z-10 mt-10 flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
             <Link href="/shop" className="btn btn--gold">
               Explore the Collection
             </Link>
@@ -66,7 +84,7 @@ export function HomeView({ products }: HomeViewProps) {
             </a>
           </div>
 
-          <dl className="reveal reveal-4 mt-16 grid w-full max-w-4xl grid-cols-1 gap-6 border-y border-line py-8 sm:grid-cols-3 sm:gap-4">
+          <dl className="reveal reveal-4 relative z-10 mt-16 grid w-full max-w-4xl grid-cols-1 gap-6 border-y border-line py-8 sm:grid-cols-3 sm:gap-4">
             {hallmarks.map((item) => (
               <div key={item.title} className="px-2">
                 <dt className="font-sans text-[0.625rem] font-medium uppercase tracking-[0.22em] text-gold">

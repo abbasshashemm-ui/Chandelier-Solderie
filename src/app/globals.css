@@ -127,11 +127,6 @@ body::after {
     linear-gradient(180deg, #14100b 0%, var(--cs-ink) 34%, var(--cs-ink-deep) 100%);
 }
 
-.page-shell > *:not(header) {
-  position: relative;
-  z-index: 1;
-}
-
 /* ── Site chrome ──────────────────────────────────────── */
 
 .site-header {
@@ -225,6 +220,14 @@ body::after {
 }
 
 /* ── Hero ─────────────────────────────────────────────── */
+
+.hero-backdrop {
+  /* Shot on pure black — screen blend melts the background into the page */
+  mix-blend-mode: screen;
+  opacity: 0.95;
+  mask-image: linear-gradient(to bottom, black 55%, transparent 97%);
+  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 97%);
+}
 
 .hero-cord {
   width: 1px;
