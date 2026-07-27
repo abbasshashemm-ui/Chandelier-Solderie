@@ -224,7 +224,7 @@ body::after {
 .hero-backdrop {
   /* Shot on pure black — screen blend melts the background into the page */
   mix-blend-mode: screen;
-  opacity: 0.95;
+  opacity: 0.48;
   mask-image: linear-gradient(to bottom, black 55%, transparent 97%);
   -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 97%);
 }
@@ -314,10 +314,10 @@ body::after {
     filter: brightness(0.72) blur(0);
   }
   76% {
-    filter: brightness(1.12);
+    filter: brightness(0.95);
   }
   100% {
-    filter: brightness(1);
+    filter: brightness(0.85);
   }
 }
 
