@@ -110,7 +110,7 @@ export function MobileFilterBar({ active, onChange, onClear }: MobileFilterBarPr
             onClick={() => setOpen(true)}
             className="flex min-h-11 flex-1 items-center justify-center gap-2 border border-line-strong px-4 font-sans text-[0.6875rem] uppercase tracking-[0.16em] text-ivory"
           >
-            Refine
+            Filters
             {activeCount > 0 ? (
               <span className="bg-gold/15 px-2 py-0.5 text-gold-bright">
                 {activeCount}

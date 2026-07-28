@@ -21,7 +21,7 @@ export function FilterPanel({
       <div className="shrink-0 px-4 pb-3 pt-5 md:px-5">
         <div className="flex items-end justify-between gap-3">
           <h2 className="font-serif text-lg font-medium text-ivory md:text-xl">
-            Refine
+            Filters
           </h2>
           <button
             type="button"
