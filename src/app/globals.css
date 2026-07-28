@@ -16,7 +16,7 @@
   --cs-gold-deep: #96763c;
   --cs-ivory: #f2ebdd;
   --cs-muted: #a89a83;
-  --cs-faint: #746a58;
+  --cs-faint: #8f8470;
   --cs-line: rgba(201, 163, 95, 0.16);
   --cs-line-strong: rgba(201, 163, 95, 0.4);
 
@@ -516,7 +516,8 @@ body::after {
   }
 
   .site-footer {
-    padding-bottom: var(--cs-mobile-nav-height);
+    /* Extra room above the floating WhatsApp (nav clearance is on body) */
+    padding-bottom: 5.5rem;
   }
 
   .catalogue-main {
