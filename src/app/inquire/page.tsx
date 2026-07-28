@@ -14,7 +14,7 @@ export default function InquirePage() {
     <div className="page-shell min-h-screen">
       <SiteHeader />
 
-      <main className="mx-auto flex min-h-[calc(var(--cs-viewport-height)-var(--cs-header-height)-var(--cs-mobile-nav-height))] max-w-2xl flex-col items-center justify-center px-5 pb-12 pt-[var(--cs-header-height)] text-center sm:px-6 md:pb-20">
+      <main className="mx-auto flex w-full max-w-2xl flex-col items-center justify-center px-5 pb-16 pt-[calc(var(--cs-header-height)+2.5rem)] text-center sm:px-6 md:min-h-[calc(var(--cs-viewport-height)-var(--cs-header-height))] md:pb-20 md:pt-[var(--cs-header-height)]">
         <div aria-hidden>
           <div className="hero-cord" />
           <div className="hero-jewel" />
@@ -52,7 +52,7 @@ export default function InquirePage() {
 
         <Link
           href="/shop"
-          className="mt-10 font-sans text-[0.6875rem] uppercase tracking-[0.18em] text-faint transition hover:text-gold-bright"
+          className="mt-10 inline-flex min-h-11 items-center font-sans text-[0.6875rem] uppercase tracking-[0.18em] text-muted transition hover:text-gold-bright"
         >
           Browse the collection
         </Link>

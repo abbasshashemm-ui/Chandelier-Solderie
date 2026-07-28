@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { buildGeneralWhatsAppUrl } from "@/lib/site-contact";
 
 function HomeIcon({ className }: { className?: string }) {
   return (
@@ -61,6 +60,12 @@ function ChatIcon({ className }: { className?: string }) {
   );
 }
 
+const NAV_ITEMS = [
+  { href: "/", label: "Home", icon: HomeIcon },
+  { href: "/shop", label: "Collection", icon: GridIcon },
+  { href: "/inquire", label: "Inquire", icon: ChatIcon },
+] as const;
+
 export function MobileBottomNav() {
   const pathname = usePathname();
 
@@ -68,63 +73,27 @@ export function MobileBottomNav() {
     return null;
   }
 
-  const items = [
-    { key: "home", href: "/", label: "Home", icon: HomeIcon, external: false },
-    {
-      key: "shop",
-      href: "/shop",
-      label: "Collection",
-      icon: GridIcon,
-      external: false,
-    },
-    {
-      key: "inquire",
-      href: buildGeneralWhatsAppUrl(),
-      label: "Inquire",
-      icon: ChatIcon,
-      external: true,
-    },
-  ] as const;
-
   return (
     <nav
       aria-label="Mobile navigation"
       className="mobile-bottom-nav fixed inset-x-0 bottom-0 z-50 grid grid-cols-3 md:hidden"
     >
-      {items.map((item) => {
+      {NAV_ITEMS.map((item) => {
         const active =
-          !item.external &&
-          (item.href === "/"
+          item.href === "/"
             ? pathname === "/"
-            : pathname === item.href || pathname.startsWith(`${item.href}/`));
-
-        const className = `flex min-h-[var(--cs-mobile-nav-bar)] flex-col items-center justify-center gap-1 px-1 font-sans text-[0.5625rem] font-medium uppercase tracking-[0.14em] transition ${
-          active ? "text-gold-bright" : "text-muted"
-        }`;
+            : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
         const Icon = item.icon;
 
-        if (item.external) {
-          return (
-            <a
-              key={item.key}
-              href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={className}
-            >
-              <Icon className="size-[1.125rem]" />
-              {item.label}
-            </a>
-          );
-        }
-
         return (
           <Link
-            key={item.key}
+            key={item.href}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            className={className}
+            className={`flex min-h-[var(--cs-mobile-nav-bar)] flex-col items-center justify-center gap-1 px-1 font-sans text-[0.5625rem] font-medium uppercase tracking-[0.14em] transition ${
+              active ? "text-gold-bright" : "text-muted"
+            }`}
           >
             <Icon className="size-[1.125rem]" />
             {item.label}

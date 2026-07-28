@@ -71,13 +71,13 @@ export function HomeView({ products }: HomeViewProps) {
             </a>
           </div>
 
-          <dl className="reveal reveal-4 relative z-10 mt-16 grid w-full max-w-4xl grid-cols-1 gap-6 border-y border-line py-8 sm:grid-cols-3 sm:gap-4">
+          <dl className="reveal reveal-4 relative z-10 mt-10 grid w-full max-w-4xl grid-cols-1 gap-4 border-y border-line py-5 pb-28 sm:mt-16 sm:grid-cols-3 sm:gap-4 sm:py-8 md:pb-8">
             {hallmarks.map((item) => (
               <div key={item.title} className="px-2">
-                <dt className="font-sans text-[0.625rem] font-medium uppercase tracking-[0.22em] text-gold">
+                <dt className="font-sans text-[0.5625rem] font-medium uppercase tracking-[0.22em] text-gold sm:text-[0.625rem]">
                   {item.title}
                 </dt>
-                <dd className="mt-2 font-serif text-base leading-snug text-muted">
+                <dd className="mt-1.5 font-serif text-sm leading-snug text-muted sm:mt-2 sm:text-base">
                   {item.copy}
                 </dd>
               </div>
