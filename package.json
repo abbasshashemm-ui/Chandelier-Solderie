@@ -7,7 +7,8 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "studio": "sanity dev"
+    "studio": "sanity dev",
+    "seed:products": "node scripts/seed-products.mjs"
   },
   "dependencies": {
     "@sanity/client": "^7.23.0",
