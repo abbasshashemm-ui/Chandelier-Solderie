@@ -3,18 +3,10 @@ import { MOCK_PRODUCTS, getMockProductBySlug } from "./mock-products";
 import { PRODUCTS_QUERY, PRODUCT_BY_SLUG_QUERY } from "./sanity.queries";
 import type { Product } from "./types";
 
-/** Merge Sanity docs with the local catalogue seed. Sanity wins on slug clash. */
+/** Seed catalogue with optional Sanity overlay. Only seeded slugs are listed. */
 function mergeCatalogue(sanityProducts: Product[]): Product[] {
-  const bySlug = new Map<string, Product>();
-
-  for (const product of MOCK_PRODUCTS) {
-    bySlug.set(product.slug, product);
-  }
-  for (const product of sanityProducts) {
-    bySlug.set(product.slug, product);
-  }
-
-  return Array.from(bySlug.values());
+  const bySlug = new Map(sanityProducts.map((product) => [product.slug, product]));
+  return MOCK_PRODUCTS.map((product) => bySlug.get(product.slug) ?? product);
 }
 
 export async function getProducts(): Promise<Product[]> {
