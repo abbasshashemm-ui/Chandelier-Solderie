@@ -88,12 +88,13 @@ export function HeroChandelier() {
                 ref={imageRef}
                 src="/hero-chandelier.png"
                 alt=""
-                width={768}
-                height={1152}
+                width={1536}
+                height={2304}
                 priority
+                quality={95}
                 onLoad={startEntry}
-                sizes="(max-width: 640px) 960px, (max-width: 768px) 1140px, 1380px"
-                className="hero-ignite h-[90rem] w-auto sm:h-[108rem] md:h-[126rem]"
+                sizes="(max-width: 640px) 480px, (max-width: 768px) 576px, 672px"
+                className="hero-ignite h-[45rem] w-auto sm:h-[54rem] md:h-[63rem]"
               />
             </div>
           </div>
