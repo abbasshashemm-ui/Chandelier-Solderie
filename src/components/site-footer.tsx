@@ -119,6 +119,18 @@ export function SiteFooter() {
             Privacy &amp; Terms
           </Link>
         </div>
+
+        <p className="mt-4 pb-1 text-center font-sans text-[0.5625rem] uppercase tracking-[0.14em] text-faint md:mt-5 md:text-[0.625rem] md:tracking-[0.16em]">
+          Powered By{" "}
+          <a
+            href="https://quantexai.solutions"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted transition hover:text-gold-bright"
+          >
+            Quantex AI Solutions
+          </a>
+        </p>
       </div>
     </footer>
   );
