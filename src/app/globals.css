@@ -224,7 +224,7 @@ body::after {
 .hero-backdrop {
   /* Shot on pure black — screen blend melts the background into the page */
   mix-blend-mode: screen;
-  opacity: 0.48;
+  opacity: 0.576; /* 0.48 × 1.2 — 20% brighter */
   mask-image: linear-gradient(to bottom, black 55%, transparent 97%);
   -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 97%);
 }
@@ -291,34 +291,39 @@ body::after {
   }
 }
 
-/* Bulbs warming up: dark → flicker → full glow */
+/* Bulbs warming up: dark → flicker → full glow (+20% vs prior settled level) */
 @keyframes cs-hero-ignite {
   0% {
     opacity: 0;
-    filter: brightness(0.05) blur(10px);
+    filter: brightness(0.06) blur(10px);
   }
   28% {
     opacity: 1;
-    filter: brightness(0.12) blur(4px);
+    filter: brightness(0.14) blur(4px);
   }
   44% {
-    filter: brightness(0.55) blur(1.5px);
+    filter: brightness(0.66) blur(1.5px);
   }
   51% {
-    filter: brightness(0.22) blur(1.5px);
+    filter: brightness(0.26) blur(1.5px);
   }
   59% {
-    filter: brightness(1.1) blur(0.5px);
+    filter: brightness(1.32) blur(0.5px);
   }
   66% {
-    filter: brightness(0.72) blur(0);
+    filter: brightness(0.86) blur(0);
   }
   76% {
-    filter: brightness(0.95);
+    filter: brightness(1.14);
   }
   100% {
-    filter: brightness(0.85);
+    filter: brightness(1.02);
   }
+}
+
+/* Settled glow after the entry animation ends */
+.hero-ignite {
+  filter: brightness(1.02);
 }
 
 @keyframes cs-hero-flare {

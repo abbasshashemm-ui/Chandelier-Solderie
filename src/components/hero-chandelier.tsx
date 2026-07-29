@@ -92,8 +92,8 @@ export function HeroChandelier() {
                 height={1152}
                 priority
                 onLoad={startEntry}
-                sizes="(max-width: 640px) 320px, (max-width: 768px) 380px, 460px"
-                className="hero-ignite h-[30rem] w-auto sm:h-[36rem] md:h-[42rem]"
+                sizes="(max-width: 640px) 960px, (max-width: 768px) 1140px, 1380px"
+                className="hero-ignite h-[90rem] w-auto sm:h-[108rem] md:h-[126rem]"
               />
             </div>
           </div>
