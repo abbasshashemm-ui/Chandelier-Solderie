@@ -42,7 +42,7 @@ export function HomeView({ products }: HomeViewProps) {
             className="pointer-events-none absolute inset-x-0 top-28 z-0 h-[28rem] bg-[radial-gradient(ellipse_52%_46%_at_50%_48%,rgba(10,8,7,0.88),transparent_74%)] md:top-36"
           />
 
-          <p className="reveal reveal-2 relative z-10 font-sans text-[0.625rem] uppercase tracking-[0.32em] text-gold sm:text-[0.6875rem]">
+          <p className="reveal reveal-2 relative z-10 font-sans text-[0.625rem] uppercase tracking-[0.32em] text-white-gold [text-shadow:0_1px_18px_rgba(10,8,7,0.9),0_0_28px_rgba(10,8,7,0.55)] sm:text-[0.6875rem]">
             Luxury Lighting Atelier · Lebanon
           </p>
 

@@ -14,6 +14,7 @@
   --cs-gold: #c9a35f;
   --cs-gold-bright: #e8cd8d;
   --cs-gold-deep: #96763c;
+  --cs-white-gold: #e8e4dc;
   --cs-ivory: #f2ebdd;
   --cs-muted: #a89a83;
   --cs-faint: #8f8470;
@@ -39,6 +40,7 @@
   --color-gold: var(--cs-gold);
   --color-gold-bright: var(--cs-gold-bright);
   --color-gold-deep: var(--cs-gold-deep);
+  --color-white-gold: var(--cs-white-gold);
   --color-ivory: var(--cs-ivory);
   --color-muted: var(--cs-muted);
   --color-faint: var(--cs-faint);
