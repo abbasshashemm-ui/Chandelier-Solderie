@@ -1,7 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  type MouseEvent as ReactMouseEvent,
+} from "react";
 import { getProductGalleryUrls, getProductVideoUrl } from "@/lib/product-media";
 import type { Product } from "@/lib/types";
 
@@ -36,15 +41,59 @@ export function ProductGallery({ product }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const active = items[activeIndex] ?? items[0];
 
+  const [canHoverZoom, setCanHoverZoom] = useState(false);
+  const [zooming, setZooming] = useState(false);
+  const [origin, setOrigin] = useState({ x: 50, y: 50 });
+
+  useEffect(() => {
+    const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const sync = () => {
+      setCanHoverZoom(hoverQuery.matches && !motionQuery.matches);
+      if (!hoverQuery.matches || motionQuery.matches) setZooming(false);
+    };
+
+    sync();
+    hoverQuery.addEventListener("change", sync);
+    motionQuery.addEventListener("change", sync);
+    return () => {
+      hoverQuery.removeEventListener("change", sync);
+      motionQuery.removeEventListener("change", sync);
+    };
+  }, []);
+
+  const updateOrigin = useCallback((event: ReactMouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    setOrigin({
+      x: ((event.clientX - rect.left) / rect.width) * 100,
+      y: ((event.clientY - rect.top) / rect.height) * 100,
+    });
+  }, []);
+
+  const showZoom = canHoverZoom && zooming && active?.kind === "image";
+
   return (
     <div className="w-full">
       <div className="relative overflow-hidden border border-line bg-ink-deep">
-        <div className="relative flex aspect-[4/5] w-full items-center justify-center sm:aspect-square">
+        <div
+          className={`relative flex aspect-[4/5] w-full items-center justify-center overflow-hidden sm:aspect-square ${
+            canHoverZoom && active?.kind === "image" ? "cursor-zoom-in" : ""
+          }`}
+          onMouseEnter={() => {
+            if (canHoverZoom && active?.kind === "image") setZooming(true);
+          }}
+          onMouseLeave={() => setZooming(false)}
+          onMouseMove={
+            canHoverZoom && active?.kind === "image" ? updateOrigin : undefined
+          }
+        >
           {active?.kind === "video" ? (
             <video
               key={active.url}
               src={active.url}
-              className="aspect-[9/16] h-full w-auto max-w-full object-cover"
+              className="h-full w-full max-h-full max-w-full object-contain"
               autoPlay
               muted
               loop
@@ -60,7 +109,11 @@ export function ProductGallery({ product }: ProductGalleryProps) {
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 55vw"
-              className="object-cover"
+              className="object-contain transition-transform duration-300 ease-out"
+              style={{
+                transformOrigin: `${origin.x}% ${origin.y}%`,
+                transform: showZoom ? "scale(1.85)" : "scale(1)",
+              }}
             />
           ) : null}
         </div>
@@ -75,7 +128,10 @@ export function ProductGallery({ product }: ProductGalleryProps) {
               <button
                 key={`${item.kind}-${index}`}
                 type="button"
-                onClick={() => setActiveIndex(index)}
+                onClick={() => {
+                  setActiveIndex(index);
+                  setZooming(false);
+                }}
                 aria-label={
                   item.kind === "video" ? "View product film" : `View ${item.label}`
                 }
