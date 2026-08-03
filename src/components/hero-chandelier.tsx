@@ -46,7 +46,7 @@ export function HeroChandelier() {
     const loop = () => {
       current.x += (target.x - current.x) * 0.06;
       current.y += (target.y - current.y) * 0.06;
-      el.style.transform = `rotateY(${(current.x * 7).toFixed(3)}deg) rotateX(${(current.y * -4).toFixed(3)}deg)`;
+      el.style.transform = `rotateY(${(current.x * 12).toFixed(3)}deg) rotateX(${(current.y * -7).toFixed(3)}deg) translateZ(${(Math.abs(current.x) * 18 + Math.abs(current.y) * 10).toFixed(2)}px)`;
 
       if (
         Math.abs(current.x - target.x) > 0.001 ||

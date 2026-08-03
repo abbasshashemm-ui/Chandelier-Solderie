@@ -82,6 +82,8 @@ html {
   -webkit-text-size-adjust: 100%;
   overflow-x: clip;
   color-scheme: dark;
+  /* Overall UI scale — 95% of the original rem-based sizing */
+  font-size: 95%;
 }
 
 body {
@@ -224,17 +226,25 @@ body::after {
 /* ── Hero ─────────────────────────────────────────────── */
 
 .hero-backdrop {
-  /* Shot on pure black — screen blend melts the background into the page */
-  mix-blend-mode: screen;
-  opacity: 0.576; /* 0.48 × 1.2 — 20% brighter */
-  mask-image: linear-gradient(to bottom, black 55%, transparent 97%);
-  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 97%);
+  /* Soft light blend — keeps the cutout luminous without flattening to paper */
+  mix-blend-mode: plus-lighter;
+  opacity: 0.78;
+  mask-image: linear-gradient(to bottom, black 58%, transparent 98%);
+  -webkit-mask-image: linear-gradient(to bottom, black 58%, transparent 98%);
+}
+
+@supports not (mix-blend-mode: plus-lighter) {
+  .hero-backdrop {
+    mix-blend-mode: screen;
+    opacity: 0.68;
+  }
 }
 
 /* ── Chandelier "coming to life" — 3D entry + idle life ── */
 
 .hero-3d {
-  perspective: 1100px;
+  perspective: 1400px;
+  perspective-origin: 50% 18%;
 }
 
 .hero-tilt {
@@ -244,7 +254,26 @@ body::after {
 
 .hero-sway {
   transform-origin: 50% 0;
+  transform-style: preserve-3d;
   animation: cs-hero-sway 10s ease-in-out 3.2s infinite;
+}
+
+/* Soft volumetric halo so the piece reads as hanging in space */
+.hero-sway::before {
+  content: "";
+  position: absolute;
+  inset: 8% 18% 12%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse 55% 48% at 50% 38%,
+    rgba(232, 189, 110, 0.22) 0%,
+    rgba(201, 163, 95, 0.1) 36%,
+    rgba(201, 163, 95, 0.03) 58%,
+    transparent 74%
+  );
+  filter: blur(18px);
+  pointer-events: none;
 }
 
 /* Only visible as a brief flash while the bulbs ignite */
@@ -283,49 +312,65 @@ body::after {
 
 @keyframes cs-hero-drop {
   0% {
-    transform: translateY(-13%) rotateX(34deg) scale(0.86);
+    transform: translateY(-13%) translateZ(-80px) rotateX(34deg) scale(0.86);
   }
   70% {
-    transform: translateY(0.8%) rotateX(-3deg) scale(1.005);
+    transform: translateY(0.8%) translateZ(12px) rotateX(-3deg) scale(1.005);
   }
   100% {
-    transform: translateY(0) rotateX(0deg) scale(1);
+    transform: translateY(0) translateZ(0) rotateX(0deg) scale(1);
   }
 }
 
-/* Bulbs warming up: dark → flicker → full glow (+20% vs prior settled level) */
+/* Bulbs warming up: dark → flicker → full glow */
 @keyframes cs-hero-ignite {
   0% {
     opacity: 0;
-    filter: brightness(0.06) blur(10px);
+    filter: brightness(0.06) contrast(1.05) blur(10px)
+      drop-shadow(0 28px 40px rgba(0, 0, 0, 0));
   }
   28% {
     opacity: 1;
-    filter: brightness(0.14) blur(4px);
+    filter: brightness(0.14) contrast(1.05) blur(4px)
+      drop-shadow(0 28px 40px rgba(0, 0, 0, 0.15));
   }
   44% {
-    filter: brightness(0.66) blur(1.5px);
+    filter: brightness(0.66) contrast(1.08) blur(1.5px)
+      drop-shadow(0 32px 48px rgba(0, 0, 0, 0.35));
   }
   51% {
-    filter: brightness(0.26) blur(1.5px);
+    filter: brightness(0.26) contrast(1.08) blur(1.5px)
+      drop-shadow(0 32px 48px rgba(0, 0, 0, 0.3));
   }
   59% {
-    filter: brightness(1.32) blur(0.5px);
+    filter: brightness(1.32) contrast(1.1) blur(0.5px)
+      drop-shadow(0 36px 54px rgba(0, 0, 0, 0.45))
+      drop-shadow(0 0 28px rgba(232, 189, 110, 0.28));
   }
   66% {
-    filter: brightness(0.86) blur(0);
+    filter: brightness(0.86) contrast(1.1) blur(0)
+      drop-shadow(0 36px 54px rgba(0, 0, 0, 0.4))
+      drop-shadow(0 0 22px rgba(232, 189, 110, 0.18));
   }
   76% {
-    filter: brightness(1.14);
+    filter: brightness(1.14) contrast(1.12)
+      drop-shadow(0 40px 60px rgba(0, 0, 0, 0.5))
+      drop-shadow(0 0 30px rgba(232, 189, 110, 0.22));
   }
   100% {
-    filter: brightness(1.02);
+    filter: brightness(1.06) contrast(1.14) saturate(1.06)
+      drop-shadow(0 42px 64px rgba(0, 0, 0, 0.55))
+      drop-shadow(0 12px 28px rgba(0, 0, 0, 0.35))
+      drop-shadow(0 0 34px rgba(232, 189, 110, 0.2));
   }
 }
 
-/* Settled glow after the entry animation ends */
+/* Settled: contrast + layered shadows for physical depth */
 .hero-ignite {
-  filter: brightness(1.02);
+  filter: brightness(1.06) contrast(1.14) saturate(1.06)
+    drop-shadow(0 42px 64px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 12px 28px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 34px rgba(232, 189, 110, 0.2));
 }
 
 @keyframes cs-hero-flare {
@@ -350,13 +395,13 @@ body::after {
 @keyframes cs-hero-sway {
   0%,
   100% {
-    transform: rotate(0deg);
+    transform: rotate(0deg) rotateY(0deg);
   }
   25% {
-    transform: rotate(0.8deg);
+    transform: rotate(1.1deg) rotateY(2.2deg);
   }
   75% {
-    transform: rotate(-0.8deg);
+    transform: rotate(-1.1deg) rotateY(-2.2deg);
   }
 }
 
