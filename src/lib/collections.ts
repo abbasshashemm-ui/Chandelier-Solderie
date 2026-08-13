@@ -8,6 +8,7 @@ import {
   COLLECTION_BY_SLUG_QUERY,
 } from "./sanity.queries";
 import { sanityClient, isSanityConfigured } from "./sanity.client";
+import { slugify } from "./slug";
 import type { Collection, HomepagePromo, Product } from "./types";
 
 function withCounts(
@@ -25,6 +26,7 @@ function withCounts(
 
     return {
       ...collection,
+      slug: collection.slug || slugify(collection.title),
       productCount: members.length,
       imageUrl: collection.imageUrl ?? members[0]?.imageUrl,
       imageLqip: collection.imageLqip ?? members[0]?.imageLqip,

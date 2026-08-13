@@ -12,7 +12,12 @@ function resolveCollection(product: Product): Product {
     product.collectionSlug ??
     (collectionTitle ? slugify(collectionTitle) : undefined);
 
-  return { ...product, collectionTitle, collectionSlug };
+  return {
+    ...product,
+    slug: product.slug || slugify(product.title),
+    collectionTitle,
+    collectionSlug,
+  };
 }
 
 export async function getProducts(): Promise<Product[]> {
@@ -51,7 +56,10 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
       { slug },
       sanityFetchOptions,
     );
-    return product ? resolveCollection(product) : null;
+    if (product) return resolveCollection(product);
+
+    const products = await getProducts();
+    return products.find((item) => item.slug === slug) ?? null;
   } catch {
     return getMockProductBySlug(slug);
   }

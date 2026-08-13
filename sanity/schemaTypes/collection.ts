@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { AutoSlugInput, HiddenSlugField } from "../../src/sanity/auto-slug-input";
 
 export const collection = defineType({
   name: "collection",
@@ -15,8 +16,15 @@ export const collection = defineType({
       name: "slug",
       title: "Slug",
       type: "slug",
-      options: { source: "title", maxLength: 96 },
-      validation: (rule) => rule.required(),
+      options: {
+        source: "title",
+        maxLength: 96,
+        isUnique: () => true,
+      },
+      components: {
+        field: HiddenSlugField,
+        input: AutoSlugInput,
+      },
     }),
     defineField({
       name: "description",
