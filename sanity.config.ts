@@ -40,6 +40,16 @@ export default defineConfig({
                   .title("On sale")
                   .filter('_type == "product" && onSale == true'),
               ),
+            S.divider(),
+            S.listItem()
+              .title("Site settings")
+              .schemaType("siteSettings")
+              .child(
+                S.document()
+                  .schemaType("siteSettings")
+                  .documentId("siteSettings")
+                  .title("Site settings"),
+              ),
           ]),
     }),
     visionTool(),

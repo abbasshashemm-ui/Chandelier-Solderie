@@ -52,6 +52,31 @@ export const COLLECTIONS_QUERY = `*[_type == "collection"] | order(sortOrder asc
   "imageAlt": coalesce(image.alt, title)
 }`;
 
+export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0] {
+  "showroom": {
+    "heading": showroom.heading,
+    "body": showroom.body,
+    "mapQuery": showroom.mapQuery,
+    "photos": showroom.photos[defined(asset)] {
+      "imageUrl": asset->url + "?w=800&h=800&fit=crop&auto=format&q=75",
+      "imageLqip": asset->metadata.lqip,
+      "imageAlt": alt
+    }
+  },
+  "instagram": {
+    "heading": instagram.heading,
+    "body": instagram.body,
+    "posts": instagram.posts[defined(image.asset)] {
+      _key,
+      "imageUrl": image.asset->url + "?w=700&h=700&fit=crop&auto=format&q=75",
+      "imageLqip": image.asset->metadata.lqip,
+      "imageAlt": coalesce(image.alt, caption),
+      url,
+      caption
+    }
+  }
+}`;
+
 export const COLLECTION_BY_SLUG_QUERY = `*[_type == "collection" && slug.current == $slug][0] {
   _id,
   title,

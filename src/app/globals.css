@@ -420,6 +420,64 @@ body::after {
   }
 }
 
+/* ── Ambient bloom ────────────────────────────────────────
+   Warm pools of light that let dark panels read as illuminated
+   rather than flat black. Layered behind copy and imagery. */
+
+.cs-bloom {
+  position: absolute;
+  pointer-events: none;
+  mix-blend-mode: plus-lighter;
+  background: radial-gradient(
+    ellipse 58% 52% at 50% 42%,
+    rgba(232, 189, 110, 0.2) 0%,
+    rgba(201, 163, 95, 0.1) 34%,
+    rgba(201, 163, 95, 0.035) 58%,
+    transparent 76%
+  );
+  filter: blur(26px);
+}
+
+@supports not (mix-blend-mode: plus-lighter) {
+  .cs-bloom {
+    mix-blend-mode: screen;
+  }
+}
+
+.cs-bloom--hero {
+  inset-inline: 8%;
+  top: 4rem;
+  height: 30rem;
+  opacity: 0.85;
+}
+
+@media (min-width: 768px) {
+  .cs-bloom--hero {
+    top: 7rem;
+    height: 36rem;
+  }
+}
+
+/* Sits inside a bordered frame — softer and centred on the piece */
+.cs-bloom--frame {
+  inset: 6%;
+  filter: blur(34px);
+  opacity: 0.7;
+}
+
+/* Fades in on hover so crystal and brass catch the light */
+.cs-bloom--card {
+  inset: -18%;
+  filter: blur(30px);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.group:hover .cs-bloom--card,
+.group:focus-within .cs-bloom--card {
+  opacity: 0.9;
+}
+
 .hero-cord {
   width: 1px;
   height: 3.5rem;
@@ -575,7 +633,119 @@ body::after {
   animation: skeleton-shimmer 1.6s ease-in-out infinite;
 }
 
+/* ── Quick view ───────────────────────────────────────── */
+
+/* Hover affordance only — on touch the whole tile is already tappable */
+.quick-view {
+  opacity: 0;
+  transform: translateY(0.5rem);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .quick-view,
+  .group:focus-within .quick-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quick-view {
+    transition: opacity 0.2s ease;
+    transform: none;
+  }
+}
+
+/* ── Value badges ─────────────────────────────────────── */
+
+.value-badge__icon {
+  transition:
+    border-color 0.4s ease,
+    color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.value-badge:hover .value-badge__icon {
+  border-color: var(--cs-gold);
+  color: var(--cs-gold-bright);
+  box-shadow:
+    0 0 0 1px rgba(201, 163, 95, 0.18),
+    0 10px 30px rgba(201, 163, 95, 0.14);
+}
+
+/* ── Showroom map ─────────────────────────────────────── */
+
+/* Google's embed only ships a light theme, so invert it into the
+   nocturne palette and warm it back toward gold. */
+.showroom-map iframe {
+  filter: invert(0.92) hue-rotate(180deg) saturate(0.68) brightness(0.92)
+    contrast(1.04);
+}
+
+.showroom-map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 70% 60% at 50% 50%,
+    transparent 40%,
+    rgba(10, 8, 7, 0.55) 100%
+  );
+}
+
+/* ── Instagram grid ───────────────────────────────────── */
+
+.ig-tile__glyph {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.group:hover .ig-tile__glyph,
+.group:focus-within .ig-tile__glyph {
+  opacity: 1;
+}
+
 /* ── Floating WhatsApp ────────────────────────────────── */
+
+.floating-whatsapp__status {
+  position: absolute;
+  top: -0.125rem;
+  right: -0.125rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 999px;
+  background: #4ade80;
+  border: 2px solid var(--cs-ink);
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.65);
+}
+
+.floating-whatsapp__label {
+  position: absolute;
+  right: calc(100% + 0.75rem);
+  white-space: nowrap;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--cs-line);
+  background: rgba(13, 10, 8, 0.92);
+  color: var(--cs-ivory);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateX(0.5rem);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .floating-whatsapp:hover .floating-whatsapp__label,
+  .floating-whatsapp:focus-visible .floating-whatsapp__label {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 
 .floating-whatsapp__pulse {
   position: absolute;
@@ -601,6 +771,10 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   .floating-whatsapp__pulse {
     animation: none;
+  }
+
+  .floating-whatsapp__status {
+    box-shadow: none;
   }
 }
 

@@ -58,6 +58,35 @@ export type HomepagePromo = {
   headline: string;
 };
 
+export type ShowroomPhoto = {
+  imageUrl: string;
+  imageLqip?: string;
+  imageAlt?: string;
+};
+
+export type InstagramPost = {
+  _key: string;
+  imageUrl: string;
+  imageLqip?: string;
+  imageAlt?: string;
+  url?: string;
+  caption?: string;
+};
+
+export type SiteSettings = {
+  showroom?: {
+    heading?: string;
+    body?: string;
+    mapQuery?: string;
+    photos?: ShowroomPhoto[];
+  };
+  instagram?: {
+    heading?: string;
+    body?: string;
+    posts?: InstagramPost[];
+  };
+};
+
 export type FilterOption = {
   key: FilterKey;
   label: string;

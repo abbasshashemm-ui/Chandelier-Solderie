@@ -77,8 +77,9 @@ export function ProductGallery({ product }: ProductGalleryProps) {
   return (
     <div className="w-full">
       <div className="relative overflow-hidden border border-line bg-ink-deep">
+        <span aria-hidden className="cs-bloom cs-bloom--frame" />
         <div
-          className={`relative flex aspect-[4/5] w-full items-center justify-center overflow-hidden sm:aspect-square ${
+          className={`relative z-10 flex aspect-[4/5] w-full items-center justify-center overflow-hidden sm:aspect-square ${
             canHoverZoom && active?.kind === "image" ? "cursor-zoom-in" : ""
           }`}
           onMouseEnter={() => {

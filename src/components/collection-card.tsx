@@ -41,6 +41,8 @@ export function CollectionCard({
           className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10"
         />
 
+        <span aria-hidden className="cs-bloom cs-bloom--card" />
+
         <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
           <p className="font-sans text-[0.5rem] uppercase tracking-[0.28em] text-gold sm:text-[0.5625rem]">
             {collection.cardEyebrow?.trim() ||

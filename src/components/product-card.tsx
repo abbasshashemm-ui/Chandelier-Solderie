@@ -40,10 +40,21 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </div>
         )}
 
+        <span aria-hidden className="cs-bloom cs-bloom--card" />
+
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         />
+
+        <span
+          aria-hidden
+          className="quick-view pointer-events-none absolute inset-x-0 bottom-3 flex justify-center"
+        >
+          <span className="border border-gold/50 bg-black/70 px-3.5 py-1.5 font-sans text-[0.5rem] uppercase tracking-[0.2em] text-gold-bright backdrop-blur-sm sm:text-[0.5625rem]">
+            Quick view
+          </span>
+        </span>
 
         {showSale ? (
           <span className="absolute left-3 top-3 border border-gold/50 bg-gold px-2.5 py-1 font-sans text-[0.5rem] uppercase tracking-[0.2em] text-ink">
