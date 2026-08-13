@@ -1,14 +1,14 @@
 import { sanityFetchOptions } from "./cache";
-import { productBelongsToCollection, SUPER_SALE_SLUG } from "./collection-membership";
+import { productBelongsToCollection } from "./collection-membership";
 import { MOCK_COLLECTIONS } from "./mock-collections";
+import { getSalePercent } from "./pricing";
 import { getProducts } from "./products";
 import {
   COLLECTIONS_QUERY,
   COLLECTION_BY_SLUG_QUERY,
 } from "./sanity.queries";
 import { sanityClient, isSanityConfigured } from "./sanity.client";
-import { slugify } from "./slug";
-import type { Collection, Product } from "./types";
+import type { Collection, HomepagePromo, Product } from "./types";
 
 function withCounts(
   collections: Collection[],
@@ -33,40 +33,6 @@ function withCounts(
   });
 }
 
-function collectionsFromProducts(products: Product[]): Collection[] {
-  const map = new Map<string, Collection>();
-
-  for (const product of products) {
-    const title = product.collectionTitle ?? product.category;
-    const slug = product.collectionSlug ?? (title ? slugify(title) : undefined);
-    if (!slug || !title) continue;
-
-    const existing = map.get(slug);
-    if (existing) {
-      existing.productCount = (existing.productCount ?? 0) + 1;
-      if (!existing.imageUrl && product.imageUrl) {
-        existing.imageUrl = product.imageUrl;
-        existing.imageLqip = product.imageLqip;
-        existing.imageAlt = product.imageAlt;
-      }
-      continue;
-    }
-
-    map.set(slug, {
-      _id: `collection-${slug}`,
-      title,
-      slug,
-      imageUrl: product.imageUrl,
-      imageLqip: product.imageLqip,
-      imageAlt: product.imageAlt,
-      featured: true,
-      productCount: 1,
-    });
-  }
-
-  return [...map.values()];
-}
-
 async function fetchSanityCollections() {
   return (
     (await sanityClient.fetch<Collection[]>(
@@ -88,18 +54,6 @@ export async function getCollections(): Promise<Collection[]> {
       getProducts(),
       fetchSanityCollections(),
     ]);
-
-    if (collections.length === 0) {
-      const derived = collectionsFromProducts(products);
-      const superSale = MOCK_COLLECTIONS.find(
-        (collection) => collection.slug === SUPER_SALE_SLUG,
-      );
-      return withCounts(
-        superSale ? [superSale, ...derived] : derived,
-        products,
-      );
-    }
-
     return withCounts(collections, products);
   } catch {
     const products = await getProducts();
@@ -140,4 +94,41 @@ export async function getCollectionBySlug(
 export async function getCollectionSlugs(): Promise<string[]> {
   const collections = await getCollections();
   return collections.map((collection) => collection.slug);
+}
+
+export async function getHomepagePromo(): Promise<HomepagePromo | null> {
+  const [collections, products] = await Promise.all([
+    getCollections(),
+    getProducts(),
+  ]);
+  const collection = collections.find((item) => {
+    if (item.promoRibbon?.enabled) return true;
+    if (item.promoRibbon?.enabled === false) return false;
+    return Boolean(item.includeSaleItems);
+  });
+  if (!collection) return null;
+
+  const members = products.filter((product) =>
+    productBelongsToCollection(
+      product,
+      collection.slug,
+      collection.includeSaleItems,
+    ),
+  );
+  const maxPercent = members.reduce((max, product) => {
+    const percent = getSalePercent(product);
+    return percent != null && percent > max ? percent : max;
+  }, 0);
+
+  const kicker =
+    collection.promoRibbon?.kicker?.trim() || collection.title;
+  const headline =
+    collection.promoRibbon?.headline?.trim() ||
+    (maxPercent > 0 ? `Up to ${maxPercent}% OFF` : "Sale");
+
+  return {
+    href: `/collection/${collection.slug}`,
+    kicker,
+    headline,
+  };
 }

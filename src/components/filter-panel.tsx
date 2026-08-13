@@ -1,10 +1,11 @@
 "use client";
 
-import { FILTER_DEFINITIONS, type FilterKey } from "@/lib/types";
 import type { ActiveFilters } from "@/lib/filters";
+import type { FilterKey, FilterOption } from "@/lib/types";
 
 type FilterPanelProps = {
   active: ActiveFilters;
+  groups: FilterOption[];
   onChange: (key: FilterKey, value: string) => void;
   onClear: () => void;
   className?: string;
@@ -12,6 +13,7 @@ type FilterPanelProps = {
 
 export function FilterPanel({
   active,
+  groups,
   onChange,
   onClear,
   className = "",
@@ -36,7 +38,7 @@ export function FilterPanel({
 
       <div className="filter-sidebar__scroll min-h-0 flex-1 overflow-y-auto overscroll-y-contain px-4 pb-6 pt-2 md:px-5">
         <div className="space-y-6">
-          {FILTER_DEFINITIONS.map((group) => (
+          {groups.map((group) => (
             <section key={group.key}>
               <h3 className="mb-2 font-sans text-[0.625rem] font-medium uppercase tracking-[0.2em] text-gold">
                 {group.label}

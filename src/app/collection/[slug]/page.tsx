@@ -4,6 +4,7 @@ import { CatalogueView } from "@/components/catalogue-view";
 import { CatalogueLoading } from "@/components/catalogue-loading";
 import { parseCatalogueParams, paginateProducts } from "@/lib/catalogue";
 import { getCollectionBySlug, getCollectionSlugs } from "@/lib/collections";
+import { getFilterDefinitions } from "@/lib/filters";
 import { getProductsByCollection } from "@/lib/products";
 
 type CollectionPageProps = {
@@ -68,6 +69,7 @@ export default async function CollectionPage({
           totalPages={totalPages}
           currentPage={safePage}
           filters={filters}
+          filterGroups={getFilterDefinitions(products)}
           searchQuery={searchQuery}
           isEmpty={products.length === 0}
         />

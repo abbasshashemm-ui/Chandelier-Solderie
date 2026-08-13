@@ -3,16 +3,21 @@
 import { useCallback, useTransition, type ReactNode } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ActiveFilters } from "@/lib/filters";
-import type { FilterKey } from "@/lib/types";
+import type { FilterKey, FilterOption } from "@/lib/types";
 import { FilterSidebar } from "./filter-sidebar";
 import { MobileFilterBar } from "./mobile-filter-bar";
 
 type CatalogueFiltersProps = {
   active: ActiveFilters;
+  groups: FilterOption[];
   children: ReactNode;
 };
 
-export function CatalogueFilters({ active, children }: CatalogueFiltersProps) {
+export function CatalogueFilters({
+  active,
+  groups,
+  children,
+}: CatalogueFiltersProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -50,12 +55,14 @@ export function CatalogueFilters({ active, children }: CatalogueFiltersProps) {
     <div className="flex items-stretch">
       <FilterSidebar
         active={active}
+        groups={groups}
         onChange={handleFilterChange}
         onClear={handleClear}
       />
       <main className="catalogue-main min-w-0 flex-1">
         <MobileFilterBar
           active={active}
+          groups={groups}
           onChange={handleFilterChange}
           onClear={handleClear}
         />

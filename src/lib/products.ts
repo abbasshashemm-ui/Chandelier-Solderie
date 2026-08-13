@@ -15,14 +15,6 @@ function resolveCollection(product: Product): Product {
   return { ...product, collectionTitle, collectionSlug };
 }
 
-/** Seed catalogue with optional Sanity overlay. Only seeded slugs are listed. */
-function mergeCatalogue(sanityProducts: Product[]): Product[] {
-  const bySlug = new Map(sanityProducts.map((product) => [product.slug, product]));
-  return MOCK_PRODUCTS.map((product) =>
-    resolveCollection(bySlug.get(product.slug) ?? product),
-  );
-}
-
 export async function getProducts(): Promise<Product[]> {
   if (!isSanityConfigured) {
     return MOCK_PRODUCTS;
@@ -30,8 +22,9 @@ export async function getProducts(): Promise<Product[]> {
 
   try {
     const products =
-      (await sanityClient.fetch<Product[]>(PRODUCTS_QUERY, {}, sanityFetchOptions)) ?? [];
-    return mergeCatalogue(products);
+      (await sanityClient.fetch<Product[]>(PRODUCTS_QUERY, {}, sanityFetchOptions)) ??
+      [];
+    return products.map(resolveCollection);
   } catch {
     return MOCK_PRODUCTS;
   }
@@ -58,8 +51,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
       { slug },
       sanityFetchOptions,
     );
-    if (product) return resolveCollection(product);
-    return getMockProductBySlug(slug);
+    return product ? resolveCollection(product) : null;
   } catch {
     return getMockProductBySlug(slug);
   }

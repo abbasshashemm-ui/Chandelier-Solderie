@@ -45,6 +45,8 @@ export const COLLECTIONS_QUERY = `*[_type == "collection"] | order(sortOrder asc
   featured,
   sortOrder,
   includeSaleItems,
+  cardEyebrow,
+  promoRibbon,
   "imageUrl": select(defined(image.asset->url) => image.asset->url + "?w=800&fit=max&auto=format&q=75"),
   "imageLqip": image.asset->metadata.lqip,
   "imageAlt": coalesce(image.alt, title)
@@ -58,6 +60,8 @@ export const COLLECTION_BY_SLUG_QUERY = `*[_type == "collection" && slug.current
   featured,
   sortOrder,
   includeSaleItems,
+  cardEyebrow,
+  promoRibbon,
   "imageUrl": select(defined(image.asset->url) => image.asset->url + "?w=800&fit=max&auto=format&q=75"),
   "imageLqip": image.asset->metadata.lqip,
   "imageAlt": coalesce(image.alt, title)

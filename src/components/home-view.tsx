@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Collection } from "@/lib/types";
+import type { Collection, HomepagePromo } from "@/lib/types";
 import { buildGeneralWhatsAppUrl, siteContact } from "@/lib/site-contact";
 import { FeaturedCollections } from "./featured-collections";
 import { HeroChandelier } from "./hero-chandelier";
@@ -9,6 +9,7 @@ import { SiteHeader } from "./site-header";
 
 type HomeViewProps = {
   collections: Collection[];
+  promo?: HomepagePromo | null;
 };
 
 const hallmarks = [
@@ -26,7 +27,7 @@ const hallmarks = [
   },
 ] as const;
 
-export function HomeView({ collections }: HomeViewProps) {
+export function HomeView({ collections, promo }: HomeViewProps) {
   return (
     <>
       <SiteHeader />
@@ -86,7 +87,7 @@ export function HomeView({ collections }: HomeViewProps) {
           </dl>
         </section>
 
-        <PromoRibbon />
+        {promo ? <PromoRibbon promo={promo} /> : null}
 
         {/* Featured collections */}
         <section className="mx-auto w-full max-w-[1340px] px-3 py-16 sm:px-4 md:px-8 md:py-20">

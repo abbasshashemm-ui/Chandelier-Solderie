@@ -69,38 +69,26 @@ export const product = defineType({
       name: "style",
       title: "Style",
       type: "string",
-      options: {
-        list: ["Classic", "Industrial", "Modern", "Vintage"],
-      },
+      description: "e.g. Classic, Industrial, Modern, Vintage",
     }),
     defineField({
       name: "material",
       title: "Material",
       type: "string",
-      options: {
-        list: ["Brass", "Crystal", "Glass", "Rattan"],
-      },
+      description: "e.g. Brass, Crystal, Glass, Rattan",
     }),
     defineField({
       name: "room",
       title: "Room",
       type: "string",
-      options: {
-        list: ["Living Room", "Dining", "Bedroom"],
-      },
+      description: "e.g. Living Room, Dining, Bedroom",
     }),
     defineField({
       name: "dimensions",
       title: "Dimensions / Size",
       type: "string",
-      options: {
-        list: [
-          "Small (under 40 cm)",
-          "Medium (40 – 80 cm)",
-          "Large (80 – 120 cm)",
-          "Extra Large (over 120 cm)",
-        ],
-      },
+      description:
+        "e.g. Small (under 40 cm), Medium (40 – 80 cm), Large (80 – 120 cm), Extra Large (over 120 cm)",
     }),
     defineField({
       name: "shortDescription",

@@ -1,5 +1,5 @@
 import type { ActiveFilters } from "@/lib/filters";
-import type { Product } from "@/lib/types";
+import type { FilterOption, Product } from "@/lib/types";
 import { CatalogueFilters } from "./catalogue-filters";
 import { CataloguePagination, CatalogueSearch } from "./catalogue-controls";
 import { ProductGrid } from "./product-grid";
@@ -14,6 +14,7 @@ type CatalogueViewProps = {
   totalPages: number;
   currentPage: number;
   filters: ActiveFilters;
+  filterGroups: FilterOption[];
   searchQuery: string;
   isEmpty: boolean;
 };
@@ -26,6 +27,7 @@ export function CatalogueView({
   totalPages,
   currentPage,
   filters,
+  filterGroups,
   searchQuery,
   isEmpty,
 }: CatalogueViewProps) {
@@ -34,7 +36,7 @@ export function CatalogueView({
       <SiteHeader />
 
       <div className="catalogue-shell pt-[var(--cs-header-height)]">
-        <CatalogueFilters active={filters}>
+        <CatalogueFilters active={filters} groups={filterGroups}>
           <section className="mx-auto max-w-[1340px] px-3 pb-12 pt-6 md:px-8 md:pb-16 md:pt-10">
             <header className="mb-6 md:mb-8">
               <p className="font-sans text-[0.625rem] uppercase tracking-[0.28em] text-gold">

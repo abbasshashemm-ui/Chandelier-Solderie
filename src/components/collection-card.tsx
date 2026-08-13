@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { SUPER_SALE_SLUG } from "@/lib/collection-membership";
 import type { Collection } from "@/lib/types";
 
 type CollectionCardProps = {
@@ -44,7 +43,8 @@ export function CollectionCard({
 
         <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
           <p className="font-sans text-[0.5rem] uppercase tracking-[0.28em] text-gold sm:text-[0.5625rem]">
-            {collection.slug === SUPER_SALE_SLUG ? "Limited offering" : "Collection"}
+            {collection.cardEyebrow?.trim() ||
+              (collection.includeSaleItems ? "Limited offering" : "Collection")}
           </p>
           <h3 className="mt-1 font-serif text-lg font-normal text-ivory sm:text-xl md:text-2xl">
             {collection.title}

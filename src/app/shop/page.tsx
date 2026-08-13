@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { CatalogueView } from "@/components/catalogue-view";
 import { CatalogueLoading } from "@/components/catalogue-loading";
 import { parseCatalogueParams, paginateProducts } from "@/lib/catalogue";
+import { getFilterDefinitions } from "@/lib/filters";
 import { getProducts } from "@/lib/products";
 
 export const metadata = {
@@ -40,6 +41,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
           totalPages={totalPages}
           currentPage={safePage}
           filters={filters}
+          filterGroups={getFilterDefinitions(products)}
           searchQuery={searchQuery}
           isEmpty={products.length === 0}
         />

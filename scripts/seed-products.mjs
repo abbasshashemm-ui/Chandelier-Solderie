@@ -50,6 +50,12 @@ const COLLECTIONS = [
       "Selected pieces with up to 50% off — limited seasonal reductions from the atelier.",
     featured: true,
     includeSaleItems: true,
+    cardEyebrow: "Limited offering",
+    promoRibbon: {
+      enabled: true,
+      kicker: "Super Sale",
+      headline: "Up to 50% OFF",
+    },
     sortOrder: 0,
     imageFile: "2.png",
     imageAlt: "Super Sale collection",

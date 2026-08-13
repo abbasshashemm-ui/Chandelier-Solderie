@@ -11,6 +11,12 @@ export const MOCK_COLLECTIONS: Collection[] = [
     imageAlt: "Super Sale collection",
     featured: true,
     includeSaleItems: true,
+    cardEyebrow: "Limited offering",
+    promoRibbon: {
+      enabled: true,
+      kicker: "Super Sale",
+      headline: "Up to 50% OFF",
+    },
     sortOrder: 0,
   },
   {

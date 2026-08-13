@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import type { ActiveFilters } from "@/lib/filters";
-import type { FilterKey } from "@/lib/types";
+import type { FilterKey, FilterOption } from "@/lib/types";
 import { FilterPanel } from "./filter-panel";
 
 type MobileFilterSheetProps = {
   open: boolean;
   onClose: () => void;
   active: ActiveFilters;
+  groups: FilterOption[];
   onChange: (key: FilterKey, value: string) => void;
   onClear: () => void;
   activeCount: number;
@@ -19,6 +20,7 @@ function MobileFilterSheet({
   open,
   onClose,
   active,
+  groups,
   onChange,
   onClear,
   activeCount,
@@ -71,6 +73,7 @@ function MobileFilterSheet({
 
         <FilterPanel
           active={active}
+          groups={groups}
           onChange={onChange}
           onClear={onClear}
           className="flex min-h-0 flex-1 flex-col"
@@ -93,11 +96,17 @@ function MobileFilterSheet({
 
 type MobileFilterBarProps = {
   active: ActiveFilters;
+  groups: FilterOption[];
   onChange: (key: FilterKey, value: string) => void;
   onClear: () => void;
 };
 
-export function MobileFilterBar({ active, onChange, onClear }: MobileFilterBarProps) {
+export function MobileFilterBar({
+  active,
+  groups,
+  onChange,
+  onClear,
+}: MobileFilterBarProps) {
   const [open, setOpen] = useState(false);
   const activeCount = Object.values(active).filter(Boolean).length;
 
@@ -133,6 +142,7 @@ export function MobileFilterBar({ active, onChange, onClear }: MobileFilterBarPr
         open={open}
         onClose={() => setOpen(false)}
         active={active}
+        groups={groups}
         onChange={onChange}
         onClear={onClear}
         activeCount={activeCount}

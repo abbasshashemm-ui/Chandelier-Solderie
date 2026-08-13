@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SUPER_SALE_SLUG } from "@/lib/collection-membership";
+import type { HomepagePromo } from "@/lib/types";
 
 function RibbonOrnament({ className }: { className?: string }) {
   return (
@@ -35,27 +35,44 @@ function RibbonOrnament({ className }: { className?: string }) {
   );
 }
 
-export function PromoRibbon() {
+function PromoHeadline({ headline }: { headline: string }) {
+  const match = headline.match(/^(.*?)(\d+\s*%)(.*)$/);
+  if (!match) return headline;
+
+  return (
+    <>
+      {match[1]}
+      <em className="italic">{match[2]}</em>
+      {match[3]}
+    </>
+  );
+}
+
+type PromoRibbonProps = {
+  promo: HomepagePromo;
+};
+
+export function PromoRibbon({ promo }: PromoRibbonProps) {
   return (
     <section
-      aria-label="Super Sale — up to 50% off"
+      aria-label={`${promo.kicker} — ${promo.headline}`}
       className="sale-ribbon relative overflow-hidden"
     >
       <div className="sale-ribbon__pattern" aria-hidden />
       <div className="sale-ribbon__sheen" aria-hidden />
 
       <Link
-        href={`/collection/${SUPER_SALE_SLUG}`}
+        href={promo.href}
         className="relative mx-auto flex w-full max-w-[1340px] flex-col items-center justify-center gap-2 px-4 py-6 text-center sm:gap-3 sm:py-7 md:flex-row md:gap-6 md:py-8"
       >
         <RibbonOrnament className="hidden h-5 w-24 shrink-0 text-[#3a2a12] md:block md:h-6 md:w-28" />
 
         <span className="flex flex-col items-center gap-1.5 md:gap-2">
           <span className="font-sans text-[0.6875rem] font-medium uppercase tracking-[0.38em] text-[#3a2a12] sm:text-[0.75rem]">
-            Super Sale
+            {promo.kicker}
           </span>
           <span className="font-serif text-[1.75rem] leading-none tracking-wide text-[#171106] sm:text-4xl md:text-[2.75rem]">
-            Up to <em className="italic">50%</em> OFF
+            <PromoHeadline headline={promo.headline} />
           </span>
         </span>
 
