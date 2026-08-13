@@ -11,67 +11,16 @@ export type CartProduct = Omit<CartItem, "qty">;
 
 export const CART_STORAGE_KEY = "cs-cart";
 
-export function readCart(): CartItem[] {
-  if (typeof window === "undefined") return [];
+export function parseCart(raw: string | null): CartItem[] {
+  if (!raw) return [];
 
   try {
-    const raw = window.localStorage.getItem(CART_STORAGE_KEY);
-    if (!raw) return [];
     const parsed = JSON.parse(raw) as unknown;
     if (!Array.isArray(parsed)) return [];
     return parsed.filter(isCartItem);
   } catch {
     return [];
   }
-}
-
-const EMPTY_CART: CartItem[] = [];
-const listeners = new Set<() => void>();
-let cachedRaw: string | null = null;
-let cachedItems: CartItem[] = EMPTY_CART;
-
-export function writeCart(items: CartItem[]) {
-  if (typeof window === "undefined") return;
-  cachedRaw = JSON.stringify(items);
-  cachedItems = items.length === 0 ? EMPTY_CART : items;
-  window.localStorage.setItem(CART_STORAGE_KEY, cachedRaw);
-  emitCart();
-}
-
-function emitCart() {
-  listeners.forEach((listener) => listener());
-}
-
-function onStorage(event: StorageEvent) {
-  if (event.key !== CART_STORAGE_KEY && event.key !== null) return;
-  cachedRaw = null;
-  emitCart();
-}
-
-export function subscribeCart(listener: () => void) {
-  listeners.add(listener);
-  if (listeners.size === 1) {
-    window.addEventListener("storage", onStorage);
-  }
-  return () => {
-    listeners.delete(listener);
-    if (listeners.size === 0) {
-      window.removeEventListener("storage", onStorage);
-    }
-  };
-}
-
-export function getCartSnapshot() {
-  const raw = window.localStorage.getItem(CART_STORAGE_KEY) ?? "[]";
-  if (raw === cachedRaw) return cachedItems;
-  cachedRaw = raw;
-  const next = readCart();
-  cachedItems = next.length === 0 ? EMPTY_CART : next;
-  return cachedItems;
-}
-
-export function getCartServerSnapshot() {
-  return EMPTY_CART;
 }
 
 export function addToCart(

@@ -7,21 +7,16 @@ import { usePathname } from "next/navigation";
 import { formatPrice } from "@/lib/format";
 import { siteUrl } from "@/lib/site-metadata";
 import { buildCartWhatsAppUrl } from "@/lib/whatsapp";
-import { useCart } from "./cart-provider";
+import { useOptionalCart } from "./cart-provider";
 
 export function CartDrawer() {
   const pathname = usePathname();
-  const {
-    items,
-    open,
-    closeCart,
-    setQty,
-    removeItem,
-    subtotal,
-  } = useCart();
+  const cart = useOptionalCart();
+  const open = cart?.open ?? false;
+  const closeCart = cart?.closeCart;
 
   useEffect(() => {
-    if (!open) return;
+    if (!open || !closeCart) return;
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") closeCart();
@@ -35,7 +30,9 @@ export function CartDrawer() {
     };
   }, [open, closeCart]);
 
-  if (pathname.startsWith("/studio") || !open) return null;
+  if (!cart || pathname.startsWith("/studio") || !open) return null;
+
+  const { items, setQty, removeItem, subtotal } = cart;
 
   const origin =
     typeof window !== "undefined" ? window.location.origin : siteUrl;

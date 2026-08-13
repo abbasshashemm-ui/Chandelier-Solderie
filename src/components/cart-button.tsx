@@ -1,15 +1,17 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useCart } from "./cart-provider";
+import { useOptionalCart } from "./cart-provider";
 
 export function CartButton() {
   const pathname = usePathname();
-  const { itemCount, toggleCart } = useCart();
+  const cart = useOptionalCart();
 
-  if (pathname.startsWith("/studio")) {
+  if (!cart || pathname.startsWith("/studio")) {
     return null;
   }
+
+  const { itemCount, toggleCart } = cart;
 
   return (
     <button
