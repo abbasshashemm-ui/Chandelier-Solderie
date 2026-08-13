@@ -18,7 +18,7 @@ export function CollectionCard({
     <article className="group relative overflow-hidden border border-line bg-ink-deep transition-colors duration-500 hover:border-line-strong">
       <Link
         href={`/collection/${collection.slug}`}
-        className="relative block aspect-[16/10] overflow-hidden"
+        className="relative block aspect-[4/5] overflow-hidden sm:aspect-square"
       >
         {collection.imageUrl ? (
           <Image
@@ -26,11 +26,7 @@ export function CollectionCard({
             alt={collection.imageAlt ?? collection.title}
             fill
             priority={priority}
-            sizes={
-              collection.slug === SUPER_SALE_SLUG
-                ? "100vw"
-                : "(max-width: 768px) 100vw, 50vw"
-            }
+            sizes="(max-width: 768px) 50vw, 25vw"
             className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
           />
         ) : (
@@ -44,19 +40,19 @@ export function CollectionCard({
           className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10"
         />
 
-        <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
-          <p className="font-sans text-[0.5625rem] uppercase tracking-[0.28em] text-gold">
+        <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
+          <p className="font-sans text-[0.5rem] uppercase tracking-[0.28em] text-gold sm:text-[0.5625rem]">
             {collection.slug === SUPER_SALE_SLUG ? "Limited offering" : "Collection"}
           </p>
-          <h3 className="mt-1.5 font-serif text-2xl font-normal text-ivory sm:text-3xl md:text-4xl">
+          <h3 className="mt-1 font-serif text-lg font-normal text-ivory sm:text-xl md:text-2xl">
             {collection.title}
           </h3>
           {collection.description ? (
-            <p className="mt-2 max-w-md font-serif text-sm leading-relaxed text-muted line-clamp-2 sm:text-base">
+            <p className="mt-1.5 hidden font-serif text-sm leading-relaxed text-muted line-clamp-2 sm:block">
               {collection.description}
             </p>
           ) : null}
-          <p className="mt-3 inline-flex items-center gap-2 font-sans text-[0.625rem] uppercase tracking-[0.18em] text-gold-bright">
+          <p className="mt-2 inline-flex items-center gap-2 font-sans text-[0.5625rem] uppercase tracking-[0.18em] text-gold-bright sm:mt-3 sm:text-[0.625rem]">
             {count > 0
               ? `${count} piece${count === 1 ? "" : "s"}`
               : "Explore"}
