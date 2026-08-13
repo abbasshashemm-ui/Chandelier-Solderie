@@ -1,8 +1,9 @@
-"use client";
-
-import { NextStudio } from "next-sanity/studio";
-import config from "../../../../sanity.config";
 import { isSanityConfigured } from "@/sanity/env";
+import { StudioApp } from "./studio-app";
+
+export const dynamic = "force-static";
+
+export { metadata, viewport } from "next-sanity/studio";
 
 function StudioSetupNotice() {
   return (
@@ -36,5 +37,5 @@ export default function StudioPage() {
     return <StudioSetupNotice />;
   }
 
-  return <NextStudio config={config} />;
+  return <StudioApp />;
 }

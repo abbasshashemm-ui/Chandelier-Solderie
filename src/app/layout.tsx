@@ -3,10 +3,6 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import localFont from "next/font/local";
-import { CartDrawer } from "@/components/cart-drawer";
-import { CartProvider } from "@/components/cart-provider";
-import { FloatingWhatsApp } from "@/components/floating-whatsapp";
-import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import {
   siteDescription,
   siteIcons,
@@ -66,13 +62,8 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${castellar.variable} ${cormorant.variable} ${montserrat.variable} h-full`}
     >
-      <body className="min-h-full antialiased pb-[var(--cs-mobile-nav-height)] md:pb-0">
-        <CartProvider>
-          {children}
-          <MobileBottomNav />
-          <FloatingWhatsApp />
-          <CartDrawer />
-        </CartProvider>
+      <body className="min-h-full antialiased">
+        {children}
         <Analytics />
         <SpeedInsights />
       </body>
