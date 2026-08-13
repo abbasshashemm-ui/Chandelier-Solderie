@@ -80,11 +80,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <div className="page-shell min-h-[var(--cs-viewport-height)]">
       <SiteHeader />
 
-      <main className="relative mx-auto max-w-[1240px] px-3 pb-12 pt-[calc(var(--cs-header-height)+1rem)] sm:px-6 sm:pb-16 md:pt-[calc(var(--cs-header-height)+2rem)]">
-        <header className="mb-6 sm:mb-10">
+      <main className="relative mx-auto max-w-[1240px] px-3 pb-12 pt-[calc(var(--cs-header-height)+0.25rem)] sm:px-6 sm:pb-16">
+        <header className="mb-3 sm:mb-4">
           <Link
             href="/shop"
-            className="inline-flex min-h-11 items-center gap-2 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-muted transition hover:text-gold-bright"
+            className="inline-flex min-h-9 items-center gap-2 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-muted transition hover:text-gold-bright"
           >
             <span aria-hidden className="text-gold">
               ←
