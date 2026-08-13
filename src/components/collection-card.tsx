@@ -28,6 +28,8 @@ export function CollectionCard({
             priority={priority}
             sizes="(max-width: 768px) 50vw, 25vw"
             className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
+            placeholder={collection.imageLqip ? "blur" : "empty"}
+            blurDataURL={collection.imageLqip}
           />
         ) : (
           <div className="flex h-full items-center justify-center font-serif text-faint">

@@ -99,7 +99,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
               loop
               playsInline
               controls
-              preload="auto"
+              preload="metadata"
               poster={active.poster || undefined}
             />
           ) : active?.kind === "image" ? (
@@ -108,8 +108,10 @@ export function ProductGallery({ product }: ProductGalleryProps) {
               alt={active.alt}
               fill
               priority
-              sizes="(max-width: 1024px) 100vw, 55vw"
+              sizes="(max-width: 1024px) 75vw, 40vw"
               className="object-contain transition-transform duration-300 ease-out"
+              placeholder={product.imageLqip ? "blur" : "empty"}
+              blurDataURL={product.imageLqip}
               style={{
                 transformOrigin: `${origin.x}% ${origin.y}%`,
                 transform: showZoom ? "scale(1.85)" : "scale(1)",

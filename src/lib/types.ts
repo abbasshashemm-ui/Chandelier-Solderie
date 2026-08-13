@@ -25,6 +25,7 @@ export type Product = {
   description?: string;
   featured?: boolean;
   imageUrl?: string;
+  imageLqip?: string;
   imageAlt?: string;
   galleryUrls?: string[];
   videoUrl?: string;
@@ -37,6 +38,7 @@ export type Collection = {
   slug: string;
   description?: string;
   imageUrl?: string;
+  imageLqip?: string;
   imageAlt?: string;
   featured?: boolean;
   sortOrder?: number;

@@ -1,11 +1,12 @@
-import { sanityClient, isSanityConfigured } from "./sanity.client";
+import { sanityFetchOptions } from "./cache";
+import { productBelongsToCollection, SUPER_SALE_SLUG } from "./collection-membership";
 import { MOCK_COLLECTIONS } from "./mock-collections";
 import { getProducts } from "./products";
 import {
   COLLECTIONS_QUERY,
   COLLECTION_BY_SLUG_QUERY,
 } from "./sanity.queries";
-import { productBelongsToCollection, SUPER_SALE_SLUG } from "./collection-membership";
+import { sanityClient, isSanityConfigured } from "./sanity.client";
 import { slugify } from "./slug";
 import type { Collection, Product } from "./types";
 
@@ -26,6 +27,7 @@ function withCounts(
       ...collection,
       productCount: members.length,
       imageUrl: collection.imageUrl ?? members[0]?.imageUrl,
+      imageLqip: collection.imageLqip ?? members[0]?.imageLqip,
       imageAlt: collection.imageAlt ?? members[0]?.imageAlt,
     };
   });
@@ -44,6 +46,7 @@ function collectionsFromProducts(products: Product[]): Collection[] {
       existing.productCount = (existing.productCount ?? 0) + 1;
       if (!existing.imageUrl && product.imageUrl) {
         existing.imageUrl = product.imageUrl;
+        existing.imageLqip = product.imageLqip;
         existing.imageAlt = product.imageAlt;
       }
       continue;
@@ -54,6 +57,7 @@ function collectionsFromProducts(products: Product[]): Collection[] {
       title,
       slug,
       imageUrl: product.imageUrl,
+      imageLqip: product.imageLqip,
       imageAlt: product.imageAlt,
       featured: true,
       productCount: 1,
@@ -63,18 +67,27 @@ function collectionsFromProducts(products: Product[]): Collection[] {
   return [...map.values()];
 }
 
-export async function getCollections(): Promise<Collection[]> {
-  const products = await getProducts();
+async function fetchSanityCollections() {
+  return (
+    (await sanityClient.fetch<Collection[]>(
+      COLLECTIONS_QUERY,
+      {},
+      sanityFetchOptions,
+    )) ?? []
+  );
+}
 
+export async function getCollections(): Promise<Collection[]> {
   if (!isSanityConfigured) {
+    const products = await getProducts();
     return withCounts(MOCK_COLLECTIONS, products);
   }
 
   try {
-    const collections =
-      (await sanityClient.fetch<Collection[]>(COLLECTIONS_QUERY, {}, {
-        next: { tags: ["products"], revalidate: 60 },
-      })) ?? [];
+    const [products, collections] = await Promise.all([
+      getProducts(),
+      fetchSanityCollections(),
+    ]);
 
     if (collections.length === 0) {
       const derived = collectionsFromProducts(products);
@@ -89,6 +102,7 @@ export async function getCollections(): Promise<Collection[]> {
 
     return withCounts(collections, products);
   } catch {
+    const products = await getProducts();
     return withCounts(MOCK_COLLECTIONS, products);
   }
 }
@@ -115,7 +129,7 @@ export async function getCollectionBySlug(
     const collection = await sanityClient.fetch<Collection | null>(
       COLLECTION_BY_SLUG_QUERY,
       { slug },
-      { next: { tags: ["products"], revalidate: 60 } },
+      sanityFetchOptions,
     );
     return collection;
   } catch {

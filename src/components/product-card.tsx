@@ -22,7 +22,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         className="relative block aspect-[4/5] overflow-hidden bg-ink-deep sm:aspect-square"
       >
         {product.imageUrl ? (
-          <div className="absolute inset-0 transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform group-hover:scale-[1.05]">
+          <div className="absolute inset-0 transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]">
             <Image
               src={product.imageUrl}
               alt={product.imageAlt ?? product.title}
@@ -30,6 +30,8 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               priority={priority}
               sizes="(max-width: 768px) 50vw, 25vw"
               className="object-cover"
+              placeholder={product.imageLqip ? "blur" : "empty"}
+              blurDataURL={product.imageLqip}
             />
           </div>
         ) : (

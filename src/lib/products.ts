@@ -1,4 +1,5 @@
 import { productBelongsToCollection } from "./collection-membership";
+import { sanityFetchOptions } from "./cache";
 import { MOCK_PRODUCTS, getMockProductBySlug } from "./mock-products";
 import { PRODUCTS_QUERY, PRODUCT_BY_SLUG_QUERY } from "./sanity.queries";
 import { sanityClient, isSanityConfigured } from "./sanity.client";
@@ -29,9 +30,7 @@ export async function getProducts(): Promise<Product[]> {
 
   try {
     const products =
-      (await sanityClient.fetch<Product[]>(PRODUCTS_QUERY, {}, {
-        next: { tags: ["products"], revalidate: 60 },
-      })) ?? [];
+      (await sanityClient.fetch<Product[]>(PRODUCTS_QUERY, {}, sanityFetchOptions)) ?? [];
     return mergeCatalogue(products);
   } catch {
     return MOCK_PRODUCTS;
@@ -57,7 +56,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     const product = await sanityClient.fetch<Product | null>(
       PRODUCT_BY_SLUG_QUERY,
       { slug },
-      { next: { tags: ["products"], revalidate: 60 } },
+      sanityFetchOptions,
     );
     if (product) return resolveCollection(product);
     return getMockProductBySlug(slug);

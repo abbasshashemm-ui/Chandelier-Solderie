@@ -51,7 +51,7 @@ export function PromoRibbon() {
         <RibbonOrnament className="hidden h-5 w-24 shrink-0 text-[#3a2a12] md:block md:h-6 md:w-28" />
 
         <span className="flex flex-col items-center gap-1.5 md:gap-2">
-          <span className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.38em] text-[#3a2a12] sm:text-[0.75rem]">
+          <span className="font-sans text-[0.6875rem] font-medium uppercase tracking-[0.38em] text-[#3a2a12] sm:text-[0.75rem]">
             Super Sale
           </span>
           <span className="font-serif text-[1.75rem] leading-none tracking-wide text-[#171106] sm:text-4xl md:text-[2.75rem]">

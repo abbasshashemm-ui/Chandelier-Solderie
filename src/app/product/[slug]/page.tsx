@@ -9,6 +9,8 @@ import { getSalePercent, isOnSale } from "@/lib/pricing";
 import { getProductBySlug, getProductSlugs } from "@/lib/products";
 import { buildWhatsAppUrlStatic } from "@/lib/whatsapp";
 
+export const revalidate = 3600;
+
 export async function generateStaticParams() {
   const slugs = await getProductSlugs();
   return slugs.map((slug) => ({ slug }));
