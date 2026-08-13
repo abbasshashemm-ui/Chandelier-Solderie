@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
+import { AddToCartButton } from "@/components/add-to-cart-button";
 import { PriceDisplay } from "@/components/price-display";
 import { ProductGallery } from "@/components/product-gallery";
 import { SiteFooter } from "@/components/site-footer";
@@ -153,11 +154,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
               ) : null}
 
               <div className="mt-9 space-y-3">
+                <AddToCartButton
+                  product={{
+                    slug: product.slug,
+                    title: product.title,
+                    sku: product.sku,
+                    price: product.price,
+                    imageUrl: product.imageUrl,
+                  }}
+                />
                 <a
                   href={buildWhatsAppUrlStatic(product, origin)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn--gold w-full"
+                  className="btn btn--ghost w-full"
                 >
                   Inquire on WhatsApp
                 </a>
