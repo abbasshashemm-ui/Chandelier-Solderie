@@ -1,6 +1,7 @@
-import { sanityClient, isSanityConfigured } from "./sanity.client";
+import { productBelongsToCollection } from "./collection-membership";
 import { MOCK_PRODUCTS, getMockProductBySlug } from "./mock-products";
 import { PRODUCTS_QUERY, PRODUCT_BY_SLUG_QUERY } from "./sanity.queries";
+import { sanityClient, isSanityConfigured } from "./sanity.client";
 import { slugify } from "./slug";
 import type { Product } from "./types";
 
@@ -37,9 +38,14 @@ export async function getProducts(): Promise<Product[]> {
   }
 }
 
-export async function getProductsByCollection(slug: string): Promise<Product[]> {
+export async function getProductsByCollection(
+  slug: string,
+  includeSaleItems?: boolean,
+): Promise<Product[]> {
   const products = await getProducts();
-  return products.filter((product) => product.collectionSlug === slug);
+  return products.filter((product) =>
+    productBelongsToCollection(product, slug, includeSaleItems),
+  );
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {

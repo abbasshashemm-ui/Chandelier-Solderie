@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SUPER_SALE_SLUG } from "@/lib/collection-membership";
 import type { Collection } from "@/lib/types";
 
 type CollectionCardProps = {
@@ -25,7 +26,11 @@ export function CollectionCard({
             alt={collection.imageAlt ?? collection.title}
             fill
             priority={priority}
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes={
+              collection.slug === SUPER_SALE_SLUG
+                ? "100vw"
+                : "(max-width: 768px) 100vw, 50vw"
+            }
             className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
           />
         ) : (
@@ -41,7 +46,7 @@ export function CollectionCard({
 
         <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
           <p className="font-sans text-[0.5625rem] uppercase tracking-[0.28em] text-gold">
-            Collection
+            {collection.slug === SUPER_SALE_SLUG ? "Limited offering" : "Collection"}
           </p>
           <h3 className="mt-1.5 font-serif text-2xl font-normal text-ivory sm:text-3xl md:text-4xl">
             {collection.title}

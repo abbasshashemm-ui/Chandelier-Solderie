@@ -5,6 +5,7 @@ import {
   COLLECTIONS_QUERY,
   COLLECTION_BY_SLUG_QUERY,
 } from "./sanity.queries";
+import { productBelongsToCollection, SUPER_SALE_SLUG } from "./collection-membership";
 import { slugify } from "./slug";
 import type { Collection, Product } from "./types";
 
@@ -12,20 +13,22 @@ function withCounts(
   collections: Collection[],
   products: Product[],
 ): Collection[] {
-  return collections.map((collection) => ({
-    ...collection,
-    productCount: products.filter(
-      (product) => product.collectionSlug === collection.slug,
-    ).length,
-    imageUrl:
-      collection.imageUrl ??
-      products.find((product) => product.collectionSlug === collection.slug)
-        ?.imageUrl,
-    imageAlt:
-      collection.imageAlt ??
-      products.find((product) => product.collectionSlug === collection.slug)
-        ?.imageAlt,
-  }));
+  return collections.map((collection) => {
+    const members = products.filter((product) =>
+      productBelongsToCollection(
+        product,
+        collection.slug,
+        collection.includeSaleItems,
+      ),
+    );
+
+    return {
+      ...collection,
+      productCount: members.length,
+      imageUrl: collection.imageUrl ?? members[0]?.imageUrl,
+      imageAlt: collection.imageAlt ?? members[0]?.imageAlt,
+    };
+  });
 }
 
 function collectionsFromProducts(products: Product[]): Collection[] {
@@ -74,7 +77,14 @@ export async function getCollections(): Promise<Collection[]> {
       })) ?? [];
 
     if (collections.length === 0) {
-      return collectionsFromProducts(products);
+      const derived = collectionsFromProducts(products);
+      const superSale = MOCK_COLLECTIONS.find(
+        (collection) => collection.slug === SUPER_SALE_SLUG,
+      );
+      return withCounts(
+        superSale ? [superSale, ...derived] : derived,
+        products,
+      );
     }
 
     return withCounts(collections, products);

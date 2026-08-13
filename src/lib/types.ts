@@ -41,6 +41,7 @@ export type Collection = {
   featured?: boolean;
   sortOrder?: number;
   productCount?: number;
+  includeSaleItems?: boolean;
 };
 
 export type FilterOption = {

@@ -43,6 +43,18 @@ const client = createClient({
 /** @type {Array<Record<string, unknown>>} */
 const COLLECTIONS = [
   {
+    _id: "collection.super-sale",
+    title: "Super Sale",
+    slug: "super-sale",
+    description:
+      "Selected pieces with up to 50% off — limited seasonal reductions from the atelier.",
+    featured: true,
+    includeSaleItems: true,
+    sortOrder: 0,
+    imageFile: "2.png",
+    imageAlt: "Super Sale collection",
+  },
+  {
     _id: "collection.chandeliers",
     title: "Chandeliers",
     slug: "chandeliers",
@@ -253,6 +265,7 @@ async function seed() {
       ...fields,
       slug: { _type: "slug", current: slug },
       featured: Boolean(featured),
+      includeSaleItems: Boolean(fields.includeSaleItems),
       image,
     });
 

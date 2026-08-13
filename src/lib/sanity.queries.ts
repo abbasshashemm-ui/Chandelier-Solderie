@@ -57,6 +57,7 @@ export const COLLECTIONS_QUERY = `*[_type == "collection"] | order(sortOrder asc
   description,
   featured,
   sortOrder,
+  includeSaleItems,
   "imageUrl": image.asset->url,
   "imageAlt": coalesce(image.alt, title)
 }`;
@@ -68,6 +69,7 @@ export const COLLECTION_BY_SLUG_QUERY = `*[_type == "collection" && slug.current
   description,
   featured,
   sortOrder,
+  includeSaleItems,
   "imageUrl": image.asset->url,
   "imageAlt": coalesce(image.alt, title)
 }`;

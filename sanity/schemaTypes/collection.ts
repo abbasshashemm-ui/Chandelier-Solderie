@@ -38,6 +38,14 @@ export const collection = defineType({
       initialValue: false,
     }),
     defineField({
+      name: "includeSaleItems",
+      title: "Include sale items",
+      type: "boolean",
+      description:
+        "When enabled, every product flagged as Sale also appears in this collection.",
+      initialValue: false,
+    }),
+    defineField({
       name: "sortOrder",
       title: "Sort Order",
       type: "number",

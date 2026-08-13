@@ -2,6 +2,18 @@ import type { Collection } from "./types";
 
 export const MOCK_COLLECTIONS: Collection[] = [
   {
+    _id: "collection-super-sale",
+    title: "Super Sale",
+    slug: "super-sale",
+    description:
+      "Selected pieces with up to 50% off — limited seasonal reductions from the atelier.",
+    imageUrl: "/products/2.png",
+    imageAlt: "Super Sale collection",
+    featured: true,
+    includeSaleItems: true,
+    sortOrder: 0,
+  },
+  {
     _id: "collection-chandeliers",
     title: "Chandeliers",
     slug: "chandeliers",

@@ -38,7 +38,10 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
     notFound();
   }
 
-  const products = await getProductsByCollection(slug);
+  const products = await getProductsByCollection(
+    slug,
+    collection.includeSaleItems,
+  );
 
   return (
     <div className="page-shell min-h-screen">

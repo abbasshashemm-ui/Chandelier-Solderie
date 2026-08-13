@@ -1,4 +1,5 @@
 import type { Collection } from "@/lib/types";
+import { SUPER_SALE_SLUG } from "@/lib/collection-membership";
 import { CollectionCard } from "./collection-card";
 
 type FeaturedCollectionsProps = {
@@ -9,17 +10,16 @@ export function FeaturedCollections({ collections }: FeaturedCollectionsProps) {
   if (collections.length === 0) return null;
 
   return (
-    <div
-      className={`grid items-stretch gap-3 sm:gap-5 ${
-        collections.length === 1 ? "grid-cols-1" : "grid-cols-1 md:grid-cols-2"
-      }`}
-    >
+    <div className="grid grid-cols-1 items-stretch gap-3 sm:gap-5 md:grid-cols-2">
       {collections.map((collection, index) => (
-        <CollectionCard
+        <div
           key={collection._id}
-          collection={collection}
-          priority={index < 2}
-        />
+          className={
+            collection.slug === SUPER_SALE_SLUG ? "md:col-span-2" : undefined
+          }
+        >
+          <CollectionCard collection={collection} priority={index < 2} />
+        </div>
       ))}
     </div>
   );

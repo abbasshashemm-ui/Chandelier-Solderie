@@ -25,6 +25,7 @@ export function HomeLoading() {
             aria-busy="true"
             aria-label="Loading collections"
           >
+            <div className="skeleton-shimmer aspect-[16/10] border border-line md:col-span-2" />
             <div className="skeleton-shimmer aspect-[16/10] border border-line" />
             <div className="skeleton-shimmer aspect-[16/10] border border-line" />
           </div>
