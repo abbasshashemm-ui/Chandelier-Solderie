@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatPrice } from "@/lib/format";
 import { getProductMetaLine } from "@/lib/filters";
+import { getSalePercent, isOnSale } from "@/lib/pricing";
 import type { Product } from "@/lib/types";
+import { PriceDisplay } from "./price-display";
 
 type ProductCardProps = {
   product: Product;
@@ -11,7 +12,8 @@ type ProductCardProps = {
 
 export function ProductCard({ product, priority = false }: ProductCardProps) {
   const meta = getProductMetaLine(product);
-  const price = formatPrice(product.price);
+  const salePercent = getSalePercent(product);
+  const showSale = isOnSale(product);
 
   return (
     <article className="group relative flex h-full flex-col overflow-hidden border border-line bg-surface transition-colors duration-500 hover:border-line-strong">
@@ -41,7 +43,11 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         />
 
-        {product.featured ? (
+        {showSale ? (
+          <span className="absolute left-3 top-3 border border-gold/50 bg-gold px-2.5 py-1 font-sans text-[0.5rem] uppercase tracking-[0.2em] text-ink">
+            {salePercent ? `−${salePercent}%` : "Sale"}
+          </span>
+        ) : product.featured ? (
           <span className="absolute left-3 top-3 border border-gold/40 bg-black/55 px-2.5 py-1 font-sans text-[0.5rem] uppercase tracking-[0.2em] text-gold-bright backdrop-blur-sm">
             Signature
           </span>
@@ -63,10 +69,8 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         </h3>
 
         <div className="mt-auto flex shrink-0 items-end justify-between gap-2 pt-2">
-          {price ? (
-            <p className="font-serif text-base tracking-wide text-gold-bright sm:text-lg">
-              {price}
-            </p>
+          {product.price != null ? (
+            <PriceDisplay product={product} />
           ) : (
             <span className="block h-5" aria-hidden />
           )}

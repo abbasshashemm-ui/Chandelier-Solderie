@@ -11,12 +11,16 @@ export type Product = {
   slug: string;
   sku?: string;
   price?: number;
+  compareAtPrice?: number;
+  onSale?: boolean;
   style?: string;
   material?: string;
   room?: string;
   priceRange?: string;
   dimensions?: string;
   category?: string;
+  collectionSlug?: string;
+  collectionTitle?: string;
   shortDescription?: string;
   description?: string;
   featured?: boolean;
@@ -27,11 +31,30 @@ export type Product = {
   publishedAt?: string;
 };
 
+export type Collection = {
+  _id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  imageUrl?: string;
+  imageAlt?: string;
+  featured?: boolean;
+  sortOrder?: number;
+  productCount?: number;
+};
+
 export type FilterOption = {
   key: FilterKey;
   label: string;
   values: string[];
 };
+
+export const PRICE_RANGE_VALUES = [
+  "Under $50",
+  "$50 – $100",
+  "$100 – $500",
+  "Over $500",
+] as const;
 
 export const FILTER_DEFINITIONS: FilterOption[] = [
   {
@@ -52,13 +75,7 @@ export const FILTER_DEFINITIONS: FilterOption[] = [
   {
     key: "priceRange",
     label: "Price Range",
-    values: [
-      "Under $500",
-      "$500 – $1,000",
-      "$1,000 – $2,500",
-      "$2,500 – $5,000",
-      "Over $5,000",
-    ],
+    values: [...PRICE_RANGE_VALUES],
   },
   {
     key: "dimensions",

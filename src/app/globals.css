@@ -435,6 +435,71 @@ body::after {
   box-shadow: 0 0 14px rgba(232, 205, 141, 0.8);
 }
 
+/* ── Sale ribbon ──────────────────────────────────────── */
+
+.sale-ribbon {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(201, 163, 95, 0.16) 0%,
+      rgba(22, 17, 12, 0.92) 48%,
+      rgba(201, 163, 95, 0.12) 100%
+    );
+}
+
+.sale-ribbon__pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(201, 163, 95, 0.12) 12%,
+      transparent 24%,
+      transparent 76%,
+      rgba(201, 163, 95, 0.12) 88%,
+      transparent 100%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 18px,
+      rgba(201, 163, 95, 0.08) 18px,
+      rgba(201, 163, 95, 0.08) 19px
+    );
+}
+
+.sale-ribbon__sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(232, 205, 141, 0.14) 48%,
+    transparent 66%
+  );
+  background-size: 220% 100%;
+  animation: cs-ribbon-sheen 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes cs-ribbon-sheen {
+  0%,
+  100% {
+    background-position: 120% 0;
+  }
+  50% {
+    background-position: -20% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sale-ribbon__sheen {
+    animation: none;
+  }
+}
+
 @keyframes cs-fade-up {
   from {
     opacity: 0;

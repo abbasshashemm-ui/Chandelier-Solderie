@@ -1,12 +1,24 @@
 import { sanityClient, isSanityConfigured } from "./sanity.client";
 import { MOCK_PRODUCTS, getMockProductBySlug } from "./mock-products";
 import { PRODUCTS_QUERY, PRODUCT_BY_SLUG_QUERY } from "./sanity.queries";
+import { slugify } from "./slug";
 import type { Product } from "./types";
+
+function resolveCollection(product: Product): Product {
+  const collectionTitle = product.collectionTitle ?? product.category;
+  const collectionSlug =
+    product.collectionSlug ??
+    (collectionTitle ? slugify(collectionTitle) : undefined);
+
+  return { ...product, collectionTitle, collectionSlug };
+}
 
 /** Seed catalogue with optional Sanity overlay. Only seeded slugs are listed. */
 function mergeCatalogue(sanityProducts: Product[]): Product[] {
   const bySlug = new Map(sanityProducts.map((product) => [product.slug, product]));
-  return MOCK_PRODUCTS.map((product) => bySlug.get(product.slug) ?? product);
+  return MOCK_PRODUCTS.map((product) =>
+    resolveCollection(bySlug.get(product.slug) ?? product),
+  );
 }
 
 export async function getProducts(): Promise<Product[]> {
@@ -25,11 +37,9 @@ export async function getProducts(): Promise<Product[]> {
   }
 }
 
-export async function getFeaturedProducts(limit = 8): Promise<Product[]> {
+export async function getProductsByCollection(slug: string): Promise<Product[]> {
   const products = await getProducts();
-  const featured = products.filter((product) => product.featured);
-  const source = featured.length > 0 ? featured : products;
-  return source.slice(0, limit);
+  return products.filter((product) => product.collectionSlug === slug);
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
@@ -43,7 +53,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
       { slug },
       { next: { tags: ["products"], revalidate: 60 } },
     );
-    if (product) return product;
+    if (product) return resolveCollection(product);
     return getMockProductBySlug(slug);
   } catch {
     return getMockProductBySlug(slug);

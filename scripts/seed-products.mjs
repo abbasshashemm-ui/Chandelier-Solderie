@@ -41,6 +41,32 @@ const client = createClient({
 });
 
 /** @type {Array<Record<string, unknown>>} */
+const COLLECTIONS = [
+  {
+    _id: "collection.chandeliers",
+    title: "Chandeliers",
+    slug: "chandeliers",
+    description:
+      "Crystal, brass and sculptural centrepieces for rooms that deserve a signature light.",
+    featured: true,
+    sortOrder: 1,
+    imageFile: "1.png",
+    imageAlt: "Chandelier collection",
+  },
+  {
+    _id: "collection.pendants",
+    title: "Pendants",
+    slug: "pendants",
+    description:
+      "Cascading columns and gallery-scale pendants for voids, stairs and dining.",
+    featured: true,
+    sortOrder: 2,
+    imageFile: "6.png",
+    imageAlt: "Pendant collection",
+  },
+];
+
+/** @type {Array<Record<string, unknown>>} */
 const PRODUCTS = [
   {
     _id: "product.volare-crystal-feather-cascade",
@@ -48,12 +74,14 @@ const PRODUCTS = [
     slug: "volare-crystal-feather-cascade",
     sku: "CS-VF-001",
     price: 2850,
+    compareAtPrice: 5700,
+    onSale: true,
     style: "Modern",
     material: "Crystal",
     room: "Living Room",
-    priceRange: "$2,500 – $5,000",
     dimensions: "Extra Large (over 120 cm)",
     category: "Chandeliers",
+    collectionId: "collection.chandeliers",
     shortDescription:
       "Hand-formed crystal feathers suspended on invisible wires in a swirling descent.",
     description:
@@ -68,12 +96,14 @@ const PRODUCTS = [
     slug: "papillon-iridescent-cascade",
     sku: "CS-PI-002",
     price: 2200,
+    compareAtPrice: 3200,
+    onSale: true,
     style: "Modern",
     material: "Crystal",
     room: "Living Room",
-    priceRange: "$1,000 – $2,500",
     dimensions: "Extra Large (over 120 cm)",
     category: "Chandeliers",
+    collectionId: "collection.chandeliers",
     shortDescription:
       "Crystal bead strands with iridescent butterflies spiraling through the fall of light.",
     description:
@@ -91,9 +121,9 @@ const PRODUCTS = [
     style: "Classic",
     material: "Crystal",
     room: "Dining",
-    priceRange: "$1,000 – $2,500",
     dimensions: "Large (80 – 120 cm)",
     category: "Chandeliers",
+    collectionId: "collection.chandeliers",
     shortDescription:
       "Multi-tier classic crystal with candle arms, bobeches, and prismatic pendalogues.",
     description:
@@ -111,9 +141,9 @@ const PRODUCTS = [
     style: "Modern",
     material: "Glass",
     room: "Living Room",
-    priceRange: "$2,500 – $5,000",
     dimensions: "Extra Large (over 120 cm)",
     category: "Chandeliers",
+    collectionId: "collection.chandeliers",
     shortDescription:
       "Inverted cone of textured clear glass and polished gold shards under a mirrored canopy.",
     description:
@@ -128,12 +158,14 @@ const PRODUCTS = [
     slug: "aether-gold-plume-installation",
     sku: "CS-AP-005",
     price: 4200,
+    compareAtPrice: 5600,
+    onSale: true,
     style: "Modern",
     material: "Brass",
     room: "Living Room",
-    priceRange: "$2,500 – $5,000",
     dimensions: "Extra Large (over 120 cm)",
     category: "Chandeliers",
+    collectionId: "collection.chandeliers",
     shortDescription:
       "Sculptural flock of gold and frosted glass plumes suspended on invisible cables.",
     description:
@@ -151,9 +183,9 @@ const PRODUCTS = [
     style: "Modern",
     material: "Glass",
     room: "Living Room",
-    priceRange: "$2,500 – $5,000",
     dimensions: "Extra Large (over 120 cm)",
     category: "Pendants",
+    collectionId: "collection.pendants",
     shortDescription:
       "Floor-near rain column of burgundy-to-clear handcrafted glass on invisible wires.",
     description:
@@ -171,9 +203,9 @@ const PRODUCTS = [
     style: "Modern",
     material: "Brass",
     room: "Dining",
-    priceRange: "$1,000 – $2,500",
     dimensions: "Extra Large (over 120 cm)",
     category: "Chandeliers",
+    collectionId: "collection.chandeliers",
     shortDescription:
       "Double-helix of rippled clear glass and polished gold leaves from a white canopy.",
     description:
@@ -206,10 +238,37 @@ async function uploadImage(filename, alt) {
 }
 
 async function seed() {
-  console.log(`Seeding ${PRODUCTS.length} products → ${projectId}/${dataset}`);
+  console.log(
+    `Seeding ${COLLECTIONS.length} collections and ${PRODUCTS.length} products → ${projectId}/${dataset}`,
+  );
+
+  for (const collection of COLLECTIONS) {
+    const { _id, slug, imageFile, imageAlt, featured, ...fields } = collection;
+    process.stdout.write(`  • Collection: ${fields.title}… `);
+    const image = await uploadImage(imageFile, imageAlt);
+
+    await client.createOrReplace({
+      _id,
+      _type: "collection",
+      ...fields,
+      slug: { _type: "slug", current: slug },
+      featured: Boolean(featured),
+      image,
+    });
+
+    console.log("ok");
+  }
 
   for (const product of PRODUCTS) {
-    const { _id, slug, imageFile, imageAlt, featured, ...fields } = product;
+    const {
+      _id,
+      slug,
+      imageFile,
+      imageAlt,
+      featured,
+      collectionId,
+      ...fields
+    } = product;
 
     process.stdout.write(`  • ${fields.title}… `);
     const mainImage = await uploadImage(imageFile, imageAlt);
@@ -220,14 +279,18 @@ async function seed() {
       ...fields,
       slug: { _type: "slug", current: slug },
       featured: Boolean(featured),
+      onSale: Boolean(fields.onSale),
       mainImage,
+      collection: collectionId
+        ? { _type: "reference", _ref: collectionId }
+        : undefined,
       publishedAt: new Date().toISOString(),
     });
 
     console.log("ok");
   }
 
-  console.log("Done. Open Studio → Products to review.");
+  console.log("Done. Open Studio → Collections / Products to review.");
 }
 
 seed().catch((error) => {

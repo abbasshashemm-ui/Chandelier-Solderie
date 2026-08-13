@@ -8,7 +8,7 @@ export default function ProductLoading() {
         <div className="skeleton-shimmer mb-8 h-4 w-36" />
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-7">
-            <div className="skeleton-shimmer aspect-[4/5] border border-line sm:aspect-square" />
+            <div className="skeleton-shimmer aspect-[4/5] border border-line sm:aspect-square mx-auto w-[75%] lg:mx-0" />
           </div>
           <div className="space-y-5 lg:col-span-5">
             <div className="skeleton-shimmer h-3 w-40" />

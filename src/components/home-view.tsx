@@ -1,13 +1,14 @@
 import Link from "next/link";
-import type { Product } from "@/lib/types";
+import type { Collection } from "@/lib/types";
 import { buildGeneralWhatsAppUrl, siteContact } from "@/lib/site-contact";
+import { FeaturedCollections } from "./featured-collections";
 import { HeroChandelier } from "./hero-chandelier";
-import { ProductGrid } from "./product-grid";
+import { PromoRibbon } from "./promo-ribbon";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
 
 type HomeViewProps = {
-  products: Product[];
+  collections: Collection[];
 };
 
 const hallmarks = [
@@ -25,7 +26,7 @@ const hallmarks = [
   },
 ] as const;
 
-export function HomeView({ products }: HomeViewProps) {
+export function HomeView({ collections }: HomeViewProps) {
   return (
     <>
       <SiteHeader />
@@ -85,15 +86,17 @@ export function HomeView({ products }: HomeViewProps) {
           </dl>
         </section>
 
-        {/* Featured pieces */}
-        <section className="mx-auto w-full max-w-[1340px] px-3 pb-16 sm:px-4 md:px-8 md:pb-20">
+        <PromoRibbon />
+
+        {/* Featured collections */}
+        <section className="mx-auto w-full max-w-[1340px] px-3 py-16 sm:px-4 md:px-8 md:py-20">
           <div className="mb-8 flex items-end justify-between gap-4 px-2 sm:px-0 md:mb-10">
             <div>
               <p className="font-sans text-[0.625rem] uppercase tracking-[0.28em] text-gold">
-                The Collection
+                The Atelier
               </p>
               <h2 className="mt-2 font-serif text-3xl font-normal text-ivory md:text-4xl">
-                Featured Pieces
+                Featured Collections
               </h2>
             </div>
             <Link
@@ -107,15 +110,15 @@ export function HomeView({ products }: HomeViewProps) {
             </Link>
           </div>
 
-          {products.length > 0 ? (
-            <ProductGrid products={products} />
+          {collections.length > 0 ? (
+            <FeaturedCollections collections={collections} />
           ) : (
             <div className="flex min-h-[280px] flex-col items-center justify-center border border-line px-8 py-16 text-center">
               <p className="font-serif text-xl text-muted">
-                The collection is being curated.
+                Collections are being curated.
               </p>
               <p className="mt-2 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-faint">
-                Publish products in the studio to see them here
+                Publish collections in the studio to see them here
               </p>
             </div>
           )}

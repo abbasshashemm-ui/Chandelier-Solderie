@@ -1,11 +1,12 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
+import { PriceDisplay } from "@/components/price-display";
 import { ProductGallery } from "@/components/product-gallery";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { getSalePercent, isOnSale } from "@/lib/pricing";
 import { getProductBySlug, getProductSlugs } from "@/lib/products";
-import { formatPrice } from "@/lib/format";
 import { buildWhatsAppUrlStatic } from "@/lib/whatsapp";
 
 export async function generateStaticParams() {
@@ -69,8 +70,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const price = formatPrice(product.price);
   const origin = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const salePercent = getSalePercent(product);
+  const showSale = isOnSale(product);
 
   return (
     <div className="page-shell min-h-[var(--cs-viewport-height)]">
@@ -91,7 +93,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
           <section className="lg:col-span-7">
-            <ProductGallery product={product} />
+            <div className="mx-auto w-[75%] lg:mx-0">
+              <ProductGallery product={product} />
+            </div>
           </section>
 
           <aside className="lg:col-span-5">
@@ -104,13 +108,27 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 {product.title}
               </h1>
 
-              {product.sku ? (
+              {(product.sku || product.collectionTitle) ? (
                 <p className="mt-3 font-sans text-[0.625rem] uppercase tracking-[0.16em] text-faint">
-                  Ref. {product.sku}
+                  {product.sku ? `Ref. ${product.sku}` : null}
+                  {product.sku && product.collectionSlug ? " · " : null}
+                  {product.collectionSlug && product.collectionTitle ? (
+                    <Link
+                      href={`/collection/${product.collectionSlug}`}
+                      className="transition hover:text-gold-bright"
+                    >
+                      {product.collectionTitle}
+                    </Link>
+                  ) : null}
                 </p>
               ) : null}
 
               <div className="mt-5 flex flex-wrap gap-2">
+                {showSale ? (
+                  <DetailPill>
+                    {salePercent ? `Sale −${salePercent}%` : "Sale"}
+                  </DetailPill>
+                ) : null}
                 {product.style ? <DetailPill>{product.style}</DetailPill> : null}
                 {product.material ? (
                   <DetailPill>{product.material}</DetailPill>
@@ -118,16 +136,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 {product.room ? <DetailPill>{product.room}</DetailPill> : null}
               </div>
 
-              {price ? (
-                <div className="mt-7 border-y border-line py-5">
-                  <p className="font-sans text-[0.625rem] uppercase tracking-[0.22em] text-faint">
-                    Price
-                  </p>
-                  <p className="mt-1 font-serif text-3xl tracking-wide text-gold-bright sm:text-4xl">
-                    {price}
-                  </p>
-                </div>
-              ) : null}
+              <PriceDisplay product={product} size="detail" />
 
               {product.shortDescription ? (
                 <p className="mt-7 border-l border-gold pl-4 font-serif text-lg italic leading-relaxed text-ivory sm:text-xl">
@@ -161,7 +170,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   Specifications
                 </p>
                 <dl className="border-t border-line">
-                  <SpecRow label="Category" value={product.category} />
+                  <SpecRow label="Collection" value={product.collectionTitle} />
                   <SpecRow label="SKU" value={product.sku} />
                   <SpecRow label="Style" value={product.style} />
                   <SpecRow label="Material" value={product.material} />

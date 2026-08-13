@@ -1,12 +1,12 @@
 import { HomeView } from "@/components/home-view";
-import { getFeaturedProducts } from "@/lib/products";
+import { getFeaturedCollections } from "@/lib/collections";
 
 export default async function HomePage() {
-  const products = await getFeaturedProducts(8);
+  const collections = await getFeaturedCollections(8);
 
   return (
     <div className="page-shell min-h-screen">
-      <HomeView products={products} />
+      <HomeView collections={collections} />
     </div>
   );
 }

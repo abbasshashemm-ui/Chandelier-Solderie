@@ -99,7 +99,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
               loop
               playsInline
               controls
-              preload="metadata"
+              preload="auto"
               poster={active.poster || undefined}
             />
           ) : active?.kind === "image" ? (

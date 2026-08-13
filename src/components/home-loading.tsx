@@ -1,6 +1,5 @@
-import { ProductGridSkeleton } from "./product-grid-skeleton";
-import { SiteFooter } from "./site-footer";
-import { SiteHeader } from "./site-header";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 
 export function HomeLoading() {
   return (
@@ -21,7 +20,14 @@ export function HomeLoading() {
         </section>
 
         <section className="mx-auto w-full max-w-[1340px] px-3 pb-16 sm:px-4 md:px-8 md:pb-20">
-          <ProductGridSkeleton count={8} />
+          <div
+            className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5"
+            aria-busy="true"
+            aria-label="Loading collections"
+          >
+            <div className="skeleton-shimmer aspect-[16/10] border border-line" />
+            <div className="skeleton-shimmer aspect-[16/10] border border-line" />
+          </div>
         </section>
 
         <SiteFooter />

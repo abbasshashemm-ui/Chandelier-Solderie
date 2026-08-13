@@ -1,4 +1,14 @@
+import { slugify } from "./slug";
 import type { Product } from "./types";
+
+function withCollection(product: Product): Product {
+  const collectionTitle = product.collectionTitle ?? product.category;
+  const collectionSlug =
+    product.collectionSlug ??
+    (collectionTitle ? slugify(collectionTitle) : undefined);
+
+  return { ...product, collectionTitle, collectionSlug };
+}
 
 export const MOCK_PRODUCTS: Product[] = [
   {
@@ -7,10 +17,11 @@ export const MOCK_PRODUCTS: Product[] = [
     slug: "volare-crystal-feather-cascade",
     sku: "CS-VF-001",
     price: 2850,
+    compareAtPrice: 5700,
+    onSale: true,
     style: "Modern",
     material: "Crystal",
     room: "Living Room",
-    priceRange: "$2,500 – $5,000",
     dimensions: "Extra Large (over 120 cm)",
     category: "Chandeliers",
     shortDescription:
@@ -27,10 +38,11 @@ export const MOCK_PRODUCTS: Product[] = [
     slug: "papillon-iridescent-cascade",
     sku: "CS-PI-002",
     price: 2200,
+    compareAtPrice: 3200,
+    onSale: true,
     style: "Modern",
     material: "Crystal",
     room: "Living Room",
-    priceRange: "$1,000 – $2,500",
     dimensions: "Extra Large (over 120 cm)",
     category: "Chandeliers",
     shortDescription:
@@ -50,7 +62,6 @@ export const MOCK_PRODUCTS: Product[] = [
     style: "Classic",
     material: "Crystal",
     room: "Dining",
-    priceRange: "$1,000 – $2,500",
     dimensions: "Large (80 – 120 cm)",
     category: "Chandeliers",
     shortDescription:
@@ -70,7 +81,6 @@ export const MOCK_PRODUCTS: Product[] = [
     style: "Modern",
     material: "Glass",
     room: "Living Room",
-    priceRange: "$2,500 – $5,000",
     dimensions: "Extra Large (over 120 cm)",
     category: "Chandeliers",
     shortDescription:
@@ -87,10 +97,11 @@ export const MOCK_PRODUCTS: Product[] = [
     slug: "aether-gold-plume-installation",
     sku: "CS-AP-005",
     price: 4200,
+    compareAtPrice: 5600,
+    onSale: true,
     style: "Modern",
     material: "Brass",
     room: "Living Room",
-    priceRange: "$2,500 – $5,000",
     dimensions: "Extra Large (over 120 cm)",
     category: "Chandeliers",
     shortDescription:
@@ -110,7 +121,6 @@ export const MOCK_PRODUCTS: Product[] = [
     style: "Modern",
     material: "Glass",
     room: "Living Room",
-    priceRange: "$2,500 – $5,000",
     dimensions: "Extra Large (over 120 cm)",
     category: "Pendants",
     shortDescription:
@@ -130,7 +140,6 @@ export const MOCK_PRODUCTS: Product[] = [
     style: "Modern",
     material: "Brass",
     room: "Dining",
-    priceRange: "$1,000 – $2,500",
     dimensions: "Extra Large (over 120 cm)",
     category: "Chandeliers",
     shortDescription:
@@ -141,7 +150,7 @@ export const MOCK_PRODUCTS: Product[] = [
     imageUrl: "/products/7.png",
     imageAlt: "Gold and clear glass leaf spiral cascade chandelier",
   },
-];
+].map(withCollection);
 
 export function getMockProductBySlug(slug: string): Product | null {
   return MOCK_PRODUCTS.find((product) => product.slug === slug) ?? null;

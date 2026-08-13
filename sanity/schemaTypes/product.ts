@@ -21,17 +21,49 @@ export const product = defineType({
     defineField({ name: "sku", title: "SKU", type: "string" }),
     defineField({ name: "price", title: "Price (USD)", type: "number" }),
     defineField({
+      name: "compareAtPrice",
+      title: "Original price (USD)",
+      type: "number",
+      description:
+        "Optional before-sale price. Shown crossed out next to the current price.",
+    }),
+    defineField({
+      name: "onSale",
+      title: "Sale",
+      type: "boolean",
+      description:
+        "Flag this piece as on sale. The discount percentage appears on collection cards.",
+      initialValue: false,
+    }),
+    defineField({
+      name: "collection",
+      title: "Collection",
+      type: "reference",
+      to: [{ type: "collection" }],
+    }),
+    defineField({
       name: "mainImage",
       title: "Main Image",
       type: "image",
       options: { hotspot: true },
       fields: [{ name: "alt", type: "string", title: "Alt text" }],
+      description: "First picture — used as the listing preview.",
     }),
     defineField({
       name: "gallery",
       title: "Gallery",
       type: "array",
       of: [{ type: "image", options: { hotspot: true } }],
+    }),
+    defineField({
+      name: "video",
+      title: "Product Video",
+      type: "file",
+      options: {
+        accept: "video/*",
+      },
+      description:
+        "Optional. The listing still shows the main image; this video autoplays when the product page opens.",
     }),
     defineField({
       name: "style",
@@ -55,20 +87,6 @@ export const product = defineType({
       type: "string",
       options: {
         list: ["Living Room", "Dining", "Bedroom"],
-      },
-    }),
-    defineField({
-      name: "priceRange",
-      title: "Price Range",
-      type: "string",
-      options: {
-        list: [
-          "Under $500",
-          "$500 – $1,000",
-          "$1,000 – $2,500",
-          "$2,500 – $5,000",
-          "Over $5,000",
-        ],
       },
     }),
     defineField({
@@ -97,30 +115,14 @@ export const product = defineType({
       rows: 6,
     }),
     defineField({
-      name: "video",
-      title: "Product Video",
-      type: "file",
-      options: {
-        accept: "video/*",
-      },
-    }),
-    defineField({
       name: "category",
       title: "Category",
       type: "string",
-      options: {
-        list: [
-          "Chandeliers",
-          "Pendants",
-          "Wall Lamps",
-          "Flush Mounts",
-          "Outdoor",
-        ],
-      },
+      hidden: true,
     }),
     defineField({
       name: "featured",
-      title: "Featured",
+      title: "Signature piece",
       type: "boolean",
       initialValue: false,
     }),
@@ -131,6 +133,16 @@ export const product = defineType({
     }),
   ],
   preview: {
-    select: { title: "title", media: "mainImage", subtitle: "sku" },
+    select: {
+      title: "title",
+      media: "mainImage",
+      subtitle: "sku",
+      onSale: "onSale",
+    },
+    prepare: ({ title, media, subtitle, onSale }) => ({
+      title,
+      subtitle: onSale ? `${subtitle ?? ""} · Sale`.trim() : subtitle,
+      media,
+    }),
   },
 });

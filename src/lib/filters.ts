@@ -1,3 +1,4 @@
+import { matchesPriceRange } from "./pricing";
 import type { FilterKey, Product } from "./types";
 
 export type ActiveFilters = Partial<Record<FilterKey, string>>;
@@ -14,7 +15,13 @@ export function filterProducts(
   return products.filter((product) => {
     const matchesFilters = (
       Object.entries(filters) as [FilterKey, string][]
-    ).every(([key, value]) => !value || product[key] === value);
+    ).every(([key, value]) => {
+      if (!value) return true;
+      if (key === "priceRange") {
+        return matchesPriceRange(product.price, value);
+      }
+      return product[key] === value;
+    });
 
     if (!matchesFilters) return false;
     if (!query) return true;
