@@ -48,7 +48,7 @@ export function InstagramFeed({ instagram }: InstagramFeedProps) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="View this installation on Instagram"
-              className="group relative block aspect-video overflow-hidden border border-line bg-ink-deep transition-colors duration-500 hover:border-line-strong"
+              className="group relative block aspect-[9/16] overflow-hidden border border-line bg-ink-deep transition-colors duration-500 hover:border-line-strong"
             >
               <InstagramReel src={reel.videoSrc} poster={reel.posterSrc} />
 

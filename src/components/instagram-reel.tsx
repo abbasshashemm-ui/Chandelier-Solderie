@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 type InstagramReelProps = {
   src: string;
@@ -10,64 +10,59 @@ type InstagramReelProps = {
 export function InstagramReel({ src, poster }: InstagramReelProps) {
   const ref = useRef<HTMLVideoElement>(null);
 
-  const [loaded, setLoaded] = useState(false);
-
   useEffect(() => {
     const video = ref.current;
     if (!video) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setLoaded(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "400px" },
-    );
-
-    observer.observe(video);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const video = ref.current;
-    if (!video || !loaded) return;
-
     video.muted = true;
     video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;
     }
 
+    const play = () => {
+      video.muted = true;
+      void video.play().catch(() => undefined);
+    };
+
+    const onReady = () => play();
+    video.addEventListener("loadeddata", onReady);
+    video.addEventListener("canplay", onReady);
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          video.muted = true;
-          void video.play().catch(() => undefined);
-        } else {
-          video.pause();
-        }
+        if (entry.isIntersecting) play();
+        else video.pause();
       },
-      { threshold: 0.35 },
+      { threshold: 0.2 },
     );
 
     observer.observe(video);
-    return () => observer.disconnect();
-  }, [loaded]);
+    play();
+
+    return () => {
+      video.removeEventListener("loadeddata", onReady);
+      video.removeEventListener("canplay", onReady);
+      observer.disconnect();
+    };
+  }, [src]);
 
   return (
     <video
       ref={ref}
-      src={loaded ? src : undefined}
+      src={src}
       poster={poster}
       muted
       loop
       playsInline
-      preload="none"
+      autoPlay
+      preload="auto"
       disablePictureInPicture
-      className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[center_32%]"
+      className="pointer-events-none absolute inset-0 h-full w-full object-cover"
       aria-hidden
     />
   );
