@@ -9,8 +9,7 @@ type InstagramReelProps = {
 
 export function InstagramReel({ src, poster }: InstagramReelProps) {
   const ref = useRef<HTMLVideoElement>(null);
-  // Only attach the video source once the tile approaches the viewport,
-  // so the reels don't compete with the hero for initial bandwidth.
+
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {

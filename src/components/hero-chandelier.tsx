@@ -3,8 +3,6 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-// Module-scoped so the cinematic entry only plays on the first load of the
-// session; returning to the home page via client navigation skips it.
 let hasPlayedEntry = false;
 
 type Phase = "waiting" | "entry" | "live";
@@ -16,8 +14,6 @@ export function HeroChandelier() {
   const tiltRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
-  // Only begin the entry once the image is fully loaded, so the animation
-  // never plays against a half-loaded picture.
   const startEntry = useCallback(() => {
     hasPlayedEntry = true;
     setPhase((current) => (current === "waiting" ? "entry" : current));
@@ -31,8 +27,6 @@ export function HeroChandelier() {
     }
   }, [phase, startEntry]);
 
-  // Subtle 3D parallax: the chandelier tilts in perspective following the
-  // pointer. Desktop-only, disabled for reduced motion.
   useEffect(() => {
     const el = tiltRef.current;
     if (!el) return;

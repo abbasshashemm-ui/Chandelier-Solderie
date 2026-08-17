@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { sanityFetchOptions } from "./cache";
 import { productBelongsToCollection } from "./collection-membership";
 import { getSalePercent, getStartingPrice } from "./pricing";
@@ -5,6 +6,7 @@ import { getProducts } from "./products";
 import {
   COLLECTIONS_QUERY,
   COLLECTION_BY_SLUG_QUERY,
+  COLLECTION_SLUGS_QUERY,
 } from "./sanity.queries";
 import { sanityClient, isSanityConfigured } from "./sanity.client";
 import { slugify } from "./slug";
@@ -38,7 +40,7 @@ function isHomepageCollection(collection: Collection) {
   return Boolean(collection.featured || collection.promoRibbon?.enabled);
 }
 
-async function fetchSanityCollections() {
+const fetchSanityCollections = cache(async () => {
   return (
     (await sanityClient.fetch<Collection[]>(
       COLLECTIONS_QUERY,
@@ -46,9 +48,9 @@ async function fetchSanityCollections() {
       sanityFetchOptions,
     )) ?? []
   );
-}
+});
 
-export async function getCollections(): Promise<Collection[]> {
+export const getCollections = cache(async (): Promise<Collection[]> => {
   if (!isSanityConfigured) {
     return [];
   }
@@ -63,7 +65,7 @@ export async function getCollections(): Promise<Collection[]> {
     console.error("Failed to load collections from Sanity", error);
     return [];
   }
-}
+});
 
 export async function getFeaturedCollections(limit = 8): Promise<Collection[]> {
   const collections = await getCollections();
@@ -72,32 +74,45 @@ export async function getFeaturedCollections(limit = 8): Promise<Collection[]> {
   return source.slice(0, limit);
 }
 
-export async function getCollectionBySlug(
-  slug: string,
-): Promise<Collection | null> {
-  const collections = await getCollections();
-  const fromList = collections.find((collection) => collection.slug === slug);
-  if (fromList) return fromList;
+export const getCollectionBySlug = cache(
+  async (slug: string): Promise<Collection | null> => {
+    const collections = await getCollections();
+    const fromList = collections.find((collection) => collection.slug === slug);
+    if (fromList) return fromList;
 
+    if (!isSanityConfigured) {
+      return null;
+    }
+
+    try {
+      const collection = await sanityClient.fetch<Collection | null>(
+        COLLECTION_BY_SLUG_QUERY,
+        { slug },
+        sanityFetchOptions,
+      );
+      return collection;
+    } catch {
+      return null;
+    }
+  },
+);
+
+export async function getCollectionSlugs(): Promise<string[]> {
   if (!isSanityConfigured) {
-    return null;
+    return [];
   }
 
   try {
-    const collection = await sanityClient.fetch<Collection | null>(
-      COLLECTION_BY_SLUG_QUERY,
-      { slug },
-      sanityFetchOptions,
+    return (
+      (await sanityClient.fetch<string[]>(
+        COLLECTION_SLUGS_QUERY,
+        {},
+        sanityFetchOptions,
+      )) ?? []
     );
-    return collection;
   } catch {
-    return null;
+    return [];
   }
-}
-
-export async function getCollectionSlugs(): Promise<string[]> {
-  const collections = await getCollections();
-  return collections.map((collection) => collection.slug);
 }
 
 export async function getHomepagePromo(): Promise<HomepagePromo | null> {

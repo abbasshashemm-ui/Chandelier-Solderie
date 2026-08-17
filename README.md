@@ -1,48 +1,50 @@
 # Chandelier Solderie — Next.js + Sanity
 
-Luxury lighting catalogue with a dark **"Nocturne"** showroom UI, built for **Vercel + Sanity free tiers**.
+Luxury lighting catalogue with a dark "Nocturne" showroom UI, built for Vercel + Sanity.
 
 ## Stack
 
-- **Next.js 16** (App Router)
-- **Sanity** (product CMS + embedded Studio at `/studio`)
-- **Tailwind CSS v4**
+- Next.js 16 (App Router)
+- Sanity (product CMS + embedded Studio at `/studio`)
+- Tailwind CSS v4
 
-## Quick start (development without Sanity)
+## Quick start
 
 ```bash
 npm install
 npm run dev
 ```
 
-Without Sanity configured, the site shows **8 demo products in development only**. Production builds show an empty catalogue until you connect Sanity and publish products.
+Without Sanity configured, the catalogue is empty until you connect a project and publish products.
 
-## Connect Sanity (CMS admin)
+## Connect Sanity
 
 1. Create a project at [sanity.io/manage](https://www.sanity.io/manage)
 2. Copy `.env.example` → `.env.local` and set:
    ```
    NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
    NEXT_PUBLIC_SANITY_DATASET=production
+   NEXT_PUBLIC_SITE_URL=https://your-domain.com
    ```
-3. In Sanity project settings → **API** → **CORS origins**, add:
-   - `http://localhost:3000`
-   - Your Vercel production URL
-4. Open [http://localhost:3000/studio](http://localhost:3000/studio) to add products (image upload, gallery, video, filters, publish)
-5. Invite client/admin emails in Sanity project **Members** for Studio access
+3. In Sanity → API → CORS origins, add `http://localhost:3000` and your Vercel URL
+4. Open `/studio` to manage collections, products, and site settings
+5. Invite admin emails in Sanity project Members
+
+Optional seed:
+
+```bash
+SANITY_API_TOKEN=<editor-token> npm run seed:products
+```
 
 ## On-demand revalidation
 
-When a product is published, the site updates via webhook:
-
 1. Set `SANITY_REVALIDATE_SECRET` in `.env.local` and Vercel
-2. In Sanity → **API** → **Webhooks**, create a webhook:
+2. In Sanity → API → Webhooks:
    - URL: `https://your-domain.com/api/revalidate`
-   - Method: POST
    - Header: `Authorization: Bearer <SANITY_REVALIDATE_SECRET>`
-   - Trigger: Create / Update / Delete on `product`
+   - Trigger: Create / Update / Delete on `product`, `collection`, and `siteSettings`
 
-## Deploy to Vercel
+## Deploy
 
 ```bash
 npx vercel
@@ -50,38 +52,12 @@ npx vercel
 
 Add all env vars from `.env.example` in the Vercel dashboard.
 
-## Project structure
-
-```
-├── sanity.config.ts        # Embedded Studio config
-├── sanity/                 # Product schema
-├── src/
-│   ├── app/
-│   │   ├── studio/         # CMS admin at /studio
-│   │   ├── shop/           # Catalogue with search + filters
-│   │   ├── product/[slug]/ # Product detail
-│   │   └── inquire/        # Contact page
-│   ├── components/         # Site chrome + catalogue UI
-│   └── lib/                # Sanity client, filters, products
-```
-
-## Features
-
-- Embedded Sanity Studio (`/studio`) for manual product entry
-- Sidebar filters (style, material, room, price, dimensions) with URL sync
-- Search by name or SKU
-- Pagination (24 per page)
-- Product detail pages with gallery + optional video
-- WhatsApp inquiry CTA
-- Fixed header (Home / Collection / Inquire) + mobile bottom nav
-- Featured products on home page
-- SEO: per-product metadata, sitemap, robots
-
 ## Scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start Next.js dev server |
+| `npm run dev` | Next.js dev server |
 | `npm run build` | Production build |
 | `npm run lint` | ESLint |
-| `npm run studio` | Standalone Sanity Studio (optional) |
+| `npm run studio` | Standalone Sanity Studio |
+| `npm run seed:products` | Upsert seed collections/products |

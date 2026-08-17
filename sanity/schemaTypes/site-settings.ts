@@ -62,47 +62,6 @@ export const siteSettings = defineType({
           type: "text",
           rows: 3,
         }),
-        defineField({
-          name: "posts",
-          title: "Posts",
-          type: "array",
-          description:
-            "Installed pieces in client homes. Six appear on the homepage; the catalogue is used until you add some.",
-          of: [
-            defineArrayMember({
-              type: "object",
-              name: "post",
-              fields: [
-                defineField({
-                  name: "image",
-                  title: "Image",
-                  type: "image",
-                  options: { hotspot: true },
-                  fields: [{ name: "alt", type: "string", title: "Alt text" }],
-                  validation: (rule) => rule.required(),
-                }),
-                defineField({
-                  name: "url",
-                  title: "Post link",
-                  type: "url",
-                  description: "Optional link to the Instagram post.",
-                }),
-                defineField({
-                  name: "caption",
-                  title: "Caption",
-                  type: "string",
-                }),
-              ],
-              preview: {
-                select: { title: "caption", media: "image" },
-                prepare: ({ title, media }) => ({
-                  title: title || "Installation",
-                  media,
-                }),
-              },
-            }),
-          ],
-        }),
       ],
     }),
   ],

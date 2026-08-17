@@ -11,9 +11,6 @@ export const sanityClient = createClient({
   projectId: projectId || "placeholder",
   dataset,
   apiVersion,
-  // Next.js ISR is the cache. Hitting the live API means a publish
-  // shows up as soon as the page revalidates, instead of waiting on
-  // the Sanity CDN plus a one-hour page cache.
   useCdn: false,
   perspective: "published",
 });

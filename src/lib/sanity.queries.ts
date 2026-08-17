@@ -10,7 +10,6 @@ const LISTING_FIELDS = `
   material,
   room,
   dimensions,
-  category,
   "collectionSlug": collection->slug.current,
   "collectionTitle": collection->title,
   featured,
@@ -44,6 +43,8 @@ export const PRODUCT_BY_SLUG_QUERY = `*[_type == "product" && slug.current == $s
 
 export const PRODUCT_SLUGS_QUERY = `*[_type == "product" && defined(slug.current)][].slug.current`;
 
+export const COLLECTION_SLUGS_QUERY = `*[_type == "collection" && defined(slug.current)][].slug.current`;
+
 export const COLLECTIONS_QUERY = `*[_type == "collection"] | order(sortOrder asc, title asc) {
   _id,
   title,
@@ -72,15 +73,7 @@ export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0] {
   },
   "instagram": {
     "heading": instagram.heading,
-    "body": instagram.body,
-    "posts": instagram.posts[defined(image.asset)] {
-      _key,
-      "imageUrl": image.asset->url + "?w=700&h=700&fit=crop&auto=format&q=75",
-      "imageLqip": image.asset->metadata.lqip,
-      "imageAlt": coalesce(image.alt, caption),
-      url,
-      caption
-    }
+    "body": instagram.body
   }
 }`;
 

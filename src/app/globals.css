@@ -1,12 +1,7 @@
 @import "tailwindcss";
 
-/* ═══════════════════════════════════════════════════════
-   Chandelier Solderie — "Nocturne" design system
-   A dark showroom where the pieces provide the light.
-   ═══════════════════════════════════════════════════════ */
-
 :root {
-  /* Palette — warm blacks + champagne gold */
+
   --cs-ink: #0f0c09;
   --cs-ink-deep: #0a0807;
   --cs-surface: #171310;
@@ -21,7 +16,6 @@
   --cs-line: rgba(201, 163, 95, 0.16);
   --cs-line-strong: rgba(201, 163, 95, 0.4);
 
-  /* Chrome sizing */
   --cs-header-bar: 3.5rem;
   --cs-mobile-nav-bar: 3.25rem;
   --cs-safe-top: env(safe-area-inset-top, 0px);
@@ -75,14 +69,12 @@
   }
 }
 
-/* ── Base ─────────────────────────────────────────────── */
-
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   overflow-x: clip;
   color-scheme: dark;
-  /* Overall UI scale — 95% of the original rem-based sizing */
+
   font-size: 95%;
 }
 
@@ -104,7 +96,6 @@ body {
   color: var(--cs-ivory);
 }
 
-/* Fine grain to keep dark gradients from banding */
 body::after {
   content: "";
   position: fixed;
@@ -124,8 +115,6 @@ body::after {
   }
 }
 
-/* ── Page shell — a single warm pool of light from above ─ */
-
 .page-shell {
   position: relative;
   overflow-x: clip;
@@ -136,8 +125,6 @@ body::after {
     radial-gradient(ellipse 40% 22% at 50% -2%, rgba(255, 222, 150, 0.1), transparent 70%),
     linear-gradient(180deg, #14100b 0%, var(--cs-ink) 34%, var(--cs-ink-deep) 100%);
 }
-
-/* ── Site chrome ──────────────────────────────────────── */
 
 .site-header {
   isolation: isolate;
@@ -158,7 +145,7 @@ body::after {
 }
 
 .site-logo-mark {
-  /* Black PNG mark → warm ivory */
+
   filter: invert(0.92) sepia(0.5) saturate(1.1) brightness(1.04);
 }
 
@@ -182,8 +169,6 @@ body::after {
 .font-castellar {
   font-family: var(--font-castellar), "Castellar", "Castellar MT", serif;
 }
-
-/* ── Buttons ──────────────────────────────────────────── */
 
 .btn {
   display: inline-flex;
@@ -229,10 +214,8 @@ body::after {
   background: rgba(201, 163, 95, 0.06);
 }
 
-/* ── Hero ─────────────────────────────────────────────── */
-
 .hero-backdrop {
-  /* Soft light blend — keeps the cutout luminous without flattening to paper */
+
   mix-blend-mode: plus-lighter;
   opacity: 0.78;
   mask-image: linear-gradient(to bottom, black 58%, transparent 98%);
@@ -245,8 +228,6 @@ body::after {
     opacity: 0.68;
   }
 }
-
-/* ── Chandelier "coming to life" — 3D entry + idle life ── */
 
 .hero-3d {
   perspective: 1400px;
@@ -264,7 +245,6 @@ body::after {
   animation: cs-hero-sway 10s ease-in-out 3.2s infinite;
 }
 
-/* Soft volumetric halo so the piece reads as hanging in space */
 .hero-sway::before {
   content: "";
   position: absolute;
@@ -282,7 +262,6 @@ body::after {
   pointer-events: none;
 }
 
-/* Only visible as a brief flash while the bulbs ignite */
 .hero-flare {
   position: absolute;
   inset: -12% -30%;
@@ -297,12 +276,10 @@ body::after {
   opacity: 0;
 }
 
-/* Hidden until the image has fully loaded, then the entry begins */
 .hero-waiting .hero-ignite {
   opacity: 0;
 }
 
-/* Cinematic first-load entry: descend in perspective, then ignite */
 .hero-entry .hero-drop {
   animation: cs-hero-drop 2.2s cubic-bezier(0.22, 1, 0.36, 1) both;
   transform-style: preserve-3d;
@@ -328,7 +305,6 @@ body::after {
   }
 }
 
-/* Bulbs warming up: dark → flicker → full glow */
 @keyframes cs-hero-ignite {
   0% {
     opacity: 0;
@@ -371,7 +347,6 @@ body::after {
   }
 }
 
-/* Settled: contrast + layered shadows for physical depth */
 .hero-ignite {
   filter: brightness(1.06) contrast(1.14) saturate(1.06)
     drop-shadow(0 42px 64px rgba(0, 0, 0, 0.55))
@@ -420,10 +395,6 @@ body::after {
   }
 }
 
-/* ── Ambient bloom ────────────────────────────────────────
-   Warm pools of light that let dark panels read as illuminated
-   rather than flat black. Layered behind copy and imagery. */
-
 .cs-bloom {
   position: absolute;
   pointer-events: none;
@@ -458,14 +429,12 @@ body::after {
   }
 }
 
-/* Sits inside a bordered frame — softer and centred on the piece */
 .cs-bloom--frame {
   inset: 6%;
   filter: blur(34px);
   opacity: 0.7;
 }
 
-/* Fades in on hover so crystal and brass catch the light */
 .cs-bloom--card {
   inset: -18%;
   filter: blur(30px);
@@ -498,8 +467,6 @@ body::after {
   background: var(--cs-gold-bright);
   box-shadow: 0 0 14px rgba(232, 205, 141, 0.8);
 }
-
-/* ── Sale ribbon ──────────────────────────────────────── */
 
 .sale-ribbon {
   border-block: 2px solid var(--cs-gold-bright);
@@ -611,8 +578,6 @@ body::after {
   }
 }
 
-/* ── Skeletons ────────────────────────────────────────── */
-
 @keyframes skeleton-shimmer {
   0% {
     background-position: 200% 0;
@@ -632,8 +597,6 @@ body::after {
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.6s ease-in-out infinite;
 }
-
-/* ── Quick view ───────────────────────────────────────── */
 
 .quick-view {
   opacity: 0;
@@ -656,8 +619,6 @@ body::after {
   }
 }
 
-/* ── Value badges ─────────────────────────────────────── */
-
 .value-badge__icon {
   transition:
     border-color 0.4s ease,
@@ -673,10 +634,6 @@ body::after {
     0 10px 30px rgba(201, 163, 95, 0.14);
 }
 
-/* ── Showroom map ─────────────────────────────────────── */
-
-/* Google's embed only ships a light theme, so invert it into the
-   nocturne palette and warm it back toward gold. */
 .showroom-map iframe {
   filter: invert(0.92) hue-rotate(180deg) saturate(0.68) brightness(0.92)
     contrast(1.04);
@@ -694,8 +651,6 @@ body::after {
   );
 }
 
-/* ── Instagram grid ───────────────────────────────────── */
-
 .ig-tile__glyph {
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -705,8 +660,6 @@ body::after {
 .group:focus-within .ig-tile__glyph {
   opacity: 1;
 }
-
-/* ── Floating WhatsApp ────────────────────────────────── */
 
 .floating-whatsapp__status {
   position: absolute;
@@ -773,8 +726,6 @@ body::after {
   }
 }
 
-/* ── Catalogue layout ─────────────────────────────────── */
-
 .catalogue-shell {
   min-height: calc(var(--cs-viewport-height) - var(--cs-header-height));
 }
@@ -800,8 +751,6 @@ body::after {
   background: rgba(201, 163, 95, 0.25);
 }
 
-/* ── Mobile / iOS polish ──────────────────────────────── */
-
 @media (max-width: 767px) {
   .filter-sidebar {
     display: none;
@@ -822,7 +771,7 @@ body::after {
   }
 
   .site-footer {
-    /* Extra room above the floating WhatsApp (nav clearance is on body) */
+
     padding-bottom: 5.5rem;
   }
 
@@ -840,7 +789,6 @@ body::after {
   }
 }
 
-/* Sanity Studio — don't inherit storefront chrome, grain, or 95% UI scale */
 html:has([data-cs-studio]) {
   font-size: 100%;
   overflow: hidden;

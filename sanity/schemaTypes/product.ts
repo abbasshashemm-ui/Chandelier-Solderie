@@ -167,12 +167,6 @@ export const product = defineType({
       rows: 6,
     }),
     defineField({
-      name: "category",
-      title: "Category",
-      type: "string",
-      hidden: true,
-    }),
-    defineField({
       name: "featured",
       title: "Signature piece",
       type: "boolean",

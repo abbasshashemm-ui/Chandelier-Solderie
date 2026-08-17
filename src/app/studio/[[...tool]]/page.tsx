@@ -1,4 +1,4 @@
-import { isSanityConfigured } from "@/sanity/env";
+import { isSanityConfigured } from "@/lib/sanity.client";
 import { StudioApp } from "./studio-app";
 
 export const dynamic = "force-static";

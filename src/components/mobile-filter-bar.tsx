@@ -43,8 +43,6 @@ function MobileFilterSheet({
 
   if (!open) return null;
 
-  // Portaled to <body> so the sheet stacks above the fixed bottom nav,
-  // outside the page-shell stacking context.
   return createPortal(
     <div className="fixed inset-0 z-[90] md:hidden">
       <button

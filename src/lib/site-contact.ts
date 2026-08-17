@@ -9,7 +9,7 @@ export const siteContact = {
   instagramUrl:
     process.env.NEXT_PUBLIC_INSTAGRAM_URL ??
     "https://instagram.com/chandeliersolderie",
-  // Exact showroom pin: https://maps.app.goo.gl/PCbJYrK225J4SxNC6
+
   mapLat: 33.87142,
   mapLng: 35.524329,
   mapsUrl: "https://maps.app.goo.gl/PCbJYrK225J4SxNC6",

@@ -78,7 +78,6 @@ export function filterProducts(
     const haystack = [
       product.title,
       product.sku,
-      product.category,
       ...getSizeLabels(product),
       ...(product.sizes ?? []).map((size) => size.sku),
     ]

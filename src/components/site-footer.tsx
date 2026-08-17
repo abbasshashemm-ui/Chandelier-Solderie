@@ -21,7 +21,7 @@ export function SiteFooter() {
   return (
     <footer className="site-footer border-t border-line bg-ink-deep">
       <div className="mx-auto w-full max-w-[1340px] px-5 pb-8 pt-8 sm:px-6 md:px-8 md:pb-10 md:pt-14">
-        {/* Brand — compact on mobile */}
+
         <div className="text-center md:text-left">
           <p className="font-castellar text-[0.6875rem] uppercase tracking-[0.2em] text-ivory sm:text-sm md:text-base md:tracking-[0.22em]">
             Chandelier Solderie
@@ -32,7 +32,6 @@ export function SiteFooter() {
           </p>
         </div>
 
-        {/* Mobile: two columns (Explore | Contact/socials). Desktop: same row. */}
         <div className="mt-6 grid grid-cols-2 gap-4 md:mt-10 md:grid-cols-[0.8fr_1fr_auto] md:gap-8">
           <nav className="text-left" aria-label="Footer">
             <h2 className="font-sans text-[0.5625rem] font-medium uppercase tracking-[0.22em] text-gold md:text-[0.625rem]">
@@ -88,7 +87,6 @@ export function SiteFooter() {
             </ul>
           </div>
 
-          {/* Social icons sit under the contact column on mobile */}
           <div className="col-start-2 flex items-center justify-start gap-2.5 md:col-start-auto md:items-start md:justify-end md:gap-3 md:pt-7">
             <a
               href={whatsappUrl}
