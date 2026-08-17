@@ -1,6 +1,6 @@
 import { sanityFetchOptions } from "./cache";
 import { productBelongsToCollection } from "./collection-membership";
-import { getSalePercent } from "./pricing";
+import { getSalePercent, getStartingPrice } from "./pricing";
 import { getProducts } from "./products";
 import {
   COLLECTIONS_QUERY,
@@ -115,7 +115,10 @@ export async function getHomepagePromo(): Promise<HomepagePromo | null> {
     ),
   );
   const maxPercent = members.reduce((max, product) => {
-    const percent = getSalePercent(product);
+    const percent = getSalePercent({
+      ...product,
+      ...getStartingPrice(product),
+    });
     return percent != null && percent > max ? percent : max;
   }, 0);
 

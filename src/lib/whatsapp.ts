@@ -5,16 +5,24 @@ import { getWhatsAppNumber } from "./site-contact";
 
 const MAX_ENCODED_LENGTH = 1800;
 
-export function buildWhatsAppUrlStatic(product: Product, origin: string) {
+export function buildWhatsAppUrlStatic(
+  product: Product,
+  origin: string,
+  size?: string,
+) {
   const message = [
     "Hello, I'm interested in the following item:",
     "",
     `*Product:* ${product.title}`,
     `*SKU:* ${product.sku ?? "N/A"}`,
+    size ? `*Size:* ${size}` : null,
+    product.price != null ? `*Price:* ${formatPrice(product.price)}` : null,
     `*Link:* ${origin}/product/${product.slug}`,
     "",
     "Could you please provide a quote?",
-  ].join("\n");
+  ]
+    .filter((line): line is string => line != null)
+    .join("\n");
 
   return whatsappUrl(message);
 }
@@ -52,9 +60,10 @@ function formatCartLine(
   includeLink: boolean,
 ) {
   const sku = item.sku ? ` (${item.sku})` : "";
+  const size = item.size ? ` — ${item.size}` : "";
   const price = formatPrice(item.price);
   const priceBit = price ? ` — ${price}` : "";
-  const line = `${index + 1}. ${item.title}${sku} × ${item.qty}${priceBit}`;
+  const line = `${index + 1}. ${item.title}${sku}${size} × ${item.qty}${priceBit}`;
   if (!includeLink) return line;
   return `${line}\n   ${origin}/product/${item.slug}`;
 }

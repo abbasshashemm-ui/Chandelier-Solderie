@@ -107,6 +107,32 @@ const PRODUCTS = [
     featured: true,
     imageFile: "1.png",
     imageAlt: "Cascading crystal feather chandelier against a dark background",
+    sizes: [
+      {
+        _key: "size-medium",
+        _type: "sizeOption",
+        label: "Medium (40 – 80 cm)",
+        price: 1850,
+        compareAtPrice: 3700,
+        sku: "CS-VF-001-M",
+      },
+      {
+        _key: "size-large",
+        _type: "sizeOption",
+        label: "Large (80 – 120 cm)",
+        price: 2450,
+        compareAtPrice: 4900,
+        sku: "CS-VF-001-L",
+      },
+      {
+        _key: "size-xl",
+        _type: "sizeOption",
+        label: "Extra Large (over 120 cm)",
+        price: 2850,
+        compareAtPrice: 5700,
+        sku: "CS-VF-001-XL",
+      },
+    ],
   },
   {
     _id: "product.papillon-iridescent-cascade",
