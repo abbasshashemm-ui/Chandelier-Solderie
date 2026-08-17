@@ -11,6 +11,8 @@ export type CartProduct = Omit<CartItem, "qty">;
 
 export const CART_STORAGE_KEY = "cs-cart";
 
+export const MAX_ITEM_QTY = 20;
+
 export function parseCart(raw: string | null): CartItem[] {
   if (!raw) return [];
 
@@ -31,10 +33,12 @@ export function addToCart(
   const existing = items.find((item) => item.slug === product.slug);
   if (existing) {
     return items.map((item) =>
-      item.slug === product.slug ? { ...item, qty: item.qty + qty } : item,
+      item.slug === product.slug
+        ? { ...item, qty: Math.min(item.qty + qty, MAX_ITEM_QTY) }
+        : item,
     );
   }
-  return [...items, { ...product, qty }];
+  return [...items, { ...product, qty: Math.min(qty, MAX_ITEM_QTY) }];
 }
 
 export function setCartQty(
@@ -43,7 +47,10 @@ export function setCartQty(
   qty: number,
 ): CartItem[] {
   if (qty <= 0) return items.filter((item) => item.slug !== slug);
-  return items.map((item) => (item.slug === slug ? { ...item, qty } : item));
+  const capped = Math.min(qty, MAX_ITEM_QTY);
+  return items.map((item) =>
+    item.slug === slug ? { ...item, qty: capped } : item,
+  );
 }
 
 export function removeFromCart(items: CartItem[], slug: string): CartItem[] {

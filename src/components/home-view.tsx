@@ -106,7 +106,7 @@ export function HomeView({
                 Collections are being curated.
               </p>
               <p className="mt-2 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-faint">
-                Publish collections in the studio to see them here
+                New arrivals are on their way — check back soon
               </p>
             </div>
           )}
