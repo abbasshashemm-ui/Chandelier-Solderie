@@ -20,6 +20,10 @@ export async function POST(request: NextRequest) {
       revalidatePath("/product/[slug]", "page");
     }
 
+    if (body._type === "collection") {
+      revalidatePath("/collection/[slug]", "page");
+    }
+
     return NextResponse.json({ revalidated: true, now: Date.now() });
   } catch {
     return NextResponse.json({ message: "Error revalidating" }, { status: 500 });

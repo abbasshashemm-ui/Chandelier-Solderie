@@ -3,8 +3,6 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import localFont from "next/font/local";
-import { FloatingWhatsApp } from "@/components/floating-whatsapp";
-import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import {
   siteDescription,
   siteIcons,
@@ -24,14 +22,14 @@ const castellar = localFont({
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
   style: ["normal", "italic"],
 });
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -64,10 +62,8 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${castellar.variable} ${cormorant.variable} ${montserrat.variable} h-full`}
     >
-      <body className="min-h-full antialiased pb-[var(--cs-mobile-nav-height)] md:pb-0">
+      <body className="min-h-full antialiased">
         {children}
-        <MobileBottomNav />
-        <FloatingWhatsApp />
         <Analytics />
         <SpeedInsights />
       </body>

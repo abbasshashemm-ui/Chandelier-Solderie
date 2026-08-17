@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CartButton } from "./cart-button";
 import { SiteLogo } from "./site-logo";
 import { SiteNav } from "./site-nav";
 
@@ -9,7 +10,8 @@ export function SiteHeader() {
 
       <SiteNav />
 
-      <div className="flex shrink-0 items-center justify-self-end">
+      <div className="flex shrink-0 items-center justify-self-end gap-1 sm:gap-3">
+        <CartButton />
         <Link
           href="/inquire"
           className="hidden min-h-10 items-center border border-line-strong px-5 font-sans text-[0.625rem] font-medium uppercase tracking-[0.2em] text-ivory transition hover:border-gold hover:text-gold-bright sm:inline-flex"

@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { ShowroomCard } from "@/components/showroom-card";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { buildGeneralWhatsAppUrl, getInstagramUrl } from "@/lib/site-contact";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export const metadata = {
   title: "Inquire",
@@ -9,12 +11,16 @@ export const metadata = {
     "Contact Chandelier Solderie for luxury lighting inquiries in Lebanon.",
 };
 
-export default function InquirePage() {
+export const revalidate = 3600;
+
+export default async function InquirePage() {
+  const settings = await getSiteSettings();
+
   return (
     <div className="page-shell min-h-screen">
       <SiteHeader />
 
-      <main className="mx-auto flex w-full max-w-2xl flex-col items-center justify-center px-5 pb-16 pt-[calc(var(--cs-header-height)+2.5rem)] text-center sm:px-6 md:min-h-[calc(var(--cs-viewport-height)-var(--cs-header-height))] md:pb-20 md:pt-[var(--cs-header-height)]">
+      <main className="mx-auto flex w-full max-w-2xl flex-col items-center justify-center px-5 pb-16 pt-[calc(var(--cs-header-height)+2.5rem)] text-center sm:px-6 md:pb-20 md:pt-[calc(var(--cs-header-height)+3rem)]">
         <div aria-hidden>
           <div className="hero-cord" />
           <div className="hero-jewel" />
@@ -57,6 +63,8 @@ export default function InquirePage() {
           Browse the collection
         </Link>
       </main>
+
+      <ShowroomCard showroom={settings.showroom} />
 
       <SiteFooter />
     </div>

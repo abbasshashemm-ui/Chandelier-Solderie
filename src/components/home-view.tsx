@@ -1,31 +1,26 @@
 import Link from "next/link";
-import type { Product } from "@/lib/types";
-import { buildGeneralWhatsAppUrl, siteContact } from "@/lib/site-contact";
+import type { Collection, HomepagePromo, SiteSettings } from "@/lib/types";
+import { buildGeneralWhatsAppUrl } from "@/lib/site-contact";
+import { FeaturedCollections } from "./featured-collections";
 import { HeroChandelier } from "./hero-chandelier";
-import { ProductGrid } from "./product-grid";
+import { InstagramFeed } from "./instagram-feed";
+import { PromoRibbon } from "./promo-ribbon";
+import { ShowroomCard } from "./showroom-card";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
+import { ValueBadges } from "./value-badges";
 
 type HomeViewProps = {
-  products: Product[];
+  collections: Collection[];
+  promo?: HomepagePromo | null;
+  settings?: SiteSettings;
 };
 
-const hallmarks = [
-  {
-    title: "Curated Collection",
-    copy: "Crystal, brass and modern pieces, selected one by one.",
-  },
-  {
-    title: "Showroom in Lebanon",
-    copy: siteContact.location,
-  },
-  {
-    title: "Personal Service",
-    copy: "Advice and quotes, directly on WhatsApp.",
-  },
-] as const;
-
-export function HomeView({ products }: HomeViewProps) {
+export function HomeView({
+  collections,
+  promo,
+  settings,
+}: HomeViewProps) {
   return (
     <>
       <SiteHeader />
@@ -41,6 +36,9 @@ export function HomeView({ products }: HomeViewProps) {
             aria-hidden
             className="pointer-events-none absolute inset-x-0 top-28 z-0 h-[28rem] bg-[radial-gradient(ellipse_52%_46%_at_50%_48%,rgba(10,8,7,0.88),transparent_74%)] md:top-36"
           />
+
+          {/* Light spilling from the chandelier over the shade */}
+          <span aria-hidden className="cs-bloom cs-bloom--hero z-0" />
 
           <p className="reveal reveal-2 relative z-10 font-sans text-[0.625rem] uppercase tracking-[0.32em] text-white-gold [text-shadow:0_1px_18px_rgba(10,8,7,0.9),0_0_28px_rgba(10,8,7,0.55)] sm:text-[0.6875rem]">
             Luxury Lighting Atelier · Lebanon
@@ -71,29 +69,22 @@ export function HomeView({ products }: HomeViewProps) {
             </a>
           </div>
 
-          <dl className="reveal reveal-4 relative z-10 mt-10 grid w-full max-w-4xl grid-cols-1 gap-4 border-y border-line py-5 pb-28 sm:mt-16 sm:grid-cols-3 sm:gap-4 sm:py-8 md:pb-8">
-            {hallmarks.map((item) => (
-              <div key={item.title} className="px-2">
-                <dt className="font-sans text-[0.5625rem] font-medium uppercase tracking-[0.22em] text-gold sm:text-[0.625rem]">
-                  {item.title}
-                </dt>
-                <dd className="mt-1.5 font-serif text-sm leading-snug text-muted sm:mt-2 sm:text-base">
-                  {item.copy}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <div className="reveal reveal-4 relative z-10 mt-10 flex w-full justify-center pb-28 sm:mt-16 md:pb-8">
+            <ValueBadges />
+          </div>
         </section>
 
-        {/* Featured pieces */}
-        <section className="mx-auto w-full max-w-[1340px] px-3 pb-16 sm:px-4 md:px-8 md:pb-20">
+        {promo ? <PromoRibbon promo={promo} /> : null}
+
+        {/* Featured collections */}
+        <section className="mx-auto w-full max-w-[1340px] px-3 py-16 sm:px-4 md:px-8 md:py-20">
           <div className="mb-8 flex items-end justify-between gap-4 px-2 sm:px-0 md:mb-10">
             <div>
               <p className="font-sans text-[0.625rem] uppercase tracking-[0.28em] text-gold">
-                The Collection
+                The Atelier
               </p>
               <h2 className="mt-2 font-serif text-3xl font-normal text-ivory md:text-4xl">
-                Featured Pieces
+                Featured Collections
               </h2>
             </div>
             <Link
@@ -107,15 +98,15 @@ export function HomeView({ products }: HomeViewProps) {
             </Link>
           </div>
 
-          {products.length > 0 ? (
-            <ProductGrid products={products} />
+          {collections.length > 0 ? (
+            <FeaturedCollections collections={collections} />
           ) : (
             <div className="flex min-h-[280px] flex-col items-center justify-center border border-line px-8 py-16 text-center">
               <p className="font-serif text-xl text-muted">
-                The collection is being curated.
+                Collections are being curated.
               </p>
               <p className="mt-2 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-faint">
-                Publish products in the studio to see them here
+                Publish collections in the studio to see them here
               </p>
             </div>
           )}
@@ -126,6 +117,10 @@ export function HomeView({ products }: HomeViewProps) {
             </Link>
           </div>
         </section>
+
+        <InstagramFeed instagram={settings?.instagram} />
+
+        <ShowroomCard showroom={settings?.showroom} />
 
         {/* Closing note */}
         <section className="border-t border-line">

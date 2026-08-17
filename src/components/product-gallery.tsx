@@ -77,8 +77,9 @@ export function ProductGallery({ product }: ProductGalleryProps) {
   return (
     <div className="w-full">
       <div className="relative overflow-hidden border border-line bg-ink-deep">
+        <span aria-hidden className="cs-bloom cs-bloom--frame" />
         <div
-          className={`relative flex aspect-[4/5] w-full items-center justify-center overflow-hidden sm:aspect-square ${
+          className={`relative z-10 flex aspect-[4/5] w-full items-center justify-center overflow-hidden sm:aspect-square ${
             canHoverZoom && active?.kind === "image" ? "cursor-zoom-in" : ""
           }`}
           onMouseEnter={() => {
@@ -108,8 +109,10 @@ export function ProductGallery({ product }: ProductGalleryProps) {
               alt={active.alt}
               fill
               priority
-              sizes="(max-width: 1024px) 100vw, 55vw"
+              sizes="(max-width: 1024px) 75vw, 40vw"
               className="object-contain transition-transform duration-300 ease-out"
+              placeholder={product.imageLqip ? "blur" : "empty"}
+              blurDataURL={product.imageLqip}
               style={{
                 transformOrigin: `${origin.x}% ${origin.y}%`,
                 transform: showZoom ? "scale(1.85)" : "scale(1)",

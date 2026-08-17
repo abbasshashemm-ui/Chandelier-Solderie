@@ -11,20 +11,80 @@ export type Product = {
   slug: string;
   sku?: string;
   price?: number;
+  compareAtPrice?: number;
+  onSale?: boolean;
   style?: string;
   material?: string;
   room?: string;
   priceRange?: string;
   dimensions?: string;
   category?: string;
+  collectionSlug?: string;
+  collectionTitle?: string;
   shortDescription?: string;
   description?: string;
   featured?: boolean;
   imageUrl?: string;
+  imageLqip?: string;
   imageAlt?: string;
   galleryUrls?: string[];
   videoUrl?: string;
   publishedAt?: string;
+};
+
+export type Collection = {
+  _id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  imageUrl?: string;
+  imageLqip?: string;
+  imageAlt?: string;
+  featured?: boolean;
+  sortOrder?: number;
+  productCount?: number;
+  includeSaleItems?: boolean;
+  cardEyebrow?: string;
+  promoRibbon?: {
+    enabled?: boolean;
+    kicker?: string;
+    headline?: string;
+  };
+};
+
+export type HomepagePromo = {
+  href: string;
+  kicker: string;
+  headline: string;
+};
+
+export type ShowroomPhoto = {
+  imageUrl: string;
+  imageLqip?: string;
+  imageAlt?: string;
+};
+
+export type InstagramPost = {
+  _key: string;
+  imageUrl: string;
+  imageLqip?: string;
+  imageAlt?: string;
+  url?: string;
+  caption?: string;
+};
+
+export type SiteSettings = {
+  showroom?: {
+    heading?: string;
+    body?: string;
+    mapQuery?: string;
+    photos?: ShowroomPhoto[];
+  };
+  instagram?: {
+    heading?: string;
+    body?: string;
+    posts?: InstagramPost[];
+  };
 };
 
 export type FilterOption = {
@@ -33,41 +93,9 @@ export type FilterOption = {
   values: string[];
 };
 
-export const FILTER_DEFINITIONS: FilterOption[] = [
-  {
-    key: "style",
-    label: "Style",
-    values: ["Classic", "Industrial", "Modern", "Vintage"],
-  },
-  {
-    key: "material",
-    label: "Material",
-    values: ["Brass", "Crystal", "Glass", "Rattan"],
-  },
-  {
-    key: "room",
-    label: "Room",
-    values: ["Bedroom", "Dining", "Living Room"],
-  },
-  {
-    key: "priceRange",
-    label: "Price Range",
-    values: [
-      "Under $500",
-      "$500 – $1,000",
-      "$1,000 – $2,500",
-      "$2,500 – $5,000",
-      "Over $5,000",
-    ],
-  },
-  {
-    key: "dimensions",
-    label: "Dimensions / Size",
-    values: [
-      "Small (under 40 cm)",
-      "Medium (40 – 80 cm)",
-      "Large (80 – 120 cm)",
-      "Extra Large (over 120 cm)",
-    ],
-  },
-];
+export const PRICE_RANGE_VALUES = [
+  "Under $50",
+  "$50 – $100",
+  "$100 – $500",
+  "Over $500",
+] as const;

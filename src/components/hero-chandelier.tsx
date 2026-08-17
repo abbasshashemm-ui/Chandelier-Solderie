@@ -86,14 +86,14 @@ export function HeroChandelier() {
               <span className="hero-flare" />
               <Image
                 ref={imageRef}
-                src="/hero-chandelier.png"
+                src="/hero-chandelier.webp"
                 alt=""
-                width={1536}
-                height={2304}
+                width={1200}
+                height={1800}
                 priority
-                quality={95}
+                quality={80}
                 onLoad={startEntry}
-                sizes="(max-width: 640px) 480px, (max-width: 768px) 576px, 672px"
+                sizes="(max-width: 640px) 460px, (max-width: 768px) 550px, 640px"
                 className="hero-ignite h-[45rem] w-auto sm:h-[54rem] md:h-[63rem]"
               />
             </div>

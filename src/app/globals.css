@@ -111,11 +111,17 @@ body::after {
   inset: 0;
   z-index: 40;
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.28;
   mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.8 0 0 0 0 0.75 0 0 0 0 0.65 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.8 0 0 0 0 0.75 0 0 0 0 0.65 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 180px 180px;
+}
+
+@media (max-width: 767px) {
+  body::after {
+    display: none;
+  }
 }
 
 /* ── Page shell — a single warm pool of light from above ─ */
@@ -414,6 +420,64 @@ body::after {
   }
 }
 
+/* ── Ambient bloom ────────────────────────────────────────
+   Warm pools of light that let dark panels read as illuminated
+   rather than flat black. Layered behind copy and imagery. */
+
+.cs-bloom {
+  position: absolute;
+  pointer-events: none;
+  mix-blend-mode: plus-lighter;
+  background: radial-gradient(
+    ellipse 58% 52% at 50% 42%,
+    rgba(232, 189, 110, 0.2) 0%,
+    rgba(201, 163, 95, 0.1) 34%,
+    rgba(201, 163, 95, 0.035) 58%,
+    transparent 76%
+  );
+  filter: blur(26px);
+}
+
+@supports not (mix-blend-mode: plus-lighter) {
+  .cs-bloom {
+    mix-blend-mode: screen;
+  }
+}
+
+.cs-bloom--hero {
+  inset-inline: 8%;
+  top: 4rem;
+  height: 30rem;
+  opacity: 0.85;
+}
+
+@media (min-width: 768px) {
+  .cs-bloom--hero {
+    top: 7rem;
+    height: 36rem;
+  }
+}
+
+/* Sits inside a bordered frame — softer and centred on the piece */
+.cs-bloom--frame {
+  inset: 6%;
+  filter: blur(34px);
+  opacity: 0.7;
+}
+
+/* Fades in on hover so crystal and brass catch the light */
+.cs-bloom--card {
+  inset: -18%;
+  filter: blur(30px);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.group:hover .cs-bloom--card,
+.group:focus-within .cs-bloom--card {
+  opacity: 0.9;
+}
+
 .hero-cord {
   width: 1px;
   height: 3.5rem;
@@ -433,6 +497,85 @@ body::after {
   transform: rotate(45deg);
   background: var(--cs-gold-bright);
   box-shadow: 0 0 14px rgba(232, 205, 141, 0.8);
+}
+
+/* ── Sale ribbon ──────────────────────────────────────── */
+
+.sale-ribbon {
+  border-block: 2px solid var(--cs-gold-bright);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 236, 190, 0.45),
+    inset 0 -1px 0 rgba(80, 55, 16, 0.28),
+    0 18px 48px rgba(201, 163, 95, 0.28);
+  background:
+    linear-gradient(
+      180deg,
+      #e8cd8d 0%,
+      #d4b06a 38%,
+      #c9a35f 62%,
+      #b68d47 100%
+    );
+}
+
+.sale-ribbon__pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.28;
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 244, 214, 0.35) 14%,
+      transparent 28%,
+      transparent 72%,
+      rgba(255, 244, 214, 0.35) 86%,
+      transparent 100%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 22px,
+      rgba(58, 42, 18, 0.12) 22px,
+      rgba(58, 42, 18, 0.12) 23px
+    );
+}
+
+.sale-ribbon__sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 22%,
+    rgba(255, 248, 230, 0.42) 48%,
+    transparent 72%
+  );
+  background-size: 220% 100%;
+  animation: cs-ribbon-sheen 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes cs-ribbon-sheen {
+  0%,
+  100% {
+    background-position: 120% 0;
+  }
+  50% {
+    background-position: -20% 0;
+  }
+}
+
+.sale-ribbon a {
+  transition: filter 0.3s ease;
+}
+
+.sale-ribbon a:hover {
+  filter: brightness(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sale-ribbon__sheen {
+    animation: none;
+  }
 }
 
 @keyframes cs-fade-up {
@@ -490,7 +633,114 @@ body::after {
   animation: skeleton-shimmer 1.6s ease-in-out infinite;
 }
 
+/* ── Quick view ───────────────────────────────────────── */
+
+.quick-view {
+  opacity: 0;
+  transform: translateY(0.5rem);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .quick-view,
+.group:focus-within .quick-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quick-view {
+    transform: none;
+    transition: opacity 0.2s ease;
+  }
+}
+
+/* ── Value badges ─────────────────────────────────────── */
+
+.value-badge__icon {
+  transition:
+    border-color 0.4s ease,
+    color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.value-badge:hover .value-badge__icon {
+  border-color: var(--cs-gold);
+  color: var(--cs-gold-bright);
+  box-shadow:
+    0 0 0 1px rgba(201, 163, 95, 0.18),
+    0 10px 30px rgba(201, 163, 95, 0.14);
+}
+
+/* ── Showroom map ─────────────────────────────────────── */
+
+/* Google's embed only ships a light theme, so invert it into the
+   nocturne palette and warm it back toward gold. */
+.showroom-map iframe {
+  filter: invert(0.92) hue-rotate(180deg) saturate(0.68) brightness(0.92)
+    contrast(1.04);
+}
+
+.showroom-map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 70% 60% at 50% 50%,
+    transparent 40%,
+    rgba(10, 8, 7, 0.55) 100%
+  );
+}
+
+/* ── Instagram grid ───────────────────────────────────── */
+
+.ig-tile__glyph {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.group:hover .ig-tile__glyph,
+.group:focus-within .ig-tile__glyph {
+  opacity: 1;
+}
+
 /* ── Floating WhatsApp ────────────────────────────────── */
+
+.floating-whatsapp__status {
+  position: absolute;
+  top: -0.125rem;
+  right: -0.125rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 999px;
+  background: #4ade80;
+  border: 2px solid var(--cs-ink);
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.65);
+}
+
+.floating-whatsapp__label {
+  position: absolute;
+  right: calc(100% + 0.75rem);
+  white-space: nowrap;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--cs-line);
+  background: rgba(13, 10, 8, 0.92);
+  color: var(--cs-ivory);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateX(0.5rem);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.floating-whatsapp:hover .floating-whatsapp__label,
+.floating-whatsapp:focus-visible .floating-whatsapp__label {
+  opacity: 1;
+  transform: translateX(0);
+}
 
 .floating-whatsapp__pulse {
   position: absolute;
@@ -516,6 +766,10 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   .floating-whatsapp__pulse {
     animation: none;
+  }
+
+  .floating-whatsapp__status {
+    box-shadow: none;
   }
 }
 
@@ -579,9 +833,35 @@ body::after {
 }
 
 @supports (-webkit-touch-callout: none) {
-  input,
-  select,
-  textarea {
+  html:not(:has([data-cs-studio])) input,
+  html:not(:has([data-cs-studio])) select,
+  html:not(:has([data-cs-studio])) textarea {
     font-size: 16px;
   }
+}
+
+/* Sanity Studio — don't inherit storefront chrome, grain, or 95% UI scale */
+html:has([data-cs-studio]) {
+  font-size: 100%;
+  overflow: hidden;
+}
+
+body:has([data-cs-studio]) {
+  overflow: hidden;
+  touch-action: auto;
+  overscroll-behavior: auto;
+  background: #101112;
+  color: inherit;
+  font-family: inherit;
+}
+
+body:has([data-cs-studio])::after {
+  display: none;
+}
+
+.cs-studio {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  height: 100%;
 }
