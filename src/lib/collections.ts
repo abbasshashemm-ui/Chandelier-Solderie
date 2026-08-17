@@ -1,6 +1,5 @@
 import { sanityFetchOptions } from "./cache";
 import { productBelongsToCollection } from "./collection-membership";
-import { MOCK_COLLECTIONS } from "./mock-collections";
 import { getSalePercent } from "./pricing";
 import { getProducts } from "./products";
 import {
@@ -47,8 +46,7 @@ async function fetchSanityCollections() {
 
 export async function getCollections(): Promise<Collection[]> {
   if (!isSanityConfigured) {
-    const products = await getProducts();
-    return withCounts(MOCK_COLLECTIONS, products);
+    return [];
   }
 
   try {
@@ -58,8 +56,7 @@ export async function getCollections(): Promise<Collection[]> {
     ]);
     return withCounts(collections, products);
   } catch {
-    const products = await getProducts();
-    return withCounts(MOCK_COLLECTIONS, products);
+    return [];
   }
 }
 
@@ -78,7 +75,7 @@ export async function getCollectionBySlug(
   if (fromList) return fromList;
 
   if (!isSanityConfigured) {
-    return MOCK_COLLECTIONS.find((collection) => collection.slug === slug) ?? null;
+    return null;
   }
 
   try {
@@ -89,7 +86,7 @@ export async function getCollectionBySlug(
     );
     return collection;
   } catch {
-    return MOCK_COLLECTIONS.find((collection) => collection.slug === slug) ?? null;
+    return null;
   }
 }
 

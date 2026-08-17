@@ -1,5 +1,13 @@
+// Fall back to Vercel's production domain so a missing env var
+// never ships localhost URLs in metadata, sitemaps, or WhatsApp links.
+const vercelProductionUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : undefined;
+
 export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  vercelProductionUrl ??
+  "http://localhost:3000";
 
 export const siteName = "Chandelier Solderie";
 

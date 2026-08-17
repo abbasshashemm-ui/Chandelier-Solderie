@@ -40,7 +40,7 @@ export function ShowroomCard({ showroom }: ShowroomCardProps) {
             <div>
               <p className="inline-flex items-start gap-2.5 font-sans text-[0.625rem] uppercase tracking-[0.2em] text-gold">
                 <MapPinIcon className="mt-px size-3.5 shrink-0" />
-                Forn Chebek, Lebanon
+                {`${address.split(",")[0].trim()}, Lebanon`}
               </p>
 
               <p className="mt-4 font-serif text-xl leading-snug text-ivory sm:text-2xl">

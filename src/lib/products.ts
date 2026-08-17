@@ -1,6 +1,5 @@
 import { productBelongsToCollection } from "./collection-membership";
 import { sanityFetchOptions } from "./cache";
-import { MOCK_PRODUCTS, getMockProductBySlug } from "./mock-products";
 import { PRODUCTS_QUERY, PRODUCT_BY_SLUG_QUERY } from "./sanity.queries";
 import { sanityClient, isSanityConfigured } from "./sanity.client";
 import { slugify } from "./slug";
@@ -22,7 +21,7 @@ function resolveCollection(product: Product): Product {
 
 export async function getProducts(): Promise<Product[]> {
   if (!isSanityConfigured) {
-    return MOCK_PRODUCTS;
+    return [];
   }
 
   try {
@@ -31,7 +30,7 @@ export async function getProducts(): Promise<Product[]> {
       [];
     return products.map(resolveCollection);
   } catch {
-    return MOCK_PRODUCTS;
+    return [];
   }
 }
 
@@ -47,7 +46,7 @@ export async function getProductsByCollection(
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   if (!isSanityConfigured) {
-    return getMockProductBySlug(slug);
+    return null;
   }
 
   try {
@@ -61,7 +60,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     const products = await getProducts();
     return products.find((item) => item.slug === slug) ?? null;
   } catch {
-    return getMockProductBySlug(slug);
+    return null;
   }
 }
 

@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   buildGeneralWhatsAppUrl,
   getInstagramUrl,
+  getWhatsAppDisplay,
   siteContact,
 } from "@/lib/site-contact";
 import { InstagramIcon, MapPinIcon, WhatsAppIcon } from "./social-icons";
@@ -64,7 +65,7 @@ export function SiteFooter() {
                   className="inline-flex min-h-9 items-center gap-2 font-sans text-xs text-muted transition hover:text-gold-bright md:min-h-11 md:gap-2.5 md:text-sm"
                 >
                   <WhatsAppIcon className="size-3.5 shrink-0 md:size-4" />
-                  <span className="truncate">+961 71 568 063</span>
+                  <span className="truncate">{getWhatsAppDisplay()}</span>
                 </a>
               </li>
               <li>

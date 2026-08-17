@@ -92,7 +92,7 @@ export function CartDrawer() {
                       {item.imageUrl ? (
                         <Image
                           src={item.imageUrl}
-                          alt=""
+                          alt={item.title}
                           fill
                           sizes="80px"
                           className="object-cover"

@@ -8,6 +8,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getSalePercent, isOnSale } from "@/lib/pricing";
 import { getProductBySlug, getProductSlugs } from "@/lib/products";
+import { siteUrl } from "@/lib/site-metadata";
 import { buildWhatsAppUrlStatic } from "@/lib/whatsapp";
 
 export const revalidate = 3600;
@@ -73,7 +74,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const origin = siteUrl;
   const salePercent = getSalePercent(product);
   const showSale = isOnSale(product);
 

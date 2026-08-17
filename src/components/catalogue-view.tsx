@@ -79,7 +79,7 @@ export function CatalogueView({
                 </p>
                 <p className="mt-2 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-faint">
                   {isEmpty
-                    ? "Publish products in the studio to populate the catalogue"
+                    ? "New pieces are on their way — message us on WhatsApp for a preview"
                     : "Try adjusting your selection"}
                 </p>
                 {!isEmpty ? (

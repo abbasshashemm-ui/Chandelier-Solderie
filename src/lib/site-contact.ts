@@ -15,6 +15,14 @@ export function getWhatsAppNumber() {
   return siteContact.whatsappNumber.replace(/\D/g, "");
 }
 
+export function getWhatsAppDisplay() {
+  const digits = getWhatsAppNumber();
+  if (digits.startsWith("961") && digits.length === 11) {
+    return `+961 ${digits.slice(3, 5)} ${digits.slice(5, 8)} ${digits.slice(8)}`;
+  }
+  return `+${digits}`;
+}
+
 export function buildGeneralWhatsAppUrl() {
   const message = [
     "Hello, I'm interested in your lighting collection.",
