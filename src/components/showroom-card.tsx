@@ -1,5 +1,10 @@
 import Image from "next/image";
-import { buildGeneralWhatsAppUrl, siteContact } from "@/lib/site-contact";
+import {
+  buildGeneralWhatsAppUrl,
+  getMapsDirectionsUrl,
+  getMapsEmbedUrl,
+  siteContact,
+} from "@/lib/site-contact";
 import type { SiteSettings } from "@/lib/types";
 import { MapPinIcon, WhatsAppIcon } from "./social-icons";
 
@@ -9,8 +14,9 @@ type ShowroomCardProps = {
 
 export function ShowroomCard({ showroom }: ShowroomCardProps) {
   const address = siteContact.location;
-  const query = showroom?.mapQuery?.trim() || `${address}, Lebanon`;
-  const encoded = encodeURIComponent(query);
+  const mapQuery = showroom?.mapQuery?.trim();
+  const embedUrl = getMapsEmbedUrl(mapQuery);
+  const directionsUrl = getMapsDirectionsUrl(mapQuery);
   const photos = (showroom?.photos ?? []).slice(0, 4);
 
   return (
@@ -29,7 +35,7 @@ export function ShowroomCard({ showroom }: ShowroomCardProps) {
           <div className="showroom-map relative min-h-[17rem] overflow-hidden border border-line bg-ink-deep lg:min-h-[22rem]">
             <iframe
               title={`Map to ${address}`}
-              src={`https://www.google.com/maps?q=${encoded}&output=embed`}
+              src={embedUrl}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="absolute inset-0 h-full w-full border-0"
@@ -77,7 +83,7 @@ export function ShowroomCard({ showroom }: ShowroomCardProps) {
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encoded}`}
+                href={directionsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn--gold flex-1"
