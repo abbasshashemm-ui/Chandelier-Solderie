@@ -26,18 +26,16 @@ export function HomeView({
       <SiteHeader />
 
       <main className="flex min-h-[calc(var(--cs-viewport-height)-var(--cs-header-height))] flex-col pt-[var(--cs-header-height)]">
-        {/* Hero */}
+
         <section className="relative mx-auto flex w-full max-w-[1340px] flex-col items-center px-5 pb-16 pt-44 text-center sm:px-6 md:px-8 md:pb-20 md:pt-60">
-          {/* Chandelier hanging from under the header, behind the copy */}
+
           <HeroChandelier />
 
-          {/* Soft shade behind the copy for readability */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 top-28 z-0 h-[28rem] bg-[radial-gradient(ellipse_52%_46%_at_50%_48%,rgba(10,8,7,0.88),transparent_74%)] md:top-36"
           />
 
-          {/* Light spilling from the chandelier over the shade */}
           <span aria-hidden className="cs-bloom cs-bloom--hero z-0" />
 
           <p className="reveal reveal-2 relative z-10 font-sans text-[0.625rem] uppercase tracking-[0.32em] text-white-gold [text-shadow:0_1px_18px_rgba(10,8,7,0.9),0_0_28px_rgba(10,8,7,0.55)] sm:text-[0.6875rem]">
@@ -76,7 +74,6 @@ export function HomeView({
 
         {promo ? <PromoRibbon promo={promo} /> : null}
 
-        {/* Featured collections */}
         <section className="mx-auto w-full max-w-[1340px] px-3 py-16 sm:px-4 md:px-8 md:py-20">
           <div className="mb-8 flex items-end justify-between gap-4 px-2 sm:px-0 md:mb-10">
             <div>
@@ -106,7 +103,7 @@ export function HomeView({
                 Collections are being curated.
               </p>
               <p className="mt-2 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-faint">
-                Publish collections in the studio to see them here
+                New arrivals are on their way — check back soon
               </p>
             </div>
           )}
@@ -122,7 +119,6 @@ export function HomeView({
 
         <ShowroomCard showroom={settings?.showroom} />
 
-        {/* Closing note */}
         <section className="border-t border-line">
           <div className="mx-auto flex w-full max-w-[1340px] flex-col items-center px-5 py-16 text-center sm:px-6 md:py-20">
             <p className="font-castellar text-[0.6875rem] uppercase tracking-[0.3em] text-gold">

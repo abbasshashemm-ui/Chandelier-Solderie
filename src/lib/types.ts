@@ -5,6 +5,14 @@ export type FilterKey =
   | "priceRange"
   | "dimensions";
 
+export type ProductSize = {
+  _key: string;
+  label: string;
+  price: number;
+  compareAtPrice?: number;
+  sku?: string;
+};
+
 export type Product = {
   _id: string;
   title: string;
@@ -13,12 +21,12 @@ export type Product = {
   price?: number;
   compareAtPrice?: number;
   onSale?: boolean;
+  sizes?: ProductSize[];
   style?: string;
   material?: string;
   room?: string;
   priceRange?: string;
   dimensions?: string;
-  category?: string;
   collectionSlug?: string;
   collectionTitle?: string;
   shortDescription?: string;
@@ -64,15 +72,6 @@ export type ShowroomPhoto = {
   imageAlt?: string;
 };
 
-export type InstagramPost = {
-  _key: string;
-  imageUrl: string;
-  imageLqip?: string;
-  imageAlt?: string;
-  url?: string;
-  caption?: string;
-};
-
 export type SiteSettings = {
   showroom?: {
     heading?: string;
@@ -83,7 +82,6 @@ export type SiteSettings = {
   instagram?: {
     heading?: string;
     body?: string;
-    posts?: InstagramPost[];
   };
 };
 

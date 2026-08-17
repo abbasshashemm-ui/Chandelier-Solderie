@@ -1,13 +1,3 @@
-/**
- * Upsert the catalogue products (and images) into Sanity.
- *
- * Usage:
- *   SANITY_API_TOKEN=<editor-token> npm run seed:products
- *
- * Create a token at https://sanity.io/manage → project asa3yip9 → API → Tokens
- * (Editor or higher). Never commit the token.
- */
-
 import { createClient } from "@sanity/client";
 import { createReadStream, existsSync } from "node:fs";
 import { basename, join, dirname } from "node:path";
@@ -40,7 +30,6 @@ const client = createClient({
   useCdn: false,
 });
 
-/** @type {Array<Record<string, unknown>>} */
 const COLLECTIONS = [
   {
     _id: "collection.super-sale",
@@ -84,7 +73,6 @@ const COLLECTIONS = [
   },
 ];
 
-/** @type {Array<Record<string, unknown>>} */
 const PRODUCTS = [
   {
     _id: "product.volare-crystal-feather-cascade",
@@ -98,7 +86,6 @@ const PRODUCTS = [
     material: "Crystal",
     room: "Living Room",
     dimensions: "Extra Large (over 120 cm)",
-    category: "Chandeliers",
     collectionId: "collection.chandeliers",
     shortDescription:
       "Hand-formed crystal feathers suspended on invisible wires in a swirling descent.",
@@ -107,6 +94,32 @@ const PRODUCTS = [
     featured: true,
     imageFile: "1.png",
     imageAlt: "Cascading crystal feather chandelier against a dark background",
+    sizes: [
+      {
+        _key: "size-medium",
+        _type: "sizeOption",
+        label: "Medium (40 – 80 cm)",
+        price: 1850,
+        compareAtPrice: 3700,
+        sku: "CS-VF-001-M",
+      },
+      {
+        _key: "size-large",
+        _type: "sizeOption",
+        label: "Large (80 – 120 cm)",
+        price: 2450,
+        compareAtPrice: 4900,
+        sku: "CS-VF-001-L",
+      },
+      {
+        _key: "size-xl",
+        _type: "sizeOption",
+        label: "Extra Large (over 120 cm)",
+        price: 2850,
+        compareAtPrice: 5700,
+        sku: "CS-VF-001-XL",
+      },
+    ],
   },
   {
     _id: "product.papillon-iridescent-cascade",
@@ -120,7 +133,6 @@ const PRODUCTS = [
     material: "Crystal",
     room: "Living Room",
     dimensions: "Extra Large (over 120 cm)",
-    category: "Chandeliers",
     collectionId: "collection.chandeliers",
     shortDescription:
       "Crystal bead strands with iridescent butterflies spiraling through the fall of light.",
@@ -140,7 +152,6 @@ const PRODUCTS = [
     material: "Crystal",
     room: "Dining",
     dimensions: "Large (80 – 120 cm)",
-    category: "Chandeliers",
     collectionId: "collection.chandeliers",
     shortDescription:
       "Multi-tier classic crystal with candle arms, bobeches, and prismatic pendalogues.",
@@ -160,7 +171,6 @@ const PRODUCTS = [
     material: "Glass",
     room: "Living Room",
     dimensions: "Extra Large (over 120 cm)",
-    category: "Chandeliers",
     collectionId: "collection.chandeliers",
     shortDescription:
       "Inverted cone of textured clear glass and polished gold shards under a mirrored canopy.",
@@ -182,7 +192,6 @@ const PRODUCTS = [
     material: "Brass",
     room: "Living Room",
     dimensions: "Extra Large (over 120 cm)",
-    category: "Chandeliers",
     collectionId: "collection.chandeliers",
     shortDescription:
       "Sculptural flock of gold and frosted glass plumes suspended on invisible cables.",
@@ -202,7 +211,6 @@ const PRODUCTS = [
     material: "Glass",
     room: "Living Room",
     dimensions: "Extra Large (over 120 cm)",
-    category: "Pendants",
     collectionId: "collection.pendants",
     shortDescription:
       "Floor-near rain column of burgundy-to-clear handcrafted glass on invisible wires.",
@@ -222,7 +230,6 @@ const PRODUCTS = [
     material: "Brass",
     room: "Dining",
     dimensions: "Extra Large (over 120 cm)",
-    category: "Chandeliers",
     collectionId: "collection.chandeliers",
     shortDescription:
       "Double-helix of rippled clear glass and polished gold leaves from a white canopy.",
@@ -235,7 +242,7 @@ const PRODUCTS = [
 ];
 
 async function uploadImage(filename, alt) {
-  const path = join(root, "public", "products", filename);
+  const path = join(root, "scripts", "assets", "products", filename);
   if (!existsSync(path)) {
     throw new Error(`Missing image: ${path}`);
   }

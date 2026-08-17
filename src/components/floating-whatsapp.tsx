@@ -1,16 +1,7 @@
-"use client";
-
-import { usePathname } from "next/navigation";
 import { buildGeneralWhatsAppUrl } from "@/lib/site-contact";
 import { WhatsAppIcon } from "./social-icons";
 
 export function FloatingWhatsApp() {
-  const pathname = usePathname();
-
-  if (pathname.startsWith("/studio")) {
-    return null;
-  }
-
   return (
     <a
       href={buildGeneralWhatsAppUrl()}

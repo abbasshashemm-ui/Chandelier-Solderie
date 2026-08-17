@@ -41,8 +41,10 @@ export const collection = defineType({
     }),
     defineField({
       name: "featured",
-      title: "Featured on homepage",
+      title: "Show collection card on homepage",
       type: "boolean",
+      description:
+        "Adds a card under Featured Collections. Click Publish after changing this — drafts stay hidden from the live site.",
       initialValue: false,
     }),
     defineField({
@@ -67,8 +69,10 @@ export const collection = defineType({
       fields: [
         defineField({
           name: "enabled",
-          title: "Show on homepage",
+          title: "Show the gold sale ribbon",
           type: "boolean",
+          description:
+            "The ribbon above Featured Collections. This is not the collection card itself.",
           initialValue: false,
         }),
         defineField({

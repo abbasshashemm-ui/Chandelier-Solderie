@@ -11,7 +11,7 @@ export const metadata = {
     "Browse curated chandeliers and luxury lighting from Chandelier Solderie, Lebanon.",
 };
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 type ShopPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

@@ -1,11 +1,12 @@
+import { cache } from "react";
 import { sanityFetchOptions } from "./cache";
 import { productBelongsToCollection } from "./collection-membership";
-import { MOCK_COLLECTIONS } from "./mock-collections";
-import { getSalePercent } from "./pricing";
+import { getSalePercent, getStartingPrice } from "./pricing";
 import { getProducts } from "./products";
 import {
   COLLECTIONS_QUERY,
   COLLECTION_BY_SLUG_QUERY,
+  COLLECTION_SLUGS_QUERY,
 } from "./sanity.queries";
 import { sanityClient, isSanityConfigured } from "./sanity.client";
 import { slugify } from "./slug";
@@ -35,7 +36,11 @@ function withCounts(
   });
 }
 
-async function fetchSanityCollections() {
+function isHomepageCollection(collection: Collection) {
+  return Boolean(collection.featured || collection.promoRibbon?.enabled);
+}
+
+const fetchSanityCollections = cache(async () => {
   return (
     (await sanityClient.fetch<Collection[]>(
       COLLECTIONS_QUERY,
@@ -43,12 +48,11 @@ async function fetchSanityCollections() {
       sanityFetchOptions,
     )) ?? []
   );
-}
+});
 
-export async function getCollections(): Promise<Collection[]> {
+export const getCollections = cache(async (): Promise<Collection[]> => {
   if (!isSanityConfigured) {
-    const products = await getProducts();
-    return withCounts(MOCK_COLLECTIONS, products);
+    return [];
   }
 
   try {
@@ -57,45 +61,58 @@ export async function getCollections(): Promise<Collection[]> {
       fetchSanityCollections(),
     ]);
     return withCounts(collections, products);
-  } catch {
-    const products = await getProducts();
-    return withCounts(MOCK_COLLECTIONS, products);
+  } catch (error) {
+    console.error("Failed to load collections from Sanity", error);
+    return [];
   }
-}
+});
 
 export async function getFeaturedCollections(limit = 8): Promise<Collection[]> {
   const collections = await getCollections();
-  const featured = collections.filter((collection) => collection.featured);
+  const featured = collections.filter(isHomepageCollection);
   const source = featured.length > 0 ? featured : collections;
   return source.slice(0, limit);
 }
 
-export async function getCollectionBySlug(
-  slug: string,
-): Promise<Collection | null> {
-  const collections = await getCollections();
-  const fromList = collections.find((collection) => collection.slug === slug);
-  if (fromList) return fromList;
+export const getCollectionBySlug = cache(
+  async (slug: string): Promise<Collection | null> => {
+    const collections = await getCollections();
+    const fromList = collections.find((collection) => collection.slug === slug);
+    if (fromList) return fromList;
 
+    if (!isSanityConfigured) {
+      return null;
+    }
+
+    try {
+      const collection = await sanityClient.fetch<Collection | null>(
+        COLLECTION_BY_SLUG_QUERY,
+        { slug },
+        sanityFetchOptions,
+      );
+      return collection;
+    } catch {
+      return null;
+    }
+  },
+);
+
+export async function getCollectionSlugs(): Promise<string[]> {
   if (!isSanityConfigured) {
-    return MOCK_COLLECTIONS.find((collection) => collection.slug === slug) ?? null;
+    return [];
   }
 
   try {
-    const collection = await sanityClient.fetch<Collection | null>(
-      COLLECTION_BY_SLUG_QUERY,
-      { slug },
-      sanityFetchOptions,
+    return (
+      (await sanityClient.fetch<string[]>(
+        COLLECTION_SLUGS_QUERY,
+        {},
+        sanityFetchOptions,
+      )) ?? []
     );
-    return collection;
   } catch {
-    return MOCK_COLLECTIONS.find((collection) => collection.slug === slug) ?? null;
+    return [];
   }
-}
-
-export async function getCollectionSlugs(): Promise<string[]> {
-  const collections = await getCollections();
-  return collections.map((collection) => collection.slug);
 }
 
 export async function getHomepagePromo(): Promise<HomepagePromo | null> {
@@ -118,7 +135,10 @@ export async function getHomepagePromo(): Promise<HomepagePromo | null> {
     ),
   );
   const maxPercent = members.reduce((max, product) => {
-    const percent = getSalePercent(product);
+    const percent = getSalePercent({
+      ...product,
+      ...getStartingPrice(product),
+    });
     return percent != null && percent > max ? percent : max;
   }, 0);
 

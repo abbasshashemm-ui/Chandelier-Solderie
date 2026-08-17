@@ -17,6 +17,8 @@ export function InstagramReel({ src, poster }: InstagramReelProps) {
     video.muted = true;
     video.defaultMuted = true;
     video.playsInline = true;
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;
@@ -27,17 +29,27 @@ export function InstagramReel({ src, poster }: InstagramReelProps) {
       void video.play().catch(() => undefined);
     };
 
+    const onReady = () => play();
+    video.addEventListener("loadeddata", onReady);
+    video.addEventListener("canplay", onReady);
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) play();
         else video.pause();
       },
-      { threshold: 0.35 },
+      { threshold: 0.2 },
     );
 
     observer.observe(video);
-    return () => observer.disconnect();
-  }, []);
+    play();
+
+    return () => {
+      video.removeEventListener("loadeddata", onReady);
+      video.removeEventListener("canplay", onReady);
+      observer.disconnect();
+    };
+  }, [src]);
 
   return (
     <video
@@ -48,9 +60,9 @@ export function InstagramReel({ src, poster }: InstagramReelProps) {
       loop
       playsInline
       autoPlay
-      preload="metadata"
+      preload="auto"
       disablePictureInPicture
-      className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[center_32%]"
+      className="pointer-events-none absolute inset-0 h-full w-full object-cover"
       aria-hidden
     />
   );

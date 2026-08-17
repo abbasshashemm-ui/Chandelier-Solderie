@@ -1,13 +1,36 @@
+import { cache } from "react";
 import { productBelongsToCollection } from "./collection-membership";
 import { sanityFetchOptions } from "./cache";
-import { MOCK_PRODUCTS, getMockProductBySlug } from "./mock-products";
-import { PRODUCTS_QUERY, PRODUCT_BY_SLUG_QUERY } from "./sanity.queries";
+import {
+  PRODUCTS_QUERY,
+  PRODUCT_BY_SLUG_QUERY,
+  PRODUCT_SLUGS_QUERY,
+} from "./sanity.queries";
 import { sanityClient, isSanityConfigured } from "./sanity.client";
 import { slugify } from "./slug";
-import type { Product } from "./types";
+import type { Product, ProductSize } from "./types";
 
-function resolveCollection(product: Product): Product {
-  const collectionTitle = product.collectionTitle ?? product.category;
+function resolveSizes(sizes: ProductSize[] | undefined): ProductSize[] | undefined {
+  if (!sizes?.length) return undefined;
+
+  const resolved = sizes
+    .filter(
+      (size) =>
+        Boolean(size.label?.trim()) &&
+        typeof size.price === "number" &&
+        !Number.isNaN(size.price),
+    )
+    .map((size, index) => ({
+      ...size,
+      label: size.label.trim(),
+      _key: size._key || `size-${index}`,
+    }));
+
+  return resolved.length > 0 ? resolved : undefined;
+}
+
+function resolveProduct(product: Product): Product {
+  const collectionTitle = product.collectionTitle;
   const collectionSlug =
     product.collectionSlug ??
     (collectionTitle ? slugify(collectionTitle) : undefined);
@@ -17,23 +40,25 @@ function resolveCollection(product: Product): Product {
     slug: product.slug || slugify(product.title),
     collectionTitle,
     collectionSlug,
+    sizes: resolveSizes(product.sizes),
   };
 }
 
-export async function getProducts(): Promise<Product[]> {
+export const getProducts = cache(async (): Promise<Product[]> => {
   if (!isSanityConfigured) {
-    return MOCK_PRODUCTS;
+    return [];
   }
 
   try {
     const products =
       (await sanityClient.fetch<Product[]>(PRODUCTS_QUERY, {}, sanityFetchOptions)) ??
       [];
-    return products.map(resolveCollection);
-  } catch {
-    return MOCK_PRODUCTS;
+    return products.map(resolveProduct);
+  } catch (error) {
+    console.error("Failed to load products from Sanity", error);
+    return [];
   }
-}
+});
 
 export async function getProductsByCollection(
   slug: string,
@@ -45,27 +70,41 @@ export async function getProductsByCollection(
   );
 }
 
-export async function getProductBySlug(slug: string): Promise<Product | null> {
+export const getProductBySlug = cache(
+  async (slug: string): Promise<Product | null> => {
+    if (!isSanityConfigured) {
+      return null;
+    }
+
+    try {
+      const product = await sanityClient.fetch<Product | null>(
+        PRODUCT_BY_SLUG_QUERY,
+        { slug },
+        sanityFetchOptions,
+      );
+      return product ? resolveProduct(product) : null;
+    } catch (error) {
+      console.error("Failed to load product from Sanity", error);
+      return null;
+    }
+  },
+);
+
+export async function getProductSlugs(): Promise<string[]> {
   if (!isSanityConfigured) {
-    return getMockProductBySlug(slug);
+    return [];
   }
 
   try {
-    const product = await sanityClient.fetch<Product | null>(
-      PRODUCT_BY_SLUG_QUERY,
-      { slug },
-      sanityFetchOptions,
+    return (
+      (await sanityClient.fetch<string[]>(
+        PRODUCT_SLUGS_QUERY,
+        {},
+        sanityFetchOptions,
+      )) ?? []
     );
-    if (product) return resolveCollection(product);
-
-    const products = await getProducts();
-    return products.find((item) => item.slug === slug) ?? null;
-  } catch {
-    return getMockProductBySlug(slug);
+  } catch (error) {
+    console.error("Failed to load product slugs from Sanity", error);
+    return [];
   }
-}
-
-export async function getProductSlugs(): Promise<string[]> {
-  const products = await getProducts();
-  return products.map((product) => product.slug);
 }

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
+import { cartLineId } from "@/lib/cart";
 import { formatPrice } from "@/lib/format";
 import { siteUrl } from "@/lib/site-metadata";
 import { buildCartWhatsAppUrl } from "@/lib/whatsapp";
@@ -79,20 +80,21 @@ export function CartDrawer() {
           ) : (
             <ul className="space-y-4">
               {items.map((item) => {
+                const lineId = cartLineId(item);
                 const linePrice = formatPrice(
                   item.price != null ? item.price * item.qty : undefined,
                 );
 
                 return (
                   <li
-                    key={item.slug}
+                    key={lineId}
                     className="flex gap-3 border border-line bg-surface p-3"
                   >
                     <div className="relative size-20 shrink-0 overflow-hidden bg-ink-deep">
                       {item.imageUrl ? (
                         <Image
                           src={item.imageUrl}
-                          alt=""
+                          alt={item.title}
                           fill
                           sizes="80px"
                           className="object-cover"
@@ -104,6 +106,11 @@ export function CartDrawer() {
                       <p className="font-serif text-base leading-snug text-ivory">
                         {item.title}
                       </p>
+                      {item.size ? (
+                        <p className="mt-1 font-sans text-[0.5rem] uppercase tracking-[0.16em] text-gold">
+                          {item.size}
+                        </p>
+                      ) : null}
                       {item.sku ? (
                         <p className="mt-1 font-sans text-[0.5rem] uppercase tracking-[0.16em] text-faint">
                           {item.sku}
@@ -115,7 +122,7 @@ export function CartDrawer() {
                           <button
                             type="button"
                             aria-label={`Decrease ${item.title}`}
-                            onClick={() => setQty(item.slug, item.qty - 1)}
+                            onClick={() => setQty(lineId, item.qty - 1)}
                             className="flex size-8 items-center justify-center text-muted transition hover:text-ivory"
                           >
                             −
@@ -126,7 +133,7 @@ export function CartDrawer() {
                           <button
                             type="button"
                             aria-label={`Increase ${item.title}`}
-                            onClick={() => setQty(item.slug, item.qty + 1)}
+                            onClick={() => setQty(lineId, item.qty + 1)}
                             className="flex size-8 items-center justify-center text-muted transition hover:text-ivory"
                           >
                             +
@@ -140,7 +147,7 @@ export function CartDrawer() {
 
                       <button
                         type="button"
-                        onClick={() => removeItem(item.slug)}
+                        onClick={() => removeItem(lineId)}
                         className="mt-2 font-sans text-[0.5rem] uppercase tracking-[0.16em] text-faint transition hover:text-gold-bright"
                       >
                         Remove
