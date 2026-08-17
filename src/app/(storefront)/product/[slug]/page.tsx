@@ -14,7 +14,7 @@ import {
 import { getProductBySlug, getProductSlugs } from "@/lib/products";
 import { siteUrl } from "@/lib/site-metadata";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export async function generateStaticParams() {
   const slugs = await getProductSlugs();

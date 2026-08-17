@@ -34,6 +34,10 @@ function withCounts(
   });
 }
 
+function isHomepageCollection(collection: Collection) {
+  return Boolean(collection.featured || collection.promoRibbon?.enabled);
+}
+
 async function fetchSanityCollections() {
   return (
     (await sanityClient.fetch<Collection[]>(
@@ -55,14 +59,15 @@ export async function getCollections(): Promise<Collection[]> {
       fetchSanityCollections(),
     ]);
     return withCounts(collections, products);
-  } catch {
+  } catch (error) {
+    console.error("Failed to load collections from Sanity", error);
     return [];
   }
 }
 
 export async function getFeaturedCollections(limit = 8): Promise<Collection[]> {
   const collections = await getCollections();
-  const featured = collections.filter((collection) => collection.featured);
+  const featured = collections.filter(isHomepageCollection);
   const source = featured.length > 0 ? featured : collections;
   return source.slice(0, limit);
 }

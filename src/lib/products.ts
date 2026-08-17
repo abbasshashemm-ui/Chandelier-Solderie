@@ -49,7 +49,8 @@ export async function getProducts(): Promise<Product[]> {
       (await sanityClient.fetch<Product[]>(PRODUCTS_QUERY, {}, sanityFetchOptions)) ??
       [];
     return products.map(resolveCollection);
-  } catch {
+  } catch (error) {
+    console.error("Failed to load products from Sanity", error);
     return [];
   }
 }

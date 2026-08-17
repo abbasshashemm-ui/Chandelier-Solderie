@@ -1,4 +1,4 @@
-import { createClient } from "@sanity/client";
+import { createClient } from "next-sanity";
 
 export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "";
 export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
@@ -11,5 +11,9 @@ export const sanityClient = createClient({
   projectId: projectId || "placeholder",
   dataset,
   apiVersion,
-  useCdn: true,
+  // Next.js ISR is the cache. Hitting the live API means a publish
+  // shows up as soon as the page revalidates, instead of waiting on
+  // the Sanity CDN plus a one-hour page cache.
+  useCdn: false,
+  perspective: "published",
 });
