@@ -635,7 +635,6 @@ body::after {
 
 /* ── Quick view ───────────────────────────────────────── */
 
-/* Hover affordance only — on touch the whole tile is already tappable */
 .quick-view {
   opacity: 0;
   transform: translateY(0.5rem);
@@ -644,18 +643,16 @@ body::after {
     transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .group:hover .quick-view,
-  .group:focus-within .quick-view {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.group:hover .quick-view,
+.group:focus-within .quick-view {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .quick-view {
-    transition: opacity 0.2s ease;
     transform: none;
+    transition: opacity 0.2s ease;
   }
 }
 
@@ -739,12 +736,10 @@ body::after {
     transform 0.3s ease;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .floating-whatsapp:hover .floating-whatsapp__label,
-  .floating-whatsapp:focus-visible .floating-whatsapp__label {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.floating-whatsapp:hover .floating-whatsapp__label,
+.floating-whatsapp:focus-visible .floating-whatsapp__label {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .floating-whatsapp__pulse {

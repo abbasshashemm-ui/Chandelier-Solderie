@@ -1,10 +1,5 @@
 import Link from "next/link";
-import type {
-  Collection,
-  HomepagePromo,
-  Product,
-  SiteSettings,
-} from "@/lib/types";
+import type { Collection, HomepagePromo, SiteSettings } from "@/lib/types";
 import { buildGeneralWhatsAppUrl } from "@/lib/site-contact";
 import { FeaturedCollections } from "./featured-collections";
 import { HeroChandelier } from "./hero-chandelier";
@@ -19,14 +14,12 @@ type HomeViewProps = {
   collections: Collection[];
   promo?: HomepagePromo | null;
   settings?: SiteSettings;
-  showcaseProducts?: Product[];
 };
 
 export function HomeView({
   collections,
   promo,
   settings,
-  showcaseProducts = [],
 }: HomeViewProps) {
   return (
     <>
@@ -125,10 +118,7 @@ export function HomeView({
           </div>
         </section>
 
-        <InstagramFeed
-          instagram={settings?.instagram}
-          fallbackProducts={showcaseProducts}
-        />
+        <InstagramFeed instagram={settings?.instagram} />
 
         <ShowroomCard showroom={settings?.showroom} />
 

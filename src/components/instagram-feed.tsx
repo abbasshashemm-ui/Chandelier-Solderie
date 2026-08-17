@@ -1,65 +1,15 @@
-import Image from "next/image";
-import Link from "next/link";
+import { homepageInstagramReels } from "@/lib/instagram-reels";
 import { getInstagramUrl } from "@/lib/site-contact";
-import type { InstagramPost, Product, SiteSettings } from "@/lib/types";
+import type { SiteSettings } from "@/lib/types";
+import { InstagramReel } from "./instagram-reel";
 import { InstagramIcon } from "./social-icons";
 
 type InstagramFeedProps = {
   instagram?: SiteSettings["instagram"];
-  fallbackProducts?: Product[];
 };
 
-type Tile = {
-  key: string;
-  imageUrl: string;
-  imageLqip?: string;
-  imageAlt: string;
-  caption?: string;
-  href: string;
-  external: boolean;
-};
-
-const TILE_COUNT = 6;
-
-function fromPosts(posts: InstagramPost[], profileUrl: string): Tile[] {
-  return posts.slice(0, TILE_COUNT).map((post) => ({
-    key: post._key,
-    imageUrl: post.imageUrl,
-    imageLqip: post.imageLqip,
-    imageAlt: post.imageAlt ?? post.caption ?? "Installed piece",
-    caption: post.caption,
-    href: post.url?.trim() || profileUrl,
-    external: true,
-  }));
-}
-
-function fromProducts(products: Product[]): Tile[] {
-  return products
-    .filter((product) => Boolean(product.imageUrl))
-    .slice(0, TILE_COUNT)
-    .map((product) => ({
-      key: product._id,
-      imageUrl: product.imageUrl as string,
-      imageLqip: product.imageLqip,
-      imageAlt: product.imageAlt ?? product.title,
-      caption: product.title,
-      href: `/product/${product.slug}`,
-      external: false,
-    }));
-}
-
-export function InstagramFeed({
-  instagram,
-  fallbackProducts = [],
-}: InstagramFeedProps) {
+export function InstagramFeed({ instagram }: InstagramFeedProps) {
   const profileUrl = getInstagramUrl();
-  const posts = instagram?.posts ?? [];
-  const tiles =
-    posts.length > 0
-      ? fromPosts(posts, profileUrl)
-      : fromProducts(fallbackProducts);
-
-  if (tiles.length === 0) return null;
 
   return (
     <section className="border-t border-line">
@@ -90,59 +40,28 @@ export function InstagramFeed({
           </a>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6 lg:gap-5">
-          {tiles.map((tile, index) => {
-            const media = (
-              <>
-                <Image
-                  src={tile.imageUrl}
-                  alt={tile.imageAlt}
-                  fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 17vw"
-                  className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
-                  placeholder={tile.imageLqip ? "blur" : "empty"}
-                  blurDataURL={tile.imageLqip}
-                />
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4 lg:gap-5">
+          {homepageInstagramReels.map((reel) => (
+            <a
+              key={reel.id}
+              href={reel.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View this installation on Instagram"
+              className="group relative block aspect-video overflow-hidden border border-line bg-ink-deep transition-colors duration-500 hover:border-line-strong"
+            >
+              <InstagramReel src={reel.videoSrc} poster={reel.posterSrc} />
 
-                <span aria-hidden className="cs-bloom cs-bloom--card" />
+              <span aria-hidden className="cs-bloom cs-bloom--card" />
 
-                <span
-                  aria-hidden
-                  className="ig-tile__glyph absolute inset-0 flex items-center justify-center bg-black/45 text-gold-bright"
-                >
-                  <InstagramIcon className="size-6" />
-                </span>
-              </>
-            );
-
-            const className =
-              "group relative block aspect-square overflow-hidden border border-line bg-ink-deep transition-colors duration-500 hover:border-line-strong";
-            const label = tile.caption
-              ? `${tile.caption} — view on Instagram`
-              : "View on Instagram";
-
-            return tile.external ? (
-              <a
-                key={tile.key}
-                href={tile.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={label}
-                className={className}
+              <span
+                aria-hidden
+                className="ig-tile__glyph absolute inset-0 flex items-center justify-center bg-black/45 text-gold-bright"
               >
-                {media}
-              </a>
-            ) : (
-              <Link
-                key={tile.key}
-                href={tile.href}
-                aria-label={tile.caption ?? `Piece ${index + 1}`}
-                className={className}
-              >
-                {media}
-              </Link>
-            );
-          })}
+                <InstagramIcon className="size-6" />
+              </span>
+            </a>
+          ))}
         </div>
 
         <div className="mt-8 flex justify-center sm:hidden">
