@@ -63,6 +63,8 @@ export const product = defineType({
       title: "Gallery",
       type: "array",
       of: [{ type: "image", options: { hotspot: true } }],
+      description:
+        "Additional photos on the product page, shown after the first picture.",
     }),
     defineField({
       name: "video",
