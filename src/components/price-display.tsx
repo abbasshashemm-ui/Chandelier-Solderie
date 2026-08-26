@@ -1,4 +1,8 @@
-import { getDisplayPrices } from "@/lib/pricing";
+import {
+  getDisplayPrices,
+  getStartingPrice,
+  hasMultipleSizePrices,
+} from "@/lib/pricing";
 import type { Product } from "@/lib/types";
 
 type PriceDisplayProps = {
@@ -7,7 +11,10 @@ type PriceDisplayProps = {
 };
 
 export function PriceDisplay({ product, size = "card" }: PriceDisplayProps) {
-  const { current, original } = getDisplayPrices(product);
+  const priced =
+    size === "card" ? { ...product, ...getStartingPrice(product) } : product;
+  const { current, original } = getDisplayPrices(priced);
+  const showFrom = size === "card" && hasMultipleSizePrices(product);
 
   if (!current) return null;
 
@@ -31,6 +38,11 @@ export function PriceDisplay({ product, size = "card" }: PriceDisplayProps) {
 
   return (
     <p className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 font-serif tracking-wide">
+      {showFrom ? (
+        <span className="font-sans text-[0.5rem] uppercase tracking-[0.14em] text-faint">
+          From
+        </span>
+      ) : null}
       {original ? (
         <span className="text-sm text-faint line-through decoration-gold/50 sm:text-base">
           {original}
