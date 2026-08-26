@@ -31,6 +31,10 @@ export const MOCK_PRODUCTS: Product[] = [
     featured: true,
     imageUrl: "/products/1.png",
     imageAlt: "Cascading crystal feather chandelier against a dark background",
+    sizes: [
+      { _key: "size-60", label: "60 cm", price: 250 },
+      { _key: "size-80", label: "80 cm", price: 350 },
+    ],
   },
   {
     _id: "mock-2",
