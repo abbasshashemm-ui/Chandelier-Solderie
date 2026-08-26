@@ -14,7 +14,14 @@ const LISTING_FIELDS = `
   "collectionSlug": collection->slug.current,
   "collectionTitle": collection->title,
   featured,
-  "publishedAt": coalesce(publishedAt, _createdAt)
+  "publishedAt": coalesce(publishedAt, _createdAt),
+  "sizes": coalesce(sizes, [])[defined(label) && defined(price)] {
+    _key,
+    label,
+    price,
+    compareAtPrice,
+    sku
+  }
 `;
 
 export const PRODUCTS_QUERY = `*[_type == "product"] | order(featured desc, _createdAt desc) {
