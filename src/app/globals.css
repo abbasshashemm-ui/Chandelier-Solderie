@@ -833,35 +833,9 @@ body::after {
 }
 
 @supports (-webkit-touch-callout: none) {
-  html:not(:has([data-cs-studio])) input,
-  html:not(:has([data-cs-studio])) select,
-  html:not(:has([data-cs-studio])) textarea {
+  input,
+  select,
+  textarea {
     font-size: 16px;
   }
-}
-
-/* Sanity Studio — don't inherit storefront chrome, grain, or 95% UI scale */
-html:has([data-cs-studio]) {
-  font-size: 100%;
-  overflow: hidden;
-}
-
-body:has([data-cs-studio]) {
-  overflow: hidden;
-  touch-action: auto;
-  overscroll-behavior: auto;
-  background: #101112;
-  color: inherit;
-  font-family: inherit;
-}
-
-body:has([data-cs-studio])::after {
-  display: none;
-}
-
-.cs-studio {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  height: 100%;
 }
