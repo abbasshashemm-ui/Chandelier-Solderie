@@ -1,4 +1,8 @@
-import { matchesPriceRange } from "./pricing";
+import {
+  getProductPrices,
+  getSizeLabels,
+  matchesPriceRange,
+} from "./pricing";
 import {
   PRICE_RANGE_VALUES,
   type FilterKey,
@@ -28,10 +32,13 @@ export function getFilterDefinitions(products: Product[]): FilterOption[] {
   const groups: FilterOption[] = ATTRIBUTE_FILTERS.map(({ key, label }) => ({
     key,
     label,
-    values: uniqueSorted(products.map((product) => product[key])),
+    values:
+      key === "dimensions"
+        ? uniqueSorted(products.flatMap(getSizeLabels))
+        : uniqueSorted(products.map((product) => product[key])),
   }));
 
-  if (products.some((product) => product.price != null)) {
+  if (products.some((product) => getProductPrices(product).length > 0)) {
     groups.splice(3, 0, {
       key: "priceRange",
       label: "Price Range",
@@ -55,7 +62,12 @@ export function filterProducts(
     ).every(([key, value]) => {
       if (!value) return true;
       if (key === "priceRange") {
-        return matchesPriceRange(product.price, value);
+        return getProductPrices(product).some((price) =>
+          matchesPriceRange(price, value),
+        );
+      }
+      if (key === "dimensions") {
+        return getSizeLabels(product).includes(value);
       }
       return product[key] === value;
     });
@@ -63,7 +75,13 @@ export function filterProducts(
     if (!matchesFilters) return false;
     if (!query) return true;
 
-    const haystack = [product.title, product.sku, product.category]
+    const haystack = [
+      product.title,
+      product.sku,
+      product.category,
+      ...getSizeLabels(product),
+      ...(product.sizes ?? []).map((size) => size.sku),
+    ]
       .filter(Boolean)
       .join(" ")
       .toLowerCase();
