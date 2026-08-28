@@ -115,8 +115,8 @@ export function ProductGallery({ product }: ProductGalleryProps) {
   const showZoom = canHoverZoom && zooming && active?.kind === "image";
 
   return (
-    <div className="w-full">
-      <div className="media-stage relative aspect-[4/5] w-full overflow-hidden border border-line bg-ink-deep sm:aspect-square">
+    <div className="w-full min-w-0 max-w-full">
+      <div className="media-stage relative aspect-[4/5] w-full min-w-0 max-w-full overflow-hidden border border-line bg-ink-deep sm:aspect-square">
         <span aria-hidden className="cs-bloom cs-bloom--frame" />
         <div
           className={`media-stage__slot z-10 ${
@@ -185,7 +185,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
       </div>
 
       {items.length > 1 ? (
-        <div className="gallery-thumbs mt-5 flex snap-x snap-mandatory gap-2.5 overflow-x-auto pb-2 pr-16 sm:mt-6 sm:gap-3 sm:pr-2">
+        <div className="gallery-thumbs mt-5 flex min-w-0 snap-x snap-mandatory gap-2.5 overflow-x-auto pb-2 pr-16 sm:mt-6 sm:gap-3 sm:pr-2">
           {items.map((item, index) => {
             const isActive = index === activeIndex;
 

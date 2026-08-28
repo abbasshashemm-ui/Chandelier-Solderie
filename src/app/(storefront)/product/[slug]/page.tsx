@@ -86,7 +86,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <div className="page-shell min-h-[var(--cs-viewport-height)]">
       <SiteHeader />
 
-      <main className="relative mx-auto max-w-[1240px] px-3 pb-12 pt-[calc(var(--cs-header-height)+0.25rem)] sm:px-6 sm:pb-16">
+      <main className="relative mx-auto w-full min-w-0 max-w-[1240px] px-3 pb-12 pt-[calc(var(--cs-header-height)+0.25rem)] sm:px-6 sm:pb-16">
         <header className="mb-3 sm:mb-4">
           <Link
             href="/shop"
@@ -99,9 +99,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </Link>
         </header>
 
-        <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
-          <section className="lg:col-span-7">
-            <div className="mx-auto w-full lg:mx-0 lg:w-[75%]">
+        <div className="grid min-w-0 gap-8 lg:grid-cols-12 lg:gap-12">
+          <section className="min-w-0 max-w-full lg:col-span-7">
+            <div className="mx-auto w-full min-w-0 max-w-full lg:mx-0 lg:w-[75%]">
               <ProductGallery product={product} />
             </div>
           </section>
