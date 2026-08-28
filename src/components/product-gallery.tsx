@@ -135,6 +135,8 @@ export function ProductGallery({ product }: ProductGalleryProps) {
               key={active.url}
               ref={videoRef}
               src={active.url}
+              width={4}
+              height={5}
               autoPlay
               muted
               loop
@@ -144,6 +146,14 @@ export function ProductGallery({ product }: ProductGalleryProps) {
               disablePictureInPicture
               disableRemotePlayback
               controlsList="nodownload nofullscreen noremoteplayback"
+              className="absolute inset-0 h-full w-full object-cover object-center"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "center center",
+              }}
+              {...{ "webkit-playsinline": "true" }}
             />
           ) : active?.kind === "image" ? (
             <Image
