@@ -800,6 +800,56 @@ body::after {
   background: rgba(201, 163, 95, 0.25);
 }
 
+/* Fixed product media slot — same box for photo and video, any source size. */
+.media-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--cs-ink-deep);
+  isolation: isolate;
+  contain: layout paint;
+}
+
+@media (min-width: 640px) {
+  .media-stage {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+.media-stage__slot {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.media-stage__slot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.media-stage video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: auto;
+  min-width: 100%;
+  min-height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  object-position: center center;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
+
 .gallery-thumbs {
   scrollbar-width: thin;
   scrollbar-color: rgba(201, 163, 95, 0.45) rgba(201, 163, 95, 0.08);

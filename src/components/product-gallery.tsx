@@ -4,6 +4,7 @@ import Image from "next/image";
 import {
   useCallback,
   useEffect,
+  useRef,
   useState,
   type MouseEvent as ReactMouseEvent,
 } from "react";
@@ -25,6 +26,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
   const galleryUrls = getProductGalleryUrls(product);
   const videoUrl = getProductVideoUrl(product);
   const poster = galleryUrls[0] ?? product.imageUrl ?? "";
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const items: GalleryItem[] = [
     ...(videoUrl
@@ -40,6 +42,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const active = items[activeIndex] ?? items[0];
+  const [paused, setPaused] = useState(false);
 
   const [canHoverZoom, setCanHoverZoom] = useState(false);
   const [zooming, setZooming] = useState(false);
@@ -63,6 +66,33 @@ export function ProductGallery({ product }: ProductGalleryProps) {
     };
   }, []);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || active?.kind !== "video") {
+      setPaused(false);
+      return;
+    }
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.disablePictureInPicture = true;
+    video.setAttribute("playsinline", "true");
+    video.setAttribute("webkit-playsinline", "true");
+    video.removeAttribute("controls");
+
+    const syncPaused = () => setPaused(video.paused);
+    video.addEventListener("play", syncPaused);
+    video.addEventListener("pause", syncPaused);
+
+    void video.play().catch(() => setPaused(true));
+
+    return () => {
+      video.removeEventListener("play", syncPaused);
+      video.removeEventListener("pause", syncPaused);
+    };
+  }, [active]);
+
   const updateOrigin = useCallback((event: ReactMouseEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
@@ -72,14 +102,24 @@ export function ProductGallery({ product }: ProductGalleryProps) {
     });
   }, []);
 
+  const togglePlayback = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      void video.play().catch(() => undefined);
+    } else {
+      video.pause();
+    }
+  }, []);
+
   const showZoom = canHoverZoom && zooming && active?.kind === "image";
 
   return (
     <div className="w-full">
-      <div className="relative overflow-hidden border border-line bg-ink-deep">
+      <div className="media-stage border border-line">
         <span aria-hidden className="cs-bloom cs-bloom--frame" />
         <div
-          className={`relative z-10 flex aspect-[4/5] w-full items-center justify-center overflow-hidden sm:aspect-square ${
+          className={`media-stage__slot z-10 ${
             canHoverZoom && active?.kind === "image" ? "cursor-zoom-in" : ""
           }`}
           onMouseEnter={() => {
@@ -93,15 +133,17 @@ export function ProductGallery({ product }: ProductGalleryProps) {
           {active?.kind === "video" ? (
             <video
               key={active.url}
+              ref={videoRef}
               src={active.url}
-              className="absolute inset-0 h-full w-full object-contain"
               autoPlay
               muted
               loop
               playsInline
-              controls
               preload="metadata"
               poster={active.poster || undefined}
+              disablePictureInPicture
+              disableRemotePlayback
+              controlsList="nodownload nofullscreen noremoteplayback"
             />
           ) : active?.kind === "image" ? (
             <Image
@@ -109,8 +151,8 @@ export function ProductGallery({ product }: ProductGalleryProps) {
               alt={active.alt}
               fill
               priority
-              sizes="(max-width: 1024px) 75vw, 40vw"
-              className="object-contain transition-transform duration-300 ease-out"
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              className="object-cover object-center transition-transform duration-300 ease-out"
               placeholder={product.imageLqip ? "blur" : "empty"}
               blurDataURL={product.imageLqip}
               style={{
@@ -118,6 +160,24 @@ export function ProductGallery({ product }: ProductGalleryProps) {
                 transform: showZoom ? "scale(1.85)" : "scale(1)",
               }}
             />
+          ) : null}
+
+          {active?.kind === "video" ? (
+            <button
+              type="button"
+              className="absolute inset-0 z-20 flex items-center justify-center"
+              aria-label={paused ? "Play film" : "Pause film"}
+              onClick={togglePlayback}
+            >
+              {paused ? (
+                <span
+                  aria-hidden
+                  className="flex size-14 items-center justify-center border border-gold/60 bg-black/55 font-sans text-lg text-gold-bright"
+                >
+                  ▶
+                </span>
+              ) : null}
+            </button>
           ) : null}
         </div>
       </div>
