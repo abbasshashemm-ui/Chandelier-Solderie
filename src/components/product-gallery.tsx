@@ -116,7 +116,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
 
   return (
     <div className="w-full">
-      <div className="media-stage border border-line">
+      <div className="media-stage relative aspect-[4/5] w-full overflow-hidden border border-line bg-ink-deep sm:aspect-square">
         <span aria-hidden className="cs-bloom cs-bloom--frame" />
         <div
           className={`media-stage__slot z-10 ${
@@ -135,8 +135,6 @@ export function ProductGallery({ product }: ProductGalleryProps) {
               key={active.url}
               ref={videoRef}
               src={active.url}
-              width={4}
-              height={5}
               autoPlay
               muted
               loop
@@ -146,13 +144,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
               disablePictureInPicture
               disableRemotePlayback
               controlsList="nodownload nofullscreen noremoteplayback"
-              className="absolute inset-0 h-full w-full object-cover object-center"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                objectPosition: "center center",
-              }}
+              className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
               {...{ "webkit-playsinline": "true" }}
             />
           ) : active?.kind === "image" ? (
