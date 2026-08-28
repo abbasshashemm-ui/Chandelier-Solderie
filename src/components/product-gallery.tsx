@@ -94,7 +94,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
             <video
               key={active.url}
               src={active.url}
-              className="h-full w-full max-h-full max-w-full object-contain"
+              className="absolute inset-0 h-full w-full object-contain"
               autoPlay
               muted
               loop
@@ -123,7 +123,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
       </div>
 
       {items.length > 1 ? (
-        <div className="mt-5 flex snap-x snap-mandatory gap-2.5 overflow-x-auto pb-1 [-webkit-overflow-scrolling:touch] sm:mt-6 sm:gap-3">
+        <div className="gallery-thumbs mt-5 flex snap-x snap-mandatory gap-2.5 overflow-x-auto pb-2 pr-16 sm:mt-6 sm:gap-3 sm:pr-2">
           {items.map((item, index) => {
             const isActive = index === activeIndex;
 

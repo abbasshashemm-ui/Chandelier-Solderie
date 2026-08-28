@@ -101,7 +101,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
           <section className="lg:col-span-7">
-            <div className="mx-auto w-[75%] lg:mx-0">
+            <div className="mx-auto w-full lg:mx-0 lg:w-[75%]">
               <ProductGallery product={product} />
             </div>
           </section>
@@ -141,7 +141,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 {product.material ? (
                   <DetailPill>{product.material}</DetailPill>
                 ) : null}
-                {product.room ? <DetailPill>{product.room}</DetailPill> : null}
+                {(product.room ?? "")
+                  .split(/[,;/|&]+/)
+                  .map((room) => room.trim())
+                  .filter(Boolean)
+                  .map((room) => (
+                    <DetailPill key={room}>{room}</DetailPill>
+                  ))}
               </div>
 
               {product.shortDescription ? (

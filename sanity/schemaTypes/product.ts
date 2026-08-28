@@ -147,14 +147,15 @@ export const product = defineType({
       name: "room",
       title: "Room",
       type: "string",
-      description: "e.g. Living Room, Dining, Bedroom",
+      description:
+        "e.g. Living Room, Dining Room, Bedroom, Kitchen, Foyer, Staircase, Hallway, Office, Study Room. Comma-separated is fine.",
     }),
     defineField({
       name: "dimensions",
       title: "Dimensions / Size",
       type: "string",
       description:
-        "Single-size pieces only. If you added size options above, this is ignored.",
+        "Single-size pieces only, e.g. 60 cm, Under 20 cm, 20 - 40 cm, Customizable. Ignored when size options are set.",
       hidden: ({ parent }) => (parent?.sizes?.length ?? 0) > 0,
     }),
     defineField({

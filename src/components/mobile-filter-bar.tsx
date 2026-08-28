@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import type { ActiveFilters } from "@/lib/filters";
+import { countActiveFilters, type ActiveFilters } from "@/lib/filters";
 import type { FilterKey, FilterOption } from "@/lib/types";
 import { FilterPanel } from "./filter-panel";
 
@@ -108,7 +108,7 @@ export function MobileFilterBar({
   onClear,
 }: MobileFilterBarProps) {
   const [open, setOpen] = useState(false);
-  const activeCount = Object.values(active).filter(Boolean).length;
+  const activeCount = countActiveFilters(active);
 
   return (
     <>
