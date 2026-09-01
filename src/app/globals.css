@@ -800,6 +800,27 @@ body::after {
   background: rgba(201, 163, 95, 0.25);
 }
 
+.product-description p + p {
+  margin-top: 0.85em;
+}
+
+.product-description strong,
+.product-description b {
+  font-weight: 500;
+  color: var(--cs-ivory);
+}
+
+.product-description em,
+.product-description i {
+  font-style: italic;
+}
+
+.product-description u {
+  text-decoration: underline;
+  text-decoration-color: rgba(201, 163, 95, 0.55);
+  text-underline-offset: 0.18em;
+}
+
 /* ── Mobile / iOS polish ──────────────────────────────── */
 
 @media (max-width: 767px) {
@@ -833,35 +854,9 @@ body::after {
 }
 
 @supports (-webkit-touch-callout: none) {
-  html:not(:has([data-cs-studio])) input,
-  html:not(:has([data-cs-studio])) select,
-  html:not(:has([data-cs-studio])) textarea {
+  input,
+  select,
+  textarea {
     font-size: 16px;
   }
-}
-
-/* Sanity Studio — don't inherit storefront chrome, grain, or 95% UI scale */
-html:has([data-cs-studio]) {
-  font-size: 100%;
-  overflow: hidden;
-}
-
-body:has([data-cs-studio]) {
-  overflow: hidden;
-  touch-action: auto;
-  overscroll-behavior: auto;
-  background: #101112;
-  color: inherit;
-  font-family: inherit;
-}
-
-body:has([data-cs-studio])::after {
-  display: none;
-}
-
-.cs-studio {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  height: 100%;
 }

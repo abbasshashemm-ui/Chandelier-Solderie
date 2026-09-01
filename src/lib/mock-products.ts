@@ -27,10 +27,16 @@ export const MOCK_PRODUCTS: Product[] = [
     shortDescription:
       "Hand-formed crystal feathers suspended on invisible wires in a swirling descent.",
     description:
-      "An architectural statement for double-height entries and grand living rooms. Translucent feather elements cascade from a circular canopy, denser at the crown and tapering to a whisper of light below. Integrated illumination travels through each crystal plume for an ethereal glow.",
+      "An architectural statement for double-height entries and grand living rooms. <strong>Translucent feather elements</strong> cascade from a circular canopy, denser at the crown and tapering to a whisper of light below. <u>Integrated illumination travels through each crystal plume</u> for an ethereal glow.",
     featured: true,
     imageUrl: "/products/1.png",
     imageAlt: "Cascading crystal feather chandelier against a dark background",
+    galleryUrls: ["/products/2.png", "/products/3.png", "/products/4.png"],
+    videoUrl: "/instagram/C9DtLW2N34h.mp4",
+    sizes: [
+      { _key: "size-60", label: "60 cm", price: 250 },
+      { _key: "size-80", label: "80 cm", price: 350 },
+    ],
   },
   {
     _id: "mock-2",
