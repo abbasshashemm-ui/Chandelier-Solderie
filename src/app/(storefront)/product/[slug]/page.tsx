@@ -1,14 +1,19 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
-import { AddToCartButton } from "@/components/add-to-cart-button";
-import { PriceDisplay } from "@/components/price-display";
+import { FormattedText } from "@/components/formatted-text";
 import { ProductGallery } from "@/components/product-gallery";
+import { ProductPurchase } from "@/components/product-purchase";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { getSalePercent, isOnSale } from "@/lib/pricing";
+import { descriptionToPlainText } from "@/lib/formatted-text";
+import {
+  getSalePercent,
+  getSizeLabels,
+  getStartingPrice,
+  isOnSale,
+} from "@/lib/pricing";
 import { getProductBySlug, getProductSlugs } from "@/lib/products";
-import { buildWhatsAppUrlStatic } from "@/lib/whatsapp";
 
 export const revalidate = 3600;
 
@@ -25,10 +30,11 @@ export async function generateMetadata({ params }: ProductPageProps) {
     return { title: "Product Not Found" };
   }
 
+  const fromBody = descriptionToPlainText(product.description).slice(0, 160);
   const description =
     product.shortDescription ??
-    product.description?.slice(0, 160) ??
-    `${product.title} — luxury lighting by Chandelier Solderie`;
+    (fromBody ||
+      `${product.title} — luxury lighting by Chandelier Solderie`);
 
   return {
     title: product.title,
@@ -74,8 +80,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const origin = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-  const salePercent = getSalePercent(product);
+  const starting = { ...product, ...getStartingPrice(product) };
+  const salePercent = getSalePercent(starting);
   const showSale = isOnSale(product);
+  const sizeLabels = getSizeLabels(product);
 
   return (
     <div className="page-shell min-h-[var(--cs-viewport-height)]">
@@ -139,39 +147,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 {product.room ? <DetailPill>{product.room}</DetailPill> : null}
               </div>
 
-              <PriceDisplay product={product} size="detail" />
-
               {product.shortDescription ? (
                 <p className="mt-7 border-l border-gold pl-4 font-serif text-lg italic leading-relaxed text-ivory sm:text-xl">
                   {product.shortDescription}
                 </p>
               ) : null}
 
-              {product.description ? (
-                <p className="mt-5 font-serif text-base leading-[1.8] text-muted">
-                  {product.description}
-                </p>
-              ) : null}
+              <FormattedText
+                value={product.description}
+                className="mt-5 font-serif text-base leading-[1.8] text-muted"
+              />
 
-              <div className="mt-9 space-y-3">
-                <AddToCartButton
-                  product={{
-                    slug: product.slug,
-                    title: product.title,
-                    sku: product.sku,
-                    price: product.price,
-                    imageUrl: product.imageUrl,
-                  }}
-                />
-                <a
-                  href={buildWhatsAppUrlStatic(product, origin)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn--ghost w-full"
-                >
-                  Inquire on WhatsApp
-                </a>
+              <ProductPurchase product={product} origin={origin} />
 
+              <div className="mt-3">
                 <Link href="/shop" className="btn btn--ghost w-full">
                   Continue Through the Collection
                 </Link>
@@ -187,7 +176,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <SpecRow label="Style" value={product.style} />
                   <SpecRow label="Material" value={product.material} />
                   <SpecRow label="Room" value={product.room} />
-                  <SpecRow label="Size" value={product.dimensions} />
+                  <SpecRow
+                    label="Size"
+                    value={sizeLabels.join(" · ") || product.dimensions}
+                  />
                 </dl>
               </div>
             </div>

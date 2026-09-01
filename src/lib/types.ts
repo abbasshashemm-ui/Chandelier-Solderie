@@ -1,9 +1,19 @@
+import type { FormattedTextValue } from "./formatted-text";
+
 export type FilterKey =
   | "style"
   | "material"
   | "room"
   | "priceRange"
   | "dimensions";
+
+export type ProductSize = {
+  _key: string;
+  label: string;
+  price: number;
+  compareAtPrice?: number;
+  sku?: string;
+};
 
 export type Product = {
   _id: string;
@@ -13,6 +23,7 @@ export type Product = {
   price?: number;
   compareAtPrice?: number;
   onSale?: boolean;
+  sizes?: ProductSize[];
   style?: string;
   material?: string;
   room?: string;
@@ -22,7 +33,7 @@ export type Product = {
   collectionSlug?: string;
   collectionTitle?: string;
   shortDescription?: string;
-  description?: string;
+  description?: FormattedTextValue;
   featured?: boolean;
   imageUrl?: string;
   imageLqip?: string;

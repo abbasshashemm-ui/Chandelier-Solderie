@@ -4,14 +4,28 @@ export function getProductVideoUrl(product: Product): string | undefined {
   return product.videoUrl || undefined;
 }
 
-export function getProductGalleryUrls(product: Product, count = 3): string[] {
-  if (product.galleryUrls?.length) {
-    return product.galleryUrls.filter(Boolean).slice(0, count);
+function assetKey(url: string) {
+  return url.split("?")[0];
+}
+
+export function getProductGalleryUrls(product: Product): string[] {
+  const gallery = Array.isArray(product.galleryUrls)
+    ? product.galleryUrls
+    : [];
+
+  const urls = [product.imageUrl, ...gallery].filter(
+    (url): url is string => Boolean(url),
+  );
+
+  const seen = new Set<string>();
+  const unique: string[] = [];
+
+  for (const url of urls) {
+    const key = assetKey(url);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    unique.push(url);
   }
 
-  if (product.imageUrl) {
-    return [product.imageUrl];
-  }
-
-  return [];
+  return unique;
 }
