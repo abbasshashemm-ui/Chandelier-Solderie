@@ -14,7 +14,14 @@ const LISTING_FIELDS = `
   "collectionSlug": collection->slug.current,
   "collectionTitle": collection->title,
   featured,
-  "publishedAt": coalesce(publishedAt, _createdAt)
+  "publishedAt": coalesce(publishedAt, _createdAt),
+  "sizes": coalesce(sizes, [])[defined(label) && defined(price)] {
+    _key,
+    label,
+    price,
+    compareAtPrice,
+    sku
+  }
 `;
 
 export const PRODUCTS_QUERY = `*[_type == "product"] | order(featured desc, _createdAt desc) {
@@ -32,7 +39,9 @@ export const PRODUCT_BY_SLUG_QUERY = `*[_type == "product" && slug.current == $s
   "imageUrl": select(defined(mainImage.asset->url) => mainImage.asset->url + "?w=1200&fit=max&auto=format&q=75"),
   "imageLqip": mainImage.asset->metadata.lqip,
   "imageAlt": coalesce(mainImage.alt, title),
-  "galleryUrls": gallery[].asset->url + "?w=1200&fit=max&auto=format&q=75"
+  "galleryUrls": gallery[defined(asset)]{
+    "url": asset->url + "?w=1200&fit=max&auto=format&q=75"
+  }.url
 }`;
 
 export const PRODUCT_SLUGS_QUERY = `*[_type == "product" && defined(slug.current)][].slug.current`;

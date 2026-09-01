@@ -26,48 +26,17 @@ export const MOCK_PRODUCTS: Product[] = [
     category: "Chandeliers",
     shortDescription:
       "Hand-formed crystal feathers suspended on invisible wires in a swirling descent.",
-    description: [
-      {
-        _type: "block",
-        _key: "desc-1",
-        style: "normal",
-        children: [
-          {
-            _type: "span",
-            _key: "desc-1a",
-            text: "An architectural statement for double-height entries and grand living rooms. ",
-            marks: [],
-          },
-          {
-            _type: "span",
-            _key: "desc-1b",
-            text: "Translucent feather elements",
-            marks: ["strong"],
-          },
-          {
-            _type: "span",
-            _key: "desc-1c",
-            text: " cascade from a circular canopy, denser at the crown and tapering to a whisper of light below. ",
-            marks: [],
-          },
-          {
-            _type: "span",
-            _key: "desc-1d",
-            text: "Integrated illumination travels through each crystal plume",
-            marks: ["underline"],
-          },
-          {
-            _type: "span",
-            _key: "desc-1e",
-            text: " for an ethereal glow.",
-            marks: [],
-          },
-        ],
-      },
-    ],
+    description:
+      "An architectural statement for double-height entries and grand living rooms. <strong>Translucent feather elements</strong> cascade from a circular canopy, denser at the crown and tapering to a whisper of light below. <u>Integrated illumination travels through each crystal plume</u> for an ethereal glow.",
     featured: true,
     imageUrl: "/products/1.png",
     imageAlt: "Cascading crystal feather chandelier against a dark background",
+    galleryUrls: ["/products/2.png", "/products/3.png", "/products/4.png"],
+    videoUrl: "/instagram/C9DtLW2N34h.mp4",
+    sizes: [
+      { _key: "size-60", label: "60 cm", price: 250 },
+      { _key: "size-80", label: "80 cm", price: 350 },
+    ],
   },
   {
     _id: "mock-2",

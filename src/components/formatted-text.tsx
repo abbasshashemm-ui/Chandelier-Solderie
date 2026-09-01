@@ -1,9 +1,11 @@
-import type { ReactNode } from "react";
 import {
   hasFormattedText,
+  sanitizeDescriptionHtml,
+  textHasMarkup,
   type FormattedSpan,
   type FormattedTextValue,
 } from "@/lib/formatted-text";
+import type { ReactNode } from "react";
 
 type FormattedTextProps = {
   value?: FormattedTextValue;
@@ -42,6 +44,17 @@ export function FormattedText({ value, className }: FormattedTextProps) {
   if (!hasFormattedText(value)) return null;
 
   if (typeof value === "string") {
+    if (textHasMarkup(value)) {
+      return (
+        <div
+          className={`product-description ${className ?? ""}`}
+          dangerouslySetInnerHTML={{
+            __html: sanitizeDescriptionHtml(value),
+          }}
+        />
+      );
+    }
+
     return (
       <div className={className}>
         {value.split(/\n+/).map((paragraph, index) => (

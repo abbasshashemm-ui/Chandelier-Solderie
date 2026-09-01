@@ -7,6 +7,14 @@ export type FilterKey =
   | "priceRange"
   | "dimensions";
 
+export type ProductSize = {
+  _key: string;
+  label: string;
+  price: number;
+  compareAtPrice?: number;
+  sku?: string;
+};
+
 export type Product = {
   _id: string;
   title: string;
@@ -15,6 +23,7 @@ export type Product = {
   price?: number;
   compareAtPrice?: number;
   onSale?: boolean;
+  sizes?: ProductSize[];
   style?: string;
   material?: string;
   room?: string;

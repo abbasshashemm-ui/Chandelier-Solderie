@@ -14,36 +14,80 @@ export type FormattedBlock = {
 
 export type FormattedTextValue = string | FormattedBlock[];
 
-function blockKey() {
-  return Math.random().toString(36).slice(2, 10);
+function escapeHtml(text: string) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
 
-export function stringToBlocks(text: string): FormattedBlock[] {
-  const paragraphs = text
-    .split(/\n+/)
-    .map((part) => part.trim())
-    .filter(Boolean);
+export function sanitizeDescriptionHtml(html: string): string {
+  return html
+    .replace(/<\/?script\b[^>]*>/gi, "")
+    .replace(/\son\w+="[^"]*"/gi, "")
+    .replace(/\son\w+='[^']*'/gi, "")
+    .replace(/<(?!\/?(strong|b|em|i|u|p|br)\b)[^>]+>/gi, "");
+}
 
-  if (paragraphs.length === 0) return [];
+export function textHasMarkup(value: string): boolean {
+  return /<(strong|b|em|i|u|p|br)\b/i.test(value);
+}
 
-  return paragraphs.map((paragraph) => ({
-    _type: "block",
-    _key: blockKey(),
-    style: "normal",
-    children: [
-      {
-        _type: "span",
-        _key: blockKey(),
-        text: paragraph,
-        marks: [],
-      },
-    ],
-  }));
+export function textToEditorHtml(value: string): string {
+  if (!value) return "";
+  if (textHasMarkup(value)) return sanitizeDescriptionHtml(value);
+  return escapeHtml(value).replace(/\n/g, "<br>");
+}
+
+export function editorHtmlToStored(html: string): string {
+  const clean = sanitizeDescriptionHtml(html)
+    .replace(/&nbsp;/g, " ")
+    .trim();
+
+  if (!textHasMarkup(clean)) {
+    return clean
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>\s*<p>/gi, "\n\n")
+      .replace(/<\/?p>/gi, "")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .trim();
+  }
+
+  return clean;
+}
+
+export function blocksToHtml(blocks: FormattedBlock[]): string {
+  return blocks
+    .map((block) => {
+      const inner = (block.children ?? [])
+        .map((span) => {
+          let text = escapeHtml(span.text ?? "");
+          const marks = span.marks ?? [];
+          if (marks.includes("strong")) text = `<strong>${text}</strong>`;
+          if (marks.includes("em")) text = `<em>${text}</em>`;
+          if (marks.includes("underline")) text = `<u>${text}</u>`;
+          return text;
+        })
+        .join("");
+      return inner;
+    })
+    .filter(Boolean)
+    .join("<br><br>");
 }
 
 export function descriptionToPlainText(value?: FormattedTextValue): string {
   if (!value) return "";
-  if (typeof value === "string") return value.trim();
+  if (typeof value === "string") {
+    return value
+      .replace(/<br\s*\/?>/gi, " ")
+      .replace(/<[^>]+>/g, "")
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
   if (!Array.isArray(value)) return "";
 
   return value
