@@ -1,16 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import {
-  CATALOGUE_HREF_KEY,
-  canBackToCatalogue,
-  markCatalogueRestore,
-} from "./catalogue-scroll";
+import { CATALOGUE_HREF_KEY, markCatalogueRestore } from "./catalogue-scroll";
 
 export function BackToCollection({ className }: { className?: string }) {
-  const router = useRouter();
   const [href, setHref] = useState("/shop");
 
   useEffect(() => {
@@ -23,11 +17,8 @@ export function BackToCollection({ className }: { className?: string }) {
       href={href}
       scroll={false}
       className={className}
-      onNavigate={(event) => {
+      onNavigate={() => {
         markCatalogueRestore();
-        if (!canBackToCatalogue()) return;
-        event.preventDefault();
-        router.back();
       }}
     >
       <span aria-hidden className="text-gold">

@@ -5,129 +5,177 @@ import { useEffect, useLayoutEffect } from "react";
 
 export const CATALOGUE_HREF_KEY = "cs:catalogue-href";
 const RESTORE_KEY = "cs:catalogue-restore";
-const CAN_BACK_KEY = "cs:catalogue-can-back";
+const POP_KEY = "cs:catalogue-pop";
+const FREEZE_KEY = "cs:catalogue-freeze";
+const LAST_Y_KEY = "cs:catalogue-last-y";
 const SCROLL_PREFIX = "cs:scroll:";
-
-let pendingPop = false;
-let listenersInstalled = false;
-let lastPathname = "";
 
 function isCataloguePath(pathname: string) {
   return pathname === "/shop" || pathname.startsWith("/collection/");
 }
 
-function locationKey(pathname: string, search: string) {
-  return `${SCROLL_PREFIX}${pathname}${search}`;
+function isProductPath(pathname: string) {
+  return pathname.startsWith("/product/");
 }
 
-function searchString(params: { toString(): string }) {
-  const value = params.toString();
-  return value ? `?${value}` : "";
+function scrollStorageKey(pathname: string, search: string) {
+  return `${SCROLL_PREFIX}${pathname}${search}`;
 }
 
 export function markCatalogueRestore() {
   sessionStorage.setItem(RESTORE_KEY, "1");
 }
 
-export function canBackToCatalogue() {
-  return sessionStorage.getItem(CAN_BACK_KEY) === "1";
+function shouldRestoreCatalogue() {
+  return (
+    sessionStorage.getItem(POP_KEY) === "1" ||
+    sessionStorage.getItem(RESTORE_KEY) === "1"
+  );
 }
 
-function consumeRestore() {
-  pendingPop = false;
+function clearRestoreFlags() {
+  sessionStorage.removeItem(POP_KEY);
   sessionStorage.removeItem(RESTORE_KEY);
+  sessionStorage.removeItem(FREEZE_KEY);
 }
 
-function restoreScroll(y: number) {
+function snapshotCatalogueScroll() {
+  const pathname = window.location.pathname;
+  if (!isCataloguePath(pathname)) return;
+  const search = window.location.search;
+  const y = window.scrollY;
+  sessionStorage.setItem(CATALOGUE_HREF_KEY, `${pathname}${search}`);
+  sessionStorage.setItem(scrollStorageKey(pathname, search), String(y));
+  sessionStorage.setItem(LAST_Y_KEY, String(y));
+}
+
+function savedScrollFor(pathname: string) {
+  const exact = Number(
+    sessionStorage.getItem(scrollStorageKey(pathname, window.location.search)),
+  );
+  if (Number.isFinite(exact) && exact > 0) return exact;
+  return Number(sessionStorage.getItem(LAST_Y_KEY));
+}
+
+function applyScroll(y: number) {
   if (!Number.isFinite(y) || y <= 0) return;
-  window.scrollTo({ top: y, left: 0, behavior: "auto" });
+  document.documentElement.scrollTop = y;
+  document.body.scrollTop = y;
+  window.scrollTo(0, y);
 }
 
-function ensureListeners() {
-  if (listenersInstalled || typeof window === "undefined") return;
-  listenersInstalled = true;
+function installGlobalListeners() {
+  if (window.__csCatalogueScrollInstalled) return;
+  window.__csCatalogueScrollInstalled = true;
   window.history.scrollRestoration = "manual";
+
   window.addEventListener("popstate", () => {
-    pendingPop = true;
+    sessionStorage.setItem(POP_KEY, "1");
   });
+
+  const freezeIfProductLink = (event: Event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const link = target.closest("a[href]");
+    if (!link) return;
+    let url: URL;
+    try {
+      url = new URL(link.getAttribute("href") ?? "", window.location.href);
+    } catch {
+      return;
+    }
+    if (url.origin !== window.location.origin) return;
+    if (
+      isProductPath(url.pathname) &&
+      isCataloguePath(window.location.pathname)
+    ) {
+      snapshotCatalogueScroll();
+      sessionStorage.setItem(FREEZE_KEY, "1");
+    }
+  };
+
+  window.addEventListener("pointerdown", freezeIfProductLink, true);
+  window.addEventListener("click", freezeIfProductLink, true);
 }
 
 export function CatalogueScroll() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const search = searchString(searchParams);
+  const search = searchParams.toString() ? `?${searchParams.toString()}` : "";
 
   useLayoutEffect(() => {
-    ensureListeners();
+    installGlobalListeners();
+    if (!isCataloguePath(pathname) || !shouldRestoreCatalogue()) return;
+    applyScroll(savedScrollFor(pathname));
+  }, [pathname, search]);
 
-    const wasCatalogue = isCataloguePath(lastPathname);
-    const isProduct = pathname.startsWith("/product/");
-    if (wasCatalogue && isProduct) {
-      sessionStorage.setItem(CAN_BACK_KEY, "1");
-    } else if (!isProduct && !isCataloguePath(pathname)) {
-      sessionStorage.removeItem(CAN_BACK_KEY);
-    }
-    lastPathname = pathname;
+  useEffect(() => {
+    installGlobalListeners();
 
     if (!isCataloguePath(pathname)) {
-      if (pendingPop) pendingPop = false;
       return;
     }
 
     sessionStorage.setItem(CATALOGUE_HREF_KEY, `${pathname}${search}`);
 
-    const shouldRestore =
-      pendingPop || sessionStorage.getItem(RESTORE_KEY) === "1";
-    if (!shouldRestore) return;
-
-    const y = Number(sessionStorage.getItem(locationKey(pathname, search)));
-    consumeRestore();
-    restoreScroll(y);
-
-    let cancelled = false;
+    let restoring = shouldRestoreCatalogue();
     let userMoved = false;
-    const onUserScroll = () => {
-      userMoved = true;
-    };
-    window.addEventListener("wheel", onUserScroll, { passive: true });
-    window.addEventListener("touchmove", onUserScroll, { passive: true });
-
-    const apply = () => {
-      if (cancelled || userMoved) return;
-      restoreScroll(y);
-    };
-    const raf = requestAnimationFrame(apply);
-    const timers = [0, 80, 200, 400].map((ms) => window.setTimeout(apply, ms));
-
-    return () => {
-      cancelled = true;
-      cancelAnimationFrame(raf);
-      timers.forEach(clearTimeout);
-      window.removeEventListener("wheel", onUserScroll);
-      window.removeEventListener("touchmove", onUserScroll);
-    };
-  }, [pathname, search]);
-
-  useEffect(() => {
-    if (!isCataloguePath(pathname)) return;
+    const y = savedScrollFor(pathname);
 
     const save = () => {
-      sessionStorage.setItem(CATALOGUE_HREF_KEY, `${pathname}${search}`);
-      sessionStorage.setItem(
-        locationKey(pathname, search),
-        String(window.scrollY),
-      );
+      if (restoring || userMoved) return;
+      if (sessionStorage.getItem(FREEZE_KEY) === "1") return;
+      if (window.location.pathname !== pathname) return;
+      snapshotCatalogueScroll();
     };
+
+    const markUserMoved = () => {
+      if (!restoring) return;
+      userMoved = true;
+      restoring = false;
+      clearRestoreFlags();
+    };
+
+    const apply = () => {
+      if (!restoring || userMoved) return;
+      applyScroll(y);
+    };
+
+    if (restoring) apply();
 
     window.addEventListener("scroll", save, { passive: true });
     window.addEventListener("pagehide", save);
-    save();
+    window.addEventListener("wheel", markUserMoved, { passive: true });
+    window.addEventListener("touchmove", markUserMoved, { passive: true });
+
+    const raf = restoring ? requestAnimationFrame(apply) : 0;
+    const interval = restoring ? window.setInterval(apply, 50) : 0;
+    const finish =
+      restoring
+        ? window.setTimeout(() => {
+            apply();
+            restoring = false;
+            clearRestoreFlags();
+          }, 1000)
+        : 0;
+
     return () => {
-      save();
+      restoring = false;
+      if (raf) cancelAnimationFrame(raf);
+      if (interval) window.clearInterval(interval);
+      if (finish) window.clearTimeout(finish);
       window.removeEventListener("scroll", save);
       window.removeEventListener("pagehide", save);
+      window.removeEventListener("wheel", markUserMoved);
+      window.removeEventListener("touchmove", markUserMoved);
     };
   }, [pathname, search]);
 
   return null;
+}
+
+declare global {
+  interface Window {
+    __csCatalogueScrollInstalled?: boolean;
+  }
 }
