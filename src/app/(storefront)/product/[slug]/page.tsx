@@ -4,8 +4,10 @@ import { notFound } from "next/navigation";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { PriceDisplay } from "@/components/price-display";
 import { ProductGallery } from "@/components/product-gallery";
+import { FormattedText } from "@/components/formatted-text";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { descriptionToPlainText } from "@/lib/formatted-text";
 import { getSalePercent, isOnSale } from "@/lib/pricing";
 import { getProductBySlug, getProductSlugs } from "@/lib/products";
 import { buildWhatsAppUrlStatic } from "@/lib/whatsapp";
@@ -25,10 +27,11 @@ export async function generateMetadata({ params }: ProductPageProps) {
     return { title: "Product Not Found" };
   }
 
+  const fromBody = descriptionToPlainText(product.description).slice(0, 160);
   const description =
     product.shortDescription ??
-    product.description?.slice(0, 160) ??
-    `${product.title} — luxury lighting by Chandelier Solderie`;
+    (fromBody ||
+      `${product.title} — luxury lighting by Chandelier Solderie`);
 
   return {
     title: product.title,
@@ -147,11 +150,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </p>
               ) : null}
 
-              {product.description ? (
-                <p className="mt-5 font-serif text-base leading-[1.8] text-muted">
-                  {product.description}
-                </p>
-              ) : null}
+              <FormattedText
+                value={product.description}
+                className="mt-5 font-serif text-base leading-[1.8] text-muted"
+              />
 
               <div className="mt-9 space-y-3">
                 <AddToCartButton

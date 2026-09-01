@@ -108,8 +108,9 @@ export const product = defineType({
     defineField({
       name: "description",
       title: "Description",
-      type: "text",
-      rows: 6,
+      type: "formattedText",
+      description:
+        "Select a phrase, then use Bold, Italic, or Underline in the toolbar.",
     }),
     defineField({
       name: "category",
