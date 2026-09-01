@@ -28,8 +28,9 @@ export function markCatalogueRestore() {
 
 function shouldRestoreCatalogue() {
   return (
-    sessionStorage.getItem(POP_KEY) === "1" ||
-    sessionStorage.getItem(RESTORE_KEY) === "1"
+    sessionStorage.getItem(FREEZE_KEY) === "1" ||
+    sessionStorage.getItem(RESTORE_KEY) === "1" ||
+    sessionStorage.getItem(POP_KEY) === "1"
   );
 }
 
@@ -64,38 +65,65 @@ function applyScroll(y: number) {
   window.scrollTo(0, y);
 }
 
+function linkUrl(link: Element) {
+  const href = link.getAttribute("href");
+  if (!href) return null;
+  try {
+    return new URL(href, window.location.href);
+  } catch {
+    return null;
+  }
+}
+
+function handleCatalogueIntent(event: Event) {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+  const link = target.closest("a[href]");
+  if (!link) return;
+  const url = linkUrl(link);
+  if (!url || url.origin !== window.location.origin) return;
+
+  if (link.hasAttribute("data-restore-catalogue")) {
+    snapshotCatalogueScroll();
+    sessionStorage.setItem(RESTORE_KEY, "1");
+    return;
+  }
+
+  if (isCataloguePath(url.pathname)) {
+    clearRestoreFlags();
+    return;
+  }
+
+  if (isProductPath(url.pathname) && isCataloguePath(window.location.pathname)) {
+    snapshotCatalogueScroll();
+    sessionStorage.setItem(FREEZE_KEY, "1");
+  }
+}
+
 function installGlobalListeners() {
   if (window.__csCatalogueScrollInstalled) return;
   window.__csCatalogueScrollInstalled = true;
   window.history.scrollRestoration = "manual";
 
-  window.addEventListener("popstate", () => {
-    sessionStorage.setItem(POP_KEY, "1");
-  });
+  window.addEventListener(
+    "popstate",
+    () => {
+      sessionStorage.setItem(POP_KEY, "1");
+    },
+    true,
+  );
 
-  const freezeIfProductLink = (event: Event) => {
-    const target = event.target;
-    if (!(target instanceof Element)) return;
-    const link = target.closest("a[href]");
-    if (!link) return;
-    let url: URL;
-    try {
-      url = new URL(link.getAttribute("href") ?? "", window.location.href);
-    } catch {
-      return;
-    }
-    if (url.origin !== window.location.origin) return;
-    if (
-      isProductPath(url.pathname) &&
-      isCataloguePath(window.location.pathname)
-    ) {
-      snapshotCatalogueScroll();
-      sessionStorage.setItem(FREEZE_KEY, "1");
-    }
-  };
+  const navigation = window.navigation;
+  if (navigation) {
+    navigation.addEventListener("navigate", (event) => {
+      if (event.navigationType === "traverse") {
+        sessionStorage.setItem(POP_KEY, "1");
+      }
+    });
+  }
 
-  window.addEventListener("pointerdown", freezeIfProductLink, true);
-  window.addEventListener("click", freezeIfProductLink, true);
+  window.addEventListener("pointerdown", handleCatalogueIntent, true);
+  window.addEventListener("click", handleCatalogueIntent, true);
 }
 
 export function CatalogueScroll() {
@@ -112,9 +140,7 @@ export function CatalogueScroll() {
   useEffect(() => {
     installGlobalListeners();
 
-    if (!isCataloguePath(pathname)) {
-      return;
-    }
+    if (!isCataloguePath(pathname)) return;
 
     sessionStorage.setItem(CATALOGUE_HREF_KEY, `${pathname}${search}`);
 
@@ -123,8 +149,7 @@ export function CatalogueScroll() {
     const y = savedScrollFor(pathname);
 
     const save = () => {
-      if (restoring || userMoved) return;
-      if (sessionStorage.getItem(FREEZE_KEY) === "1") return;
+      if (restoring) return;
       if (window.location.pathname !== pathname) return;
       snapshotCatalogueScroll();
     };
@@ -141,29 +166,38 @@ export function CatalogueScroll() {
       applyScroll(y);
     };
 
-    if (restoring) apply();
-
     window.addEventListener("scroll", save, { passive: true });
     window.addEventListener("pagehide", save);
     window.addEventListener("wheel", markUserMoved, { passive: true });
     window.addEventListener("touchmove", markUserMoved, { passive: true });
 
-    const raf = restoring ? requestAnimationFrame(apply) : 0;
-    const interval = restoring ? window.setInterval(apply, 50) : 0;
-    const finish =
-      restoring
-        ? window.setTimeout(() => {
-            apply();
-            restoring = false;
-            clearRestoreFlags();
-          }, 1000)
-        : 0;
+    if (!restoring) {
+      return () => {
+        window.removeEventListener("scroll", save);
+        window.removeEventListener("pagehide", save);
+        window.removeEventListener("wheel", markUserMoved);
+        window.removeEventListener("touchmove", markUserMoved);
+      };
+    }
+
+    apply();
+    let raf = 0;
+    const tick = () => {
+      apply();
+      if (restoring && !userMoved) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    const finish = window.setTimeout(() => {
+      apply();
+      restoring = false;
+      clearRestoreFlags();
+    }, 1500);
 
     return () => {
       restoring = false;
-      if (raf) cancelAnimationFrame(raf);
-      if (interval) window.clearInterval(interval);
-      if (finish) window.clearTimeout(finish);
+      cancelAnimationFrame(raf);
+      window.clearTimeout(finish);
       window.removeEventListener("scroll", save);
       window.removeEventListener("pagehide", save);
       window.removeEventListener("wheel", markUserMoved);
@@ -177,5 +211,11 @@ export function CatalogueScroll() {
 declare global {
   interface Window {
     __csCatalogueScrollInstalled?: boolean;
+    navigation?: {
+      addEventListener: (
+        type: "navigate",
+        listener: (event: { navigationType: string }) => void,
+      ) => void;
+    };
   }
 }

@@ -16,6 +16,7 @@ export function BackToCollection({ className }: { className?: string }) {
     <Link
       href={href}
       scroll={false}
+      data-restore-catalogue=""
       className={className}
       onNavigate={() => {
         markCatalogueRestore();

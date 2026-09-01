@@ -35,12 +35,12 @@ export function StorefrontShell({ children }: { children: ReactNode }) {
   return (
     <div className={`${fontClass} min-h-full font-serif`}>
       <CartProvider>
-        <Suspense fallback={null}>
-          <CatalogueScroll />
-        </Suspense>
         <div className="pb-[var(--cs-mobile-nav-height)] md:pb-0">
           {children}
         </div>
+        <Suspense fallback={null}>
+          <CatalogueScroll />
+        </Suspense>
         <MobileBottomNav />
         <FloatingWhatsApp />
         <CartDrawer />
