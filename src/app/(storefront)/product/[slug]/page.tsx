@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
+import { BackToCollection } from "@/components/back-to-collection";
 import { FormattedText } from "@/components/formatted-text";
 import { ProductGallery } from "@/components/product-gallery";
 import { ProductPurchase } from "@/components/product-purchase";
@@ -91,15 +92,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       <main className="relative mx-auto max-w-[1240px] px-3 pb-12 pt-[calc(var(--cs-header-height)+0.25rem)] sm:px-6 sm:pb-16">
         <header className="mb-3 sm:mb-4">
-          <Link
-            href="/shop"
-            className="inline-flex min-h-9 items-center gap-2 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-muted transition hover:text-gold-bright"
-          >
-            <span aria-hidden className="text-gold">
-              ←
-            </span>
-            The Collection
-          </Link>
+          <BackToCollection className="inline-flex min-h-9 items-center gap-2 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-muted transition hover:text-gold-bright" />
         </header>
 
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
