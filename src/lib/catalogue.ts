@@ -23,11 +23,17 @@ function first(value: string | string[] | undefined) {
   return value;
 }
 
+function all(value: string | string[] | undefined) {
+  if (!value) return [];
+  const list = Array.isArray(value) ? value : [value];
+  return [...new Set(list.map((item) => item.trim()).filter(Boolean))];
+}
+
 export function parseCatalogueParams(searchParams: CatalogueSearchValues) {
   const filters: ActiveFilters = {};
   for (const key of CATALOGUE_FILTER_KEYS) {
-    const value = first(searchParams[key]);
-    if (value) filters[key] = value;
+    const values = all(searchParams[key]);
+    if (values.length > 0) filters[key] = values;
   }
 
   const searchQuery = first(searchParams.q)?.trim() ?? "";
@@ -62,8 +68,10 @@ export function catalogueQueryString(options: {
 }) {
   const params = new URLSearchParams();
 
-  for (const [key, value] of Object.entries(options.filters)) {
-    if (value) params.set(key, value);
+  for (const [key, values] of Object.entries(options.filters)) {
+    for (const value of values ?? []) {
+      if (value) params.append(key, value);
+    }
   }
   if (options.searchQuery) params.set("q", options.searchQuery);
   if (options.page && options.page > 1) params.set("page", String(options.page));

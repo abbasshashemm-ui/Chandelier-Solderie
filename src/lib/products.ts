@@ -4,7 +4,26 @@ import { MOCK_PRODUCTS, getMockProductBySlug } from "./mock-products";
 import { PRODUCTS_QUERY, PRODUCT_BY_SLUG_QUERY } from "./sanity.queries";
 import { sanityClient, isSanityConfigured } from "./sanity.client";
 import { slugify } from "./slug";
-import type { Product } from "./types";
+import type { Product, ProductSize } from "./types";
+
+function resolveSizes(sizes: ProductSize[] | undefined): ProductSize[] | undefined {
+  if (!sizes?.length) return undefined;
+
+  const resolved = sizes
+    .filter(
+      (size) =>
+        Boolean(size.label?.trim()) &&
+        typeof size.price === "number" &&
+        !Number.isNaN(size.price),
+    )
+    .map((size, index) => ({
+      ...size,
+      label: size.label.trim(),
+      _key: size._key || `size-${index}`,
+    }));
+
+  return resolved.length > 0 ? resolved : undefined;
+}
 
 function resolveCollection(product: Product): Product {
   const collectionTitle = product.collectionTitle ?? product.category;
@@ -17,6 +36,7 @@ function resolveCollection(product: Product): Product {
     slug: product.slug || slugify(product.title),
     collectionTitle,
     collectionSlug,
+    sizes: resolveSizes(product.sizes),
   };
 }
 

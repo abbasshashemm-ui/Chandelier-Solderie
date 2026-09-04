@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getProductMetaLine } from "@/lib/filters";
-import { getSalePercent, isOnSale } from "@/lib/pricing";
+import { getSalePercent, getStartingPrice, isOnSale } from "@/lib/pricing";
 import type { Product } from "@/lib/types";
 import { PriceDisplay } from "./price-display";
 
@@ -12,7 +12,8 @@ type ProductCardProps = {
 
 export function ProductCard({ product, priority = false }: ProductCardProps) {
   const meta = getProductMetaLine(product);
-  const salePercent = getSalePercent(product);
+  const priced = { ...product, ...getStartingPrice(product) };
+  const salePercent = getSalePercent(priced);
   const showSale = isOnSale(product);
 
   return (
@@ -82,7 +83,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         </h3>
 
         <div className="mt-auto flex shrink-0 items-end justify-between gap-2 pt-2">
-          {product.price != null ? (
+          {priced.price != null ? (
             <PriceDisplay product={product} />
           ) : (
             <span className="block h-5" aria-hidden />

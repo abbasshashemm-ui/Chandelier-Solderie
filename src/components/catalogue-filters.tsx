@@ -40,8 +40,12 @@ export function CatalogueFilters({
 
   const handleFilterChange = (key: FilterKey, value: string) => {
     replaceParams((params) => {
-      if (value) params.set(key, value);
-      else params.delete(key);
+      const selected = params.getAll(key);
+      params.delete(key);
+      const next = selected.includes(value)
+        ? selected.filter((item) => item !== value)
+        : [...selected, value];
+      for (const item of next) params.append(key, item);
     });
   };
 
