@@ -1,16 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { CATALOGUE_HREF_KEY, markCatalogueRestore } from "./catalogue-scroll";
 
-export function BackToCollection({ className }: { className?: string }) {
-  const [href, setHref] = useState("/shop");
+function subscribe() {
+  return () => undefined;
+}
 
-  useEffect(() => {
-    const saved = sessionStorage.getItem(CATALOGUE_HREF_KEY);
-    if (saved) setHref(saved);
-  }, []);
+function getCatalogueHref() {
+  return sessionStorage.getItem(CATALOGUE_HREF_KEY) || "/shop";
+}
+
+function getServerCatalogueHref() {
+  return "/shop";
+}
+
+export function BackToCollection({ className }: { className?: string }) {
+  const href = useSyncExternalStore(
+    subscribe,
+    getCatalogueHref,
+    getServerCatalogueHref,
+  );
 
   return (
     <Link
