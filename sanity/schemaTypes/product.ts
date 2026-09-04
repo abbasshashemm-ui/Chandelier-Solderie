@@ -1,5 +1,9 @@
 import { defineField, defineType } from "sanity";
 import { AutoSlugInput, HiddenSlugField } from "../../src/sanity/auto-slug-input";
+import {
+  FormattedTextField,
+  FormattedTextInput,
+} from "../../src/sanity/formatted-text-input";
 
 export const product = defineType({
   name: "product",
@@ -168,7 +172,13 @@ export const product = defineType({
       name: "description",
       title: "Description",
       type: "text",
-      rows: 6,
+      rows: 8,
+      description:
+        "Select a phrase, then use Bold, Italic, or Underline. Existing text is kept.",
+      components: {
+        field: FormattedTextField,
+        input: FormattedTextInput,
+      },
     }),
     defineField({
       name: "category",

@@ -1,10 +1,13 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
+import { BackToCollection } from "@/components/back-to-collection";
+import { FormattedText } from "@/components/formatted-text";
 import { ProductGallery } from "@/components/product-gallery";
 import { ProductPurchase } from "@/components/product-purchase";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { descriptionToPlainText } from "@/lib/formatted-text";
 import {
   getSalePercent,
   getSizeLabels,
@@ -28,10 +31,11 @@ export async function generateMetadata({ params }: ProductPageProps) {
     return { title: "Product Not Found" };
   }
 
+  const fromBody = descriptionToPlainText(product.description).slice(0, 160);
   const description =
     product.shortDescription ??
-    product.description?.slice(0, 160) ??
-    `${product.title} — luxury lighting by Chandelier Solderie`;
+    (fromBody ||
+      `${product.title} — luxury lighting by Chandelier Solderie`);
 
   return {
     title: product.title,
@@ -88,15 +92,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       <main className="relative mx-auto w-full min-w-0 max-w-[1240px] px-3 pb-12 pt-[calc(var(--cs-header-height)+0.25rem)] sm:px-6 sm:pb-16">
         <header className="mb-3 sm:mb-4">
-          <Link
-            href="/shop"
-            className="inline-flex min-h-9 items-center gap-2 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-muted transition hover:text-gold-bright"
-          >
-            <span aria-hidden className="text-gold">
-              ←
-            </span>
-            The Collection
-          </Link>
+          <BackToCollection className="inline-flex min-h-9 items-center gap-2 font-sans text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-muted transition hover:text-gold-bright" />
         </header>
 
         <div className="grid min-w-0 gap-8 lg:grid-cols-12 lg:gap-12">
@@ -156,11 +152,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </p>
               ) : null}
 
-              {product.description ? (
-                <p className="mt-5 font-serif text-base leading-[1.8] text-muted">
-                  {product.description}
-                </p>
-              ) : null}
+              <FormattedText
+                value={product.description}
+                className="mt-5 font-serif text-base leading-[1.8] text-muted"
+              />
 
               <ProductPurchase product={product} origin={origin} />
 

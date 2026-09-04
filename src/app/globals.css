@@ -850,6 +850,27 @@ body::after {
   height: 0;
 }
 
+.product-description p + p {
+  margin-top: 0.85em;
+}
+
+.product-description strong,
+.product-description b {
+  font-weight: 500;
+  color: var(--cs-ivory);
+}
+
+.product-description em,
+.product-description i {
+  font-style: italic;
+}
+
+.product-description u {
+  text-decoration: underline;
+  text-decoration-color: rgba(201, 163, 95, 0.55);
+  text-underline-offset: 0.18em;
+}
+
 /* ── Mobile / iOS polish ──────────────────────────────── */
 
 @media (max-width: 767px) {

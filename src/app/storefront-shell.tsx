@@ -1,10 +1,11 @@
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import localFont from "next/font/local";
 import { CartDrawer } from "@/components/cart-drawer";
 import { CartProvider } from "@/components/cart-provider";
+import { CatalogueScroll } from "@/components/catalogue-scroll";
 import { FloatingWhatsApp } from "@/components/floating-whatsapp";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import "./globals.css";
@@ -37,6 +38,9 @@ export function StorefrontShell({ children }: { children: ReactNode }) {
         <div className="pb-[var(--cs-mobile-nav-height)] md:pb-0">
           {children}
         </div>
+        <Suspense fallback={null}>
+          <CatalogueScroll />
+        </Suspense>
         <MobileBottomNav />
         <FloatingWhatsApp />
         <CartDrawer />

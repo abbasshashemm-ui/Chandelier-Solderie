@@ -1,3 +1,5 @@
+import type { FormattedTextValue } from "./formatted-text";
+
 export type FilterKey =
   | "style"
   | "material"
@@ -31,7 +33,7 @@ export type Product = {
   collectionSlug?: string;
   collectionTitle?: string;
   shortDescription?: string;
-  description?: string;
+  description?: FormattedTextValue;
   featured?: boolean;
   imageUrl?: string;
   imageLqip?: string;
