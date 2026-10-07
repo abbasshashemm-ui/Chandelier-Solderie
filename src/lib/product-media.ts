@@ -4,14 +4,14 @@ export function getProductVideoUrl(product: Product): string | undefined {
   return product.videoUrl || undefined;
 }
 
-export function getProductGalleryUrls(product: Product, count = 3): string[] {
-  if (product.galleryUrls?.length) {
-    return product.galleryUrls.filter(Boolean).slice(0, count);
-  }
+/**
+ * Main image first (so the product page always opens on the same picture as
+ * the listing card), then the gallery, skipping duplicates of the main image.
+ */
+export function getProductGalleryUrls(product: Product, count = 4): string[] {
+  const urls = [product.imageUrl, ...(product.galleryUrls ?? [])].filter(
+    (url): url is string => Boolean(url),
+  );
 
-  if (product.imageUrl) {
-    return [product.imageUrl];
-  }
-
-  return [];
+  return [...new Set(urls)].slice(0, count);
 }
