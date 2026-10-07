@@ -24,7 +24,7 @@ export const PRODUCTS_QUERY = `*[_type == "product"] | order(featured desc, _cre
   "imageAlt": coalesce(mainImage.alt, title)
 }`;
 
-export const PRODUCT_BY_SLUG_QUERY = `*[_type == "product" && slug.current == $slug][0] {
+export const PRODUCT_BY_ID_QUERY = `*[_type == "product" && _id == $id][0] {
   ${LISTING_FIELDS},
   shortDescription,
   description,

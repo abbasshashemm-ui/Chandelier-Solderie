@@ -1,7 +1,7 @@
 import { productBelongsToCollection } from "./collection-membership";
 import { sanityFetchOptions } from "./cache";
 import { MOCK_PRODUCTS, getMockProductBySlug } from "./mock-products";
-import { PRODUCTS_QUERY, PRODUCT_BY_SLUG_QUERY } from "./sanity.queries";
+import { PRODUCTS_QUERY, PRODUCT_BY_ID_QUERY } from "./sanity.queries";
 import { sanityClient, isSanityConfigured } from "./sanity.client";
 import { slugify } from "./slug";
 import type { Product } from "./types";
@@ -20,6 +20,26 @@ function resolveCollection(product: Product): Product {
   };
 }
 
+// Two products with the same title get the same Sanity slug. Give every
+// product in such a group a short, stable ID suffix so each has its own URL
+// (and cart line). Products with a unique slug keep their existing URL.
+function disambiguateSlugs(products: Product[]): Product[] {
+  const counts = new Map<string, number>();
+  for (const product of products) {
+    counts.set(product.slug, (counts.get(product.slug) ?? 0) + 1);
+  }
+
+  return products.map((product) => {
+    if ((counts.get(product.slug) ?? 0) < 2) return product;
+    const suffix = product._id
+      .replace(/^drafts\./, "")
+      .replace(/[^a-z0-9]/gi, "")
+      .slice(-6)
+      .toLowerCase();
+    return { ...product, slug: `${product.slug}-${suffix}` };
+  });
+}
+
 export async function getProducts(): Promise<Product[]> {
   if (!isSanityConfigured) {
     return MOCK_PRODUCTS;
@@ -29,7 +49,7 @@ export async function getProducts(): Promise<Product[]> {
     const products =
       (await sanityClient.fetch<Product[]>(PRODUCTS_QUERY, {}, sanityFetchOptions)) ??
       [];
-    return products.map(resolveCollection);
+    return disambiguateSlugs(products.map(resolveCollection));
   } catch {
     return MOCK_PRODUCTS;
   }
@@ -51,15 +71,18 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   }
 
   try {
+    // Resolve through the (slug-disambiguated) list so duplicate titles open
+    // the right product, then load that product's full details by ID.
+    const products = await getProducts();
+    const match = products.find((item) => item.slug === slug);
+    if (!match) return null;
+
     const product = await sanityClient.fetch<Product | null>(
-      PRODUCT_BY_SLUG_QUERY,
-      { slug },
+      PRODUCT_BY_ID_QUERY,
+      { id: match._id },
       sanityFetchOptions,
     );
-    if (product) return resolveCollection(product);
-
-    const products = await getProducts();
-    return products.find((item) => item.slug === slug) ?? null;
+    return product ? { ...resolveCollection(product), slug: match.slug } : match;
   } catch {
     return getMockProductBySlug(slug);
   }
