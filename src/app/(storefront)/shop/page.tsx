@@ -1,7 +1,7 @@
 import { Suspense } from "react";
+import { CatalogueClient } from "@/components/catalogue-client";
 import { CatalogueView } from "@/components/catalogue-view";
-import { CatalogueLoading } from "@/components/catalogue-loading";
-import { parseCatalogueParams, paginateProducts } from "@/lib/catalogue";
+import { paginateProducts } from "@/lib/catalogue";
 import { getFilterDefinitions } from "@/lib/filters";
 import { getProducts } from "@/lib/products";
 
@@ -13,37 +13,36 @@ export const metadata = {
 
 export const revalidate = 3600;
 
-type ShopPageProps = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
-
-export default async function ShopPage({ searchParams }: ShopPageProps) {
-  const [products, params] = await Promise.all([
-    getProducts(),
-    searchParams,
-  ]);
-  const { filters, searchQuery, currentPage } = parseCatalogueParams(params);
-  const { filtered, totalPages, safePage, pageItems } = paginateProducts(
-    products,
-    filters,
-    searchQuery,
-    currentPage,
-  );
+export default async function ShopPage() {
+  const products = await getProducts();
+  const filterGroups = getFilterDefinitions(products);
+  const initial = paginateProducts(products, {}, "", 1);
 
   return (
     <div className="page-shell min-h-screen">
-      <Suspense fallback={<CatalogueLoading title="The Collection" />}>
-        <CatalogueView
+      {/* Filters live in the URL and are applied in the browser, so the page
+          itself stays static. The fallback is the unfiltered first page. */}
+      <Suspense
+        fallback={
+          <CatalogueView
+            title="The Collection"
+            pathname="/shop"
+            pageItems={initial.pageItems}
+            totalCount={initial.filtered.length}
+            totalPages={initial.totalPages}
+            currentPage={initial.safePage}
+            filters={{}}
+            filterGroups={filterGroups}
+            searchQuery=""
+            isEmpty={products.length === 0}
+          />
+        }
+      >
+        <CatalogueClient
           title="The Collection"
           pathname="/shop"
-          pageItems={pageItems}
-          totalCount={filtered.length}
-          totalPages={totalPages}
-          currentPage={safePage}
-          filters={filters}
-          filterGroups={getFilterDefinitions(products)}
-          searchQuery={searchQuery}
-          isEmpty={products.length === 0}
+          products={products}
+          filterGroups={filterGroups}
         />
       </Suspense>
     </div>
