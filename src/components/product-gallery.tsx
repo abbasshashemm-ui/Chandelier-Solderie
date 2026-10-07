@@ -22,7 +22,7 @@ const thumbBase =
   "group/thumb relative size-[4.75rem] shrink-0 snap-center overflow-hidden border bg-ink-deep transition duration-500 sm:size-[5.75rem] md:size-[6.5rem]";
 
 export function ProductGallery({ product }: ProductGalleryProps) {
-  const galleryUrls = getProductGalleryUrls(product, 3);
+  const galleryUrls = getProductGalleryUrls(product);
   const videoUrl = getProductVideoUrl(product);
   const poster = galleryUrls[0] ?? product.imageUrl ?? "";
 
