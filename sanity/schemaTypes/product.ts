@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { AutoSlugInput, HiddenSlugField } from "../../src/sanity/auto-slug-input";
+import { warnDuplicateSku, warnDuplicateTitle } from "../validation";
 
 export const product = defineType({
   name: "product",
@@ -10,7 +11,10 @@ export const product = defineType({
       name: "title",
       title: "Title",
       type: "string",
-      validation: (rule) => rule.required(),
+      validation: (rule) => [
+        rule.required(),
+        rule.custom(warnDuplicateTitle).warning(),
+      ],
     }),
     defineField({
       name: "slug",
@@ -27,7 +31,12 @@ export const product = defineType({
         input: AutoSlugInput,
       },
     }),
-    defineField({ name: "sku", title: "SKU", type: "string" }),
+    defineField({
+      name: "sku",
+      title: "SKU",
+      type: "string",
+      validation: (rule) => rule.custom(warnDuplicateSku).warning(),
+    }),
     defineField({ name: "price", title: "Price (USD)", type: "number" }),
     defineField({
       name: "compareAtPrice",
