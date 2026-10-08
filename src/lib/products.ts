@@ -4,17 +4,39 @@ import { MOCK_PRODUCTS, getMockProductBySlug } from "./mock-products";
 import { PRODUCTS_QUERY, PRODUCT_BY_ID_QUERY } from "./sanity.queries";
 import { sanityClient, isSanityConfigured } from "./sanity.client";
 import { slugify } from "./slug";
+import { cleanDescription } from "./text";
 import type { Product } from "./types";
 
+const CARD_IMAGE_PARAMS = "?w=800&fit=max&auto=format&q=75";
+const DETAIL_IMAGE_PARAMS = "?w=1200&fit=max&auto=format&q=75";
+
+// Second photo shown when hovering a card: the first gallery image that is not
+// the main image itself.
+function pickHoverImage(product: Product): string | undefined {
+  const mainBase = product.imageUrl?.split("?")[0];
+  const candidate = product.hoverCandidates?.find(
+    (url): url is string => Boolean(url) && url !== mainBase,
+  );
+  return candidate ? `${candidate}${CARD_IMAGE_PARAMS}` : undefined;
+}
+
 function resolveCollection(product: Product): Product {
+  const { hoverCandidates, ...rest } = product;
+  void hoverCandidates;
   const collectionTitle = product.collectionTitle ?? product.category;
   const collectionSlug =
     product.collectionSlug ??
     (collectionTitle ? slugify(collectionTitle) : undefined);
 
   return {
-    ...product,
+    ...rest,
+    hoverImageUrl: pickHoverImage(product),
+    galleryUrls: product.galleryUrls
+      ?.filter((url): url is string => Boolean(url))
+      .map((url) => `${url}${DETAIL_IMAGE_PARAMS}`),
     slug: product.slug || slugify(product.title),
+    shortDescription: cleanDescription(product.shortDescription),
+    description: cleanDescription(product.description),
     collectionTitle,
     collectionSlug,
   };

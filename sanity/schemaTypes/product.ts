@@ -72,7 +72,7 @@ export const product = defineType({
         accept: "video/*",
       },
       description:
-        "Optional. The listing still shows the main image; this video autoplays when the product page opens.",
+        "Optional. The listing still shows the main image; this video autoplays when the product page opens. Keep it short (under ~30 seconds) and under ~5 MB — large videos slow the page down.",
     }),
     defineField({
       name: "style",

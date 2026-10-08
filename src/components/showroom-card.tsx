@@ -1,6 +1,7 @@
 import { SanityImage } from "./sanity-image";
 import { buildGeneralWhatsAppUrl, siteContact } from "@/lib/site-contact";
 import type { SiteSettings } from "@/lib/types";
+import { MapEmbed } from "./map-embed";
 import { MapPinIcon, WhatsAppIcon } from "./social-icons";
 
 type ShowroomCardProps = {
@@ -27,12 +28,11 @@ export function ShowroomCard({ showroom }: ShowroomCardProps) {
 
         <div className="grid gap-4 lg:grid-cols-2 lg:gap-6">
           <div className="showroom-map relative min-h-[17rem] overflow-hidden border border-line bg-ink-deep lg:min-h-[22rem]">
-            <iframe
+            <MapEmbed
               title={`Map to ${address}`}
-              src={`https://www.google.com/maps?q=${encoded}&output=embed`}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="absolute inset-0 h-full w-full border-0"
+              embedSrc={`https://www.google.com/maps?q=${encoded}&output=embed`}
+              address={address}
+              directionsHref={`https://www.google.com/maps/search/?api=1&query=${encoded}`}
             />
           </div>
 

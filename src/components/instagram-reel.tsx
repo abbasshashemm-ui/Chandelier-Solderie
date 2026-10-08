@@ -47,8 +47,7 @@ export function InstagramReel({ src, poster }: InstagramReelProps) {
       muted
       loop
       playsInline
-      autoPlay
-      preload="metadata"
+      preload="none"
       disablePictureInPicture
       className="pointer-events-none absolute inset-0 h-full w-full object-cover object-[center_32%]"
       aria-hidden
