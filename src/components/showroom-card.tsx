@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { SanityImage } from "./sanity-image";
 import { buildGeneralWhatsAppUrl, siteContact } from "@/lib/site-contact";
 import type { SiteSettings } from "@/lib/types";
 import { MapPinIcon, WhatsAppIcon } from "./social-icons";
@@ -60,7 +60,7 @@ export function ShowroomCard({ showroom }: ShowroomCardProps) {
                     key={photo.imageUrl}
                     className="group relative aspect-[4/3] overflow-hidden border border-line bg-ink-deep"
                   >
-                    <Image
+                    <SanityImage
                       src={photo.imageUrl}
                       alt={photo.imageAlt ?? `Showroom view ${index + 1}`}
                       fill

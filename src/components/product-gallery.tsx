@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SanityImage } from "./sanity-image";
 import {
   useCallback,
   useEffect,
@@ -104,7 +104,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
               poster={active.poster || undefined}
             />
           ) : active?.kind === "image" ? (
-            <Image
+            <SanityImage
               src={active.url}
               alt={active.alt}
               fill
@@ -148,7 +148,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
                 {item.kind === "video" ? (
                   <>
                     {item.poster ? (
-                      <Image
+                      <SanityImage
                         src={item.poster}
                         alt=""
                         fill
@@ -163,7 +163,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
                     </span>
                   </>
                 ) : (
-                  <Image
+                  <SanityImage
                     src={item.url}
                     alt={item.alt}
                     fill

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { SanityImage } from "./sanity-image";
 import Link from "next/link";
 import { getProductMetaLine } from "@/lib/filters";
 import { getSalePercent, isOnSale } from "@/lib/pricing";
@@ -23,7 +23,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       >
         {product.imageUrl ? (
           <div className="absolute inset-0 transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]">
-            <Image
+            <SanityImage
               src={product.imageUrl}
               alt={product.imageAlt ?? product.title}
               fill

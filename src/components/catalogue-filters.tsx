@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useTransition, type ReactNode } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import type { ActiveFilters } from "@/lib/filters";
 import type { FilterKey, FilterOption } from "@/lib/types";
 import { FilterSidebar } from "./filter-sidebar";
@@ -20,12 +20,11 @@ export function CatalogueFilters({
 }: CatalogueFiltersProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
 
   const replaceParams = useCallback(
     (mutate: (params: URLSearchParams) => void) => {
-      const params = new URLSearchParams(searchParams.toString());
+      const params = new URLSearchParams(window.location.search);
       mutate(params);
       params.delete("page");
       const query = params.toString();
@@ -35,7 +34,7 @@ export function CatalogueFilters({
         });
       });
     },
-    [pathname, router, searchParams, startTransition],
+    [pathname, router, startTransition],
   );
 
   const handleFilterChange = (key: FilterKey, value: string) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SanityImage } from "./sanity-image";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
@@ -90,7 +90,7 @@ export function CartDrawer() {
                   >
                     <div className="relative size-20 shrink-0 overflow-hidden bg-ink-deep">
                       {item.imageUrl ? (
-                        <Image
+                        <SanityImage
                           src={item.imageUrl}
                           alt=""
                           fill

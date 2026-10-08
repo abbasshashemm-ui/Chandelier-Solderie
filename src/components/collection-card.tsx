@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { SanityImage } from "./sanity-image";
 import Link from "next/link";
 import type { Collection } from "@/lib/types";
 
@@ -20,7 +20,7 @@ export function CollectionCard({
         className="relative block aspect-[4/5] overflow-hidden sm:aspect-square"
       >
         {collection.imageUrl ? (
-          <Image
+          <SanityImage
             src={collection.imageUrl}
             alt={collection.imageAlt ?? collection.title}
             fill
