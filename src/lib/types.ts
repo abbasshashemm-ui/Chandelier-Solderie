@@ -23,6 +23,8 @@ export type Product = {
   collectionTitle?: string;
   shortDescription?: string;
   description?: string;
+  hoverCandidates?: (string | null)[];
+  hoverImageUrl?: string;
   featured?: boolean;
   imageUrl?: string;
   imageLqip?: string;

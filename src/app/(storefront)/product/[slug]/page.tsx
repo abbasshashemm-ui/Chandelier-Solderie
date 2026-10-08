@@ -6,8 +6,11 @@ import { PriceDisplay } from "@/components/price-display";
 import { ProductGallery } from "@/components/product-gallery";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { MapPinIcon, WhatsAppIcon } from "@/components/social-icons";
 import { getSalePercent, isOnSale } from "@/lib/pricing";
 import { getProductBySlug, getProductSlugs } from "@/lib/products";
+import { siteContact } from "@/lib/site-contact";
+import { toParagraphs } from "@/lib/text";
 import { buildWhatsAppUrlStatic } from "@/lib/whatsapp";
 
 export const revalidate = 3600;
@@ -147,11 +150,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </p>
               ) : null}
 
-              {product.description ? (
-                <p className="mt-5 font-serif text-base leading-[1.8] text-muted">
-                  {product.description}
+              {toParagraphs(product.description).map((paragraph, index) => (
+                <p
+                  key={index}
+                  className="mt-5 whitespace-pre-line font-serif text-[1.0625rem] leading-[1.85] text-ivory/80 sm:text-lg"
+                >
+                  {paragraph}
                 </p>
-              ) : null}
+              ))}
 
               <div className="mt-9 space-y-3">
                 <AddToCartButton
@@ -176,6 +182,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   Continue Through the Collection
                 </Link>
               </div>
+
+              <ul className="mt-6 space-y-2.5 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-muted">
+                <li className="flex items-start gap-2.5">
+                  <MapPinIcon className="mt-px size-3.5 shrink-0 text-gold" />
+                  Visit our showroom — {siteContact.location}
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <WhatsAppIcon className="mt-px size-3.5 shrink-0 text-gold" />
+                  Questions? Message us on WhatsApp
+                </li>
+              </ul>
 
               <div className="mt-11">
                 <p className="mb-3 font-sans text-[0.625rem] uppercase tracking-[0.22em] text-gold">

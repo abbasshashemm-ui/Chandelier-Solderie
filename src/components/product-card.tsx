@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getProductMetaLine } from "@/lib/filters";
 import { getSalePercent, isOnSale } from "@/lib/pricing";
 import type { Product } from "@/lib/types";
+import { CardHoverImage } from "./card-hover-image";
 import { PriceDisplay } from "./price-display";
 
 type ProductCardProps = {
@@ -19,7 +20,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     <article className="group relative flex h-full flex-col overflow-hidden border border-line bg-surface transition-colors duration-500 hover:border-line-strong">
       <Link
         href={`/product/${product.slug}`}
-        className="relative block aspect-[4/5] overflow-hidden bg-ink-deep sm:aspect-square"
+        className="relative block aspect-[4/5] overflow-hidden bg-gradient-to-br from-ink-deep to-surface sm:aspect-square"
       >
         {product.imageUrl ? (
           <div className="absolute inset-0 transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]">
@@ -33,6 +34,13 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               placeholder={product.imageLqip ? "blur" : "empty"}
               blurDataURL={product.imageLqip}
             />
+            {product.hoverImageUrl ? (
+              <CardHoverImage
+                src={product.hoverImageUrl}
+                alt=""
+                sizes="(max-width: 768px) 50vw, 25vw"
+              />
+            ) : null}
           </div>
         ) : (
           <div className="flex h-full items-center justify-center font-serif text-faint">
@@ -57,7 +65,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         </span>
 
         {showSale ? (
-          <span className="absolute left-3 top-3 border border-gold/50 bg-gold px-2.5 py-1 font-sans text-[0.5rem] uppercase tracking-[0.2em] text-ink">
+          <span className="absolute left-3 top-3 border border-gold/50 bg-gold px-3 py-1.5 font-sans text-[0.5625rem] font-semibold uppercase tracking-[0.2em] text-ink shadow-[0_4px_14px_rgba(0,0,0,0.35)]">
             {salePercent ? `−${salePercent}%` : "Sale"}
           </span>
         ) : product.featured ? (

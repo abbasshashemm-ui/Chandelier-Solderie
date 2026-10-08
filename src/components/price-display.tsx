@@ -19,7 +19,7 @@ export function PriceDisplay({ product, size = "card" }: PriceDisplayProps) {
         </p>
         <p className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1 font-serif tracking-wide">
           {original ? (
-            <span className="text-xl text-faint line-through decoration-gold/50 sm:text-2xl">
+            <span className="text-xl text-muted line-through decoration-gold/70 sm:text-2xl">
               {original}
             </span>
           ) : null}
@@ -32,11 +32,17 @@ export function PriceDisplay({ product, size = "card" }: PriceDisplayProps) {
   return (
     <p className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 font-serif tracking-wide">
       {original ? (
-        <span className="text-sm text-faint line-through decoration-gold/50 sm:text-base">
+        <span className="text-sm text-muted line-through decoration-gold/70 sm:text-base">
           {original}
         </span>
       ) : null}
-      <span className="text-base text-gold-bright sm:text-lg">{current}</span>
+      <span
+        className={`text-base text-gold-bright sm:text-lg ${
+          original ? "font-medium" : ""
+        }`}
+      >
+        {current}
+      </span>
     </p>
   );
 }

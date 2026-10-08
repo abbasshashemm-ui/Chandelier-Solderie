@@ -10,8 +10,14 @@ const SANITY_CDN = "https://cdn.sanity.io/";
  * from Sanity (already resized + auto-format) rather than routing them through
  * the Next.js optimizer a second time. Other sources use the default loader.
  */
-export function SanityImage(props: ImageProps) {
+export function SanityImage({ alt, ...props }: ImageProps) {
   const isSanity =
     typeof props.src === "string" && props.src.startsWith(SANITY_CDN);
-  return <Image {...props} loader={isSanity ? sanityImageLoader : undefined} />;
+  return (
+    <Image
+      {...props}
+      alt={alt}
+      loader={isSanity ? sanityImageLoader : undefined}
+    />
+  );
 }

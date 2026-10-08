@@ -19,6 +19,7 @@ const LISTING_FIELDS = `
 
 export const PRODUCTS_QUERY = `*[_type == "product"] | order(featured desc, _createdAt desc) {
   ${LISTING_FIELDS},
+  "hoverCandidates": gallery[0..1].asset->url,
   "imageUrl": select(defined(mainImage.asset->url) => mainImage.asset->url + "?w=800&fit=max&auto=format&q=75"),
   "imageLqip": mainImage.asset->metadata.lqip,
   "imageAlt": coalesce(mainImage.alt, title)
@@ -32,7 +33,7 @@ export const PRODUCT_BY_ID_QUERY = `*[_type == "product" && _id == $id][0] {
   "imageUrl": select(defined(mainImage.asset->url) => mainImage.asset->url + "?w=1200&fit=max&auto=format&q=75"),
   "imageLqip": mainImage.asset->metadata.lqip,
   "imageAlt": coalesce(mainImage.alt, title),
-  "galleryUrls": gallery[].asset->url + "?w=1200&fit=max&auto=format&q=75"
+  "galleryUrls": gallery[defined(asset)].asset->url
 }`;
 
 export const PRODUCT_SLUGS_QUERY = `*[_type == "product" && defined(slug.current)][].slug.current`;
