@@ -850,6 +850,10 @@ body::after {
   height: 0;
 }
 
+.product-description {
+  overflow-wrap: anywhere;
+}
+
 .product-description p + p {
   margin-top: 0.85em;
 }
@@ -908,5 +912,49 @@ body::after {
   select,
   textarea {
     font-size: 16px;
+  }
+}
+
+/* ── Touch devices: same look, cheaper to draw ─────────────
+   Phones and tablets repaint blurs, blend modes and looping animations on
+   every scroll frame, which makes scrolling stutter on mid-range devices.
+   Desktop (mouse/trackpad) is untouched. */
+
+@media (hover: none) and (pointer: coarse) {
+  /* Soft glows: the radial gradient already fades out, so drop the extra
+     blur pass and the blend mode. */
+  .cs-bloom {
+    filter: none;
+    mix-blend-mode: normal;
+  }
+
+  .hero-sway::before {
+    filter: none;
+  }
+
+  /* Frosted header/bottom bar: solid instead of a live background blur. */
+  .site-header {
+    background: rgba(13, 10, 8, 0.96);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .mobile-bottom-nav {
+    background: rgba(13, 10, 8, 0.97);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  [class*="backdrop-blur"] {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* Endless loops: keep the entrance animations, stop the ones that never
+     finish. */
+  .hero-sway,
+  .sale-ribbon__sheen,
+  .floating-whatsapp__pulse {
+    animation: none;
   }
 }

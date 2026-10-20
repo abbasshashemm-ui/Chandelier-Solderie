@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
+import { useSyncExternalStore, type ReactNode } from "react";
 import { CATALOGUE_HREF_KEY, markCatalogueRestore } from "./catalogue-scroll";
 
 function subscribe() {
@@ -16,7 +16,13 @@ function getServerCatalogueHref() {
   return "/shop";
 }
 
-export function BackToCollection({ className }: { className?: string }) {
+export function BackToCollection({
+  className,
+  children,
+}: {
+  className?: string;
+  children?: ReactNode;
+}) {
   const href = useSyncExternalStore(
     subscribe,
     getCatalogueHref,
@@ -33,10 +39,14 @@ export function BackToCollection({ className }: { className?: string }) {
         markCatalogueRestore();
       }}
     >
-      <span aria-hidden className="text-gold">
-        ←
-      </span>
-      The Collection
+      {children ?? (
+        <>
+          <span aria-hidden className="text-gold">
+            ←
+          </span>
+          The Collection
+        </>
+      )}
     </Link>
   );
 }

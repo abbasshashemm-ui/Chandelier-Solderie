@@ -105,7 +105,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </section>
 
-          <aside className="lg:col-span-5">
+          <aside className="min-w-0 [overflow-wrap:anywhere] lg:col-span-5">
             <div className="h-full lg:border-l lg:border-line lg:pl-10 xl:pl-12">
               <p className="font-castellar text-[0.6875rem] uppercase tracking-[0.3em] text-gold">
                 Chandelier Solderie
@@ -163,9 +163,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <ProductPurchase product={product} origin={origin} />
 
               <div className="mt-3">
-                <Link href="/shop" className="btn btn--ghost w-full">
+                <BackToCollection className="btn btn--ghost w-full">
                   Continue Through the Collection
-                </Link>
+                </BackToCollection>
               </div>
 
               <ul className="mt-6 space-y-2.5 font-sans text-[0.6875rem] uppercase tracking-[0.14em] text-muted">

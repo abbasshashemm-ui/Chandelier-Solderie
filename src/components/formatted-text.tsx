@@ -35,19 +35,30 @@ function renderSpans(spans: FormattedSpan[] | undefined, blockKey: string) {
 
   return spans.map((span, index) => (
     <span key={span._key ?? `${blockKey}-${index}`}>
-      {decorate(span.text ?? "", span.marks)}
+      {decorate(normalizeSpaces(span.text ?? ""), span.marks)}
     </span>
   ));
 }
 
-export function FormattedText({ value, className }: FormattedTextProps) {
-  if (!hasFormattedText(value)) return null;
+// Text pasted from WhatsApp/Word (or typed in the Studio editor) often uses
+// non-breaking spaces, which turn a whole sentence into one unbreakable
+// "word" that runs off the screen on phones.
+function normalizeSpaces(text: string) {
+  return text.replace(/\u00a0|&nbsp;/gi, " ");
+}
+
+export function FormattedText({ value: rawValue, className }: FormattedTextProps) {
+  if (!hasFormattedText(rawValue)) return null;
+
+  const value =
+    typeof rawValue === "string" ? normalizeSpaces(rawValue) : rawValue;
+  const wrapperClass = `product-description ${className ?? ""}`;
 
   if (typeof value === "string") {
     if (textHasMarkup(value)) {
       return (
         <div
-          className={`product-description ${className ?? ""}`}
+          className={wrapperClass}
           dangerouslySetInnerHTML={{
             __html: sanitizeDescriptionHtml(value),
           }}
@@ -56,7 +67,7 @@ export function FormattedText({ value, className }: FormattedTextProps) {
     }
 
     return (
-      <div className={className}>
+      <div className={wrapperClass}>
         {value.split(/\n+/).map((paragraph, index) => (
           <p key={index} className="[&:not(:first-child)]:mt-[0.85em]">
             {paragraph}
@@ -69,7 +80,7 @@ export function FormattedText({ value, className }: FormattedTextProps) {
   const blocks = Array.isArray(value) ? value : [];
 
   return (
-    <div className={className}>
+    <div className={wrapperClass}>
       {blocks.map((block, index) => (
         <p
           key={block._key ?? index}

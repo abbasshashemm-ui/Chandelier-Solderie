@@ -76,7 +76,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         ) : null}
       </Link>
 
-      <div className="mt-auto flex h-[7.25rem] shrink-0 flex-col border-t border-line px-4 py-4 sm:h-[7.5rem] sm:px-5 sm:py-5">
+      <div className="flex min-h-[7.25rem] flex-1 flex-col border-t border-line px-4 py-4 sm:min-h-[7.5rem] sm:px-5 sm:py-5">
         <p className="h-3 shrink-0 font-sans text-[0.5625rem] uppercase leading-none tracking-[0.2em] text-gold">
           {meta ?? "\u00A0"}
         </p>
@@ -90,7 +90,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </Link>
         </h3>
 
-        <div className="mt-auto flex shrink-0 items-end justify-between gap-2 pt-2">
+        <div className="mt-auto flex shrink-0 flex-wrap items-end justify-between gap-x-2 gap-y-1 pt-2">
           {priced.price != null ? (
             <PriceDisplay product={product} />
           ) : (
