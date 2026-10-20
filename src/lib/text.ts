@@ -28,7 +28,3 @@ export function cleanDescription(value?: string | null): string | undefined {
 
   return text || undefined;
 }
-
-export function toParagraphs(value?: string): string[] {
-  return value ? value.split(/\n{2,}/).map((part) => part.trim()).filter(Boolean) : [];
-}

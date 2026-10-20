@@ -1,9 +1,13 @@
-'use client'
+"use client";
 
+import { visionTool } from "@sanity/vision";
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
-import { visionTool } from "@sanity/vision";
 import { schemaTypes } from "./sanity/schemaTypes";
+import {
+  SimpleDeleteAction,
+  SimpleUnpublishAction,
+} from "./src/sanity/simple-document-actions";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "placeholder";
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
@@ -14,6 +18,9 @@ export default defineConfig({
   projectId,
   dataset,
   basePath: "/studio",
+  scheduledPublishing: { enabled: false },
+  releases: { enabled: false },
+  tasks: { enabled: false },
   plugins: [
     structureTool({
       structure: (S) =>
@@ -52,9 +59,17 @@ export default defineConfig({
               ),
           ]),
     }),
-    visionTool(),
+    ...(process.env.NODE_ENV === "development" ? [visionTool()] : []),
   ],
   schema: {
     types: schemaTypes,
+  },
+  document: {
+    actions: (prev) =>
+      prev.map((action) => {
+        if (action.action === "delete") return SimpleDeleteAction;
+        if (action.action === "unpublish") return SimpleUnpublishAction;
+        return action;
+      }),
   },
 });

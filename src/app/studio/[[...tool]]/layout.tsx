@@ -4,7 +4,14 @@ export default function StudioLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div data-cs-studio="" className="cs-studio">
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        height: "100%",
+        overflow: "hidden",
+      }}
+    >
       {children}
     </div>
   );

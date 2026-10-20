@@ -4,12 +4,19 @@ export type CartItem = {
   sku?: string;
   price?: number;
   imageUrl?: string;
+  size?: string;
   qty: number;
 };
 
 export type CartProduct = Omit<CartItem, "qty">;
 
 export const CART_STORAGE_KEY = "cs-cart";
+
+export const MAX_ITEM_QTY = 20;
+
+export function cartLineId(item: { slug: string; size?: string }) {
+  return item.size ? `${item.slug}::${item.size}` : item.slug;
+}
 
 export function parseCart(raw: string | null): CartItem[] {
   if (!raw) return [];
@@ -28,26 +35,32 @@ export function addToCart(
   product: CartProduct,
   qty = 1,
 ): CartItem[] {
-  const existing = items.find((item) => item.slug === product.slug);
+  const lineId = cartLineId(product);
+  const existing = items.find((item) => cartLineId(item) === lineId);
   if (existing) {
     return items.map((item) =>
-      item.slug === product.slug ? { ...item, qty: item.qty + qty } : item,
+      cartLineId(item) === lineId
+        ? { ...item, qty: Math.min(item.qty + qty, MAX_ITEM_QTY) }
+        : item,
     );
   }
-  return [...items, { ...product, qty }];
+  return [...items, { ...product, qty: Math.min(qty, MAX_ITEM_QTY) }];
 }
 
 export function setCartQty(
   items: CartItem[],
-  slug: string,
+  lineId: string,
   qty: number,
 ): CartItem[] {
-  if (qty <= 0) return items.filter((item) => item.slug !== slug);
-  return items.map((item) => (item.slug === slug ? { ...item, qty } : item));
+  if (qty <= 0) return items.filter((item) => cartLineId(item) !== lineId);
+  const capped = Math.min(qty, MAX_ITEM_QTY);
+  return items.map((item) =>
+    cartLineId(item) === lineId ? { ...item, qty: capped } : item,
+  );
 }
 
-export function removeFromCart(items: CartItem[], slug: string): CartItem[] {
-  return items.filter((item) => item.slug !== slug);
+export function removeFromCart(items: CartItem[], lineId: string): CartItem[] {
+  return items.filter((item) => cartLineId(item) !== lineId);
 }
 
 export function cartItemCount(items: CartItem[]) {

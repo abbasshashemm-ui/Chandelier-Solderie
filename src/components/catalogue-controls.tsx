@@ -18,10 +18,10 @@ export function CatalogueSearch({
       action={pathname}
       className="mb-8 flex max-w-md flex-col gap-2 sm:flex-row"
     >
-      {Object.entries(filters).map(([key, value]) =>
-        value ? (
-          <input key={key} type="hidden" name={key} value={value} />
-        ) : null,
+      {Object.entries(filters).flatMap(([key, values]) =>
+        (values ?? []).map((value) => (
+          <input key={`${key}-${value}`} type="hidden" name={key} value={value} />
+        )),
       )}
       <label htmlFor="catalogue-search" className="sr-only">
         Search products

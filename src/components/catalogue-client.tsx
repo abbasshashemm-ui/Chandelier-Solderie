@@ -27,9 +27,12 @@ export function CatalogueClient({
   const query = searchParams.toString();
 
   const view = useMemo(() => {
-    const parsed = parseCatalogueParams(
-      Object.fromEntries(new URLSearchParams(query)),
-    );
+    // Keep repeated keys (multi-select filters, e.g. ?style=A&style=B).
+    const values: Record<string, string[]> = {};
+    for (const [key, value] of new URLSearchParams(query)) {
+      (values[key] ??= []).push(value);
+    }
+    const parsed = parseCatalogueParams(values);
     return {
       ...parsed,
       ...paginateProducts(
