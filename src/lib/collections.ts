@@ -57,15 +57,18 @@ export async function getCollections(): Promise<Collection[]> {
       fetchSanityCollections(),
     ]);
     return withCounts(collections, products);
-  } catch {
-    const products = await getProducts();
-    return withCounts(MOCK_COLLECTIONS, products);
+  } catch (error) {
+    // Throwing keeps the last good page cached instead of showing demo items.
+    console.error("Failed to load collections from Sanity", error);
+    throw error;
   }
 }
 
 export async function getFeaturedCollections(limit = 8): Promise<Collection[]> {
   const collections = await getCollections();
-  const featured = collections.filter((collection) => collection.featured);
+  const featured = collections.filter(
+    (collection) => collection.featured || collection.promoRibbon?.enabled,
+  );
   const source = featured.length > 0 ? featured : collections;
   return source.slice(0, limit);
 }
@@ -88,8 +91,9 @@ export async function getCollectionBySlug(
       sanityFetchOptions,
     );
     return collection;
-  } catch {
-    return MOCK_COLLECTIONS.find((collection) => collection.slug === slug) ?? null;
+  } catch (error) {
+    console.error(`Failed to load collection "${slug}" from Sanity`, error);
+    throw error;
   }
 }
 

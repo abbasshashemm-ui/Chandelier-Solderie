@@ -11,7 +11,7 @@ export const metadata = {
     "Contact Chandelier Solderie for luxury lighting inquiries in Lebanon.",
 };
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export default async function InquirePage() {
   const settings = await getSiteSettings();

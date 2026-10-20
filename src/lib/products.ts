@@ -87,8 +87,10 @@ export async function getProducts(): Promise<Product[]> {
       (await sanityClient.fetch<Product[]>(PRODUCTS_QUERY, {}, sanityFetchOptions)) ??
       [];
     return disambiguateSlugs(products.map(resolveCollection));
-  } catch {
-    return MOCK_PRODUCTS;
+  } catch (error) {
+    // Throwing keeps the last good page cached instead of showing demo items.
+    console.error("Failed to load products from Sanity", error);
+    throw error;
   }
 }
 
@@ -120,8 +122,9 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
       sanityFetchOptions,
     );
     return product ? { ...resolveCollection(product), slug: match.slug } : match;
-  } catch {
-    return getMockProductBySlug(slug);
+  } catch (error) {
+    console.error(`Failed to load product "${slug}" from Sanity`, error);
+    throw error;
   }
 }
 

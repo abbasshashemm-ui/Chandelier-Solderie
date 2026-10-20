@@ -11,5 +11,8 @@ export const sanityClient = createClient({
   projectId: projectId || "placeholder",
   dataset,
   apiVersion,
-  useCdn: true,
+  // Next.js ISR is the cache; reading the live API means a publish shows up
+  // as soon as the page revalidates instead of waiting on Sanity's CDN too.
+  useCdn: false,
+  perspective: "published",
 });

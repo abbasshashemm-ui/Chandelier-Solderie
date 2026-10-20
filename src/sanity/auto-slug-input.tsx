@@ -16,7 +16,10 @@ export function AutoSlugInput(props: ObjectInputProps<SlugValue>) {
   const current = props.value?.current ?? "";
   const { onChange } = props;
   const onChangeRef = useRef(onChange);
-  onChangeRef.current = onChange;
+
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
 
   useEffect(() => {
     if (!next) {

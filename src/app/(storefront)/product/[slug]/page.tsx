@@ -17,8 +17,9 @@ import {
 } from "@/lib/pricing";
 import { getProductBySlug, getProductSlugs } from "@/lib/products";
 import { siteContact } from "@/lib/site-contact";
+import { siteUrl } from "@/lib/site-metadata";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export async function generateStaticParams() {
   const slugs = await getProductSlugs();
@@ -82,7 +83,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const origin = siteUrl;
   const starting = { ...product, ...getStartingPrice(product) };
   const salePercent = getSalePercent(starting);
   const showSale = isOnSale(product);
