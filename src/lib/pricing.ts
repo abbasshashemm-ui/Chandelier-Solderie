@@ -1,5 +1,45 @@
 import { formatPrice } from "./format";
-import type { Product } from "./types";
+import type { Product, ProductSize } from "./types";
+
+export function getProductSizes(product: Product): ProductSize[] {
+  return product.sizes ?? [];
+}
+
+export function getStartingPrice(product: Product): {
+  price?: number;
+  compareAtPrice?: number;
+} {
+  const sizes = getProductSizes(product);
+  if (sizes.length === 0) {
+    return { price: product.price, compareAtPrice: product.compareAtPrice };
+  }
+
+  const cheapest = sizes.reduce((lowest, size) =>
+    size.price < lowest.price ? size : lowest,
+  );
+
+  return {
+    price: cheapest.price,
+    compareAtPrice: cheapest.compareAtPrice,
+  };
+}
+
+export function hasMultipleSizePrices(product: Product) {
+  const prices = new Set(getProductSizes(product).map((size) => size.price));
+  return prices.size > 1;
+}
+
+export function getProductPrices(product: Product) {
+  const sizes = getProductSizes(product);
+  if (sizes.length > 0) return sizes.map((size) => size.price);
+  return product.price != null ? [product.price] : [];
+}
+
+export function getSizeLabels(product: Product) {
+  const sizes = getProductSizes(product);
+  if (sizes.length > 0) return sizes.map((size) => size.label);
+  return product.dimensions ? [product.dimensions] : [];
+}
 
 export function matchesPriceRange(
   price: number | undefined,

@@ -21,14 +21,11 @@ export function cleanDescription(value?: string | null): string | undefined {
     .replace(/<\/\s*(p|div|li|h[1-6])\s*>/gi, "\n\n")
     .replace(/<[^>]*>/g, "")
     .replace(/&(?:amp|lt|gt|quot|apos|nbsp|#39);/g, (entity) => ENTITIES[entity])
+    .replace(/\u00a0/g, " ")
     .replace(/[ \t]+/g, " ")
     .replace(/ ?\n ?/g, "\n")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
 
   return text || undefined;
-}
-
-export function toParagraphs(value?: string): string[] {
-  return value ? value.split(/\n{2,}/).map((part) => part.trim()).filter(Boolean) : [];
 }

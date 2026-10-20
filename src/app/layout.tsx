@@ -1,8 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Cormorant_Garamond, Montserrat } from "next/font/google";
-import localFont from "next/font/local";
 import {
   siteDescription,
   siteIcons,
@@ -11,26 +7,6 @@ import {
   siteTwitter,
   siteUrl,
 } from "@/lib/site-metadata";
-import "./globals.css";
-
-const castellar = localFont({
-  src: "../fonts/Castellar.woff2",
-  variable: "--font-castellar",
-  display: "swap",
-});
-
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  style: ["normal", "italic"],
-});
-
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
-  weight: ["400", "500"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -57,16 +33,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      data-scroll-behavior="smooth"
-      className={`${castellar.variable} ${cormorant.variable} ${montserrat.variable} h-full`}
-    >
-      <body className="min-h-full antialiased">
-        {children}
-        <Analytics />
-        <SpeedInsights />
-      </body>
+    <html lang="en" data-scroll-behavior="smooth" className="h-full">
+      <body className="min-h-full antialiased">{children}</body>
     </html>
   );
 }

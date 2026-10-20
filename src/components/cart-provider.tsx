@@ -27,8 +27,8 @@ type CartContextValue = {
   itemCount: number;
   subtotal: number;
   addItem: (product: CartProduct, qty?: number) => void;
-  setQty: (slug: string, qty: number) => void;
-  removeItem: (slug: string) => void;
+  setQty: (lineId: string, qty: number) => void;
+  removeItem: (lineId: string) => void;
   clear: () => void;
   openCart: () => void;
   closeCart: () => void;
@@ -98,12 +98,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setOpen(true);
   }, []);
 
-  const setQty = useCallback((slug: string, qty: number) => {
-    writeCart(setCartQty(getCartSnapshot(), slug, qty));
+  const setQty = useCallback((lineId: string, qty: number) => {
+    writeCart(setCartQty(getCartSnapshot(), lineId, qty));
   }, []);
 
-  const removeItem = useCallback((slug: string) => {
-    writeCart(removeFromCart(getCartSnapshot(), slug));
+  const removeItem = useCallback((lineId: string) => {
+    writeCart(removeFromCart(getCartSnapshot(), lineId));
   }, []);
 
   const clear = useCallback(() => writeCart([]), []);

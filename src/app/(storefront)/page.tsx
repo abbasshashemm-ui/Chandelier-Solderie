@@ -2,7 +2,7 @@ import { HomeView } from "@/components/home-view";
 import { getFeaturedCollections, getHomepagePromo } from "@/lib/collections";
 import { getSiteSettings } from "@/lib/site-settings";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export default async function HomePage() {
   const [collections, promo, settings] = await Promise.all([

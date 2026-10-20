@@ -14,6 +14,7 @@ export async function POST(request: NextRequest) {
     revalidateTag("products", "max");
     revalidatePath("/");
     revalidatePath("/shop");
+    revalidatePath("/inquire");
     revalidatePath("/sitemap.xml");
 
     if (body._type === "product") {

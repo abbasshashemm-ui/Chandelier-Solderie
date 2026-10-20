@@ -1,6 +1,10 @@
 import { defineField, defineType } from "sanity";
 import { AutoSlugInput, HiddenSlugField } from "../../src/sanity/auto-slug-input";
 import { warnDuplicateSku, warnDuplicateTitle } from "../validation";
+import {
+  FormattedTextField,
+  FormattedTextInput,
+} from "../../src/sanity/formatted-text-input";
 
 export const product = defineType({
   name: "product",
@@ -37,13 +41,19 @@ export const product = defineType({
       type: "string",
       validation: (rule) => rule.custom(warnDuplicateSku).warning(),
     }),
-    defineField({ name: "price", title: "Price (USD)", type: "number" }),
+    defineField({
+      name: "price",
+      title: "Price (USD)",
+      type: "number",
+      description:
+        "Used when this piece has one price. If you add size options below, listings show the lowest size price.",
+    }),
     defineField({
       name: "compareAtPrice",
       title: "Original price (USD)",
       type: "number",
       description:
-        "Optional before-sale price. Shown crossed out next to the current price.",
+        "Optional before-sale price for a single-price piece. For multiple sizes, set original price on each size.",
     }),
     defineField({
       name: "onSale",
@@ -52,6 +62,54 @@ export const product = defineType({
       description:
         "Flag this piece as on sale. The discount percentage appears on collection cards.",
       initialValue: false,
+    }),
+    defineField({
+      name: "sizes",
+      title: "Size options",
+      type: "array",
+      description:
+        "Add a row per size with its own price. Leave empty if the piece has one size and one price.",
+      of: [
+        {
+          type: "object",
+          name: "sizeOption",
+          fields: [
+            defineField({
+              name: "label",
+              title: "Size",
+              type: "string",
+              description:
+                "e.g. Small (under 40 cm), Medium (40 – 80 cm), Large (80 – 120 cm)",
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "price",
+              title: "Price (USD)",
+              type: "number",
+              validation: (rule) => rule.required().positive(),
+            }),
+            defineField({
+              name: "compareAtPrice",
+              title: "Original price (USD)",
+              type: "number",
+              description: "Optional before-sale price for this size.",
+            }),
+            defineField({
+              name: "sku",
+              title: "Size SKU",
+              type: "string",
+              description: "Optional. Falls back to the product SKU.",
+            }),
+          ],
+          preview: {
+            select: { title: "label", price: "price" },
+            prepare: ({ title, price }) => ({
+              title: title || "Size",
+              subtitle: typeof price === "number" ? `$${price}` : undefined,
+            }),
+          },
+        },
+      ],
     }),
     defineField({
       name: "collection",
@@ -71,7 +129,10 @@ export const product = defineType({
       name: "gallery",
       title: "Gallery",
       type: "array",
+      options: { layout: "grid" },
       of: [{ type: "image", options: { hotspot: true } }],
+      description:
+        "Additional photos on the product page, shown after the first picture.",
     }),
     defineField({
       name: "video",
@@ -99,14 +160,16 @@ export const product = defineType({
       name: "room",
       title: "Room",
       type: "string",
-      description: "e.g. Living Room, Dining, Bedroom",
+      description:
+        "e.g. Living Room, Dining Room, Bedroom, Kitchen, Foyer, Staircase, Hallway, Office, Study Room. Comma-separated is fine.",
     }),
     defineField({
       name: "dimensions",
       title: "Dimensions / Size",
       type: "string",
       description:
-        "e.g. Small (under 40 cm), Medium (40 – 80 cm), Large (80 – 120 cm), Extra Large (over 120 cm)",
+        "Single-size pieces only, e.g. 60 cm, Under 20 cm, 20 - 40 cm, Customizable. Ignored when size options are set.",
+      hidden: ({ parent }) => (parent?.sizes?.length ?? 0) > 0,
     }),
     defineField({
       name: "shortDescription",
@@ -118,7 +181,13 @@ export const product = defineType({
       name: "description",
       title: "Description",
       type: "text",
-      rows: 6,
+      rows: 8,
+      description:
+        "Select a phrase, then use Bold, Italic, or Underline. Existing text is kept.",
+      components: {
+        field: FormattedTextField,
+        input: FormattedTextInput,
+      },
     }),
     defineField({
       name: "category",
